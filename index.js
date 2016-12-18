@@ -11,12 +11,21 @@ class AbstractSyntaxTree {
         this.ast = acorn.parse(source);
     }
 
-    query (selector) {
+    find (selector) {
         return esquery(this.ast, selector);
     }
 
+    first (selector) {
+        return this.find(selector)[0];
+    }
+
+    last (selector) {
+        var nodes = this.find(selector);
+        return nodes[nodes.length - 1];
+    }
+
     has (selector) {
-        return this.query(selector).length > 0;
+        return this.find(selector).length > 0;
     }
 
     remove (node) {

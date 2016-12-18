@@ -7,7 +7,7 @@ test('it works', t => {
 
 test('it queries the syntax tree', t => {
     var ast = new AbstractSyntaxTree('var y = 1;');
-    var declarations = ast.query('VariableDeclaration');
+    var declarations = ast.find('VariableDeclaration');
     t.truthy(declarations.length === 1);
 });
 
@@ -25,5 +25,17 @@ test('it removes nodes', t => {
     var ast = new AbstractSyntaxTree('"use strict"; var b = 4;');
     ast.remove({ type: 'Literal', value: 'use strict' });
     t.truthy(ast.toSource() === 'var b = 4;');
+});
+
+test('it returns the first node', t => {
+    var ast = new AbstractSyntaxTree('var a = 1; var b = 2;');
+    var declaration = ast.first('VariableDeclaration');
+    t.truthy(declaration.declarations[0].id.name === 'a');
+});
+
+test('it returns the last node', t => {
+    var ast = new AbstractSyntaxTree('var c = 3; var d = 4;');
+    var declaration = ast.last('VariableDeclaration');
+    t.truthy(declaration.declarations[0].id.name === 'd');
 });
 
