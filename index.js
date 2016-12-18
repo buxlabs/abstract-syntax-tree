@@ -2,6 +2,7 @@
 
 const acorn = require('acorn');
 const esquery = require('esquery');
+const escodegen = require('escodegen');
 
 class AbstractSyntaxTree {
 
@@ -15,6 +16,10 @@ class AbstractSyntaxTree {
 
     has (selector) {
         return this.query(selector).length > 0;
+    }
+
+    toSource () {
+        return escodegen.generate(this.ast);
     }
 
 }

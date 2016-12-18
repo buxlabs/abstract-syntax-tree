@@ -16,3 +16,8 @@ test('it checks if node is in the syntax tree', t => {
     t.truthy(ast.has('VariableDeclaration'));
 });
 
+test('it returns the source', t => {
+    var ast = new AbstractSyntaxTree('var a = 3;');
+    t.truthy(ast.toSource() === 'var a = 3;');
+});
+
