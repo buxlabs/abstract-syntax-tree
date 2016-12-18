@@ -3,6 +3,7 @@
 const acorn = require('acorn');
 const esquery = require('esquery');
 const escodegen = require('escodegen');
+const estraverse = require('estraverse');
 
 class AbstractSyntaxTree {
 
@@ -16,6 +17,18 @@ class AbstractSyntaxTree {
 
     has (selector) {
         return this.query(selector).length > 0;
+    }
+
+    remove (node) {
+        estraverse.replace(this.ast, {
+            leave: function (current, parent) {
+                if (current.type === node.type &&
+                    current.value === node.value) {
+                    return this.remove();
+                }
+                if (current.expression === null) { this.remove(); }
+            }
+        });
     }
 
     toSource () {

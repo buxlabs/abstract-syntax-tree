@@ -21,3 +21,9 @@ test('it returns the source', t => {
     t.truthy(ast.toSource() === 'var a = 3;');
 });
 
+test('it removes nodes', t => {
+    var ast = new AbstractSyntaxTree('"use strict"; var b = 4;');
+    ast.remove({ type: 'Literal', value: 'use strict' });
+    t.truthy(ast.toSource() === 'var b = 4;');
+});
+
