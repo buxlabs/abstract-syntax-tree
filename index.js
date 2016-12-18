@@ -13,6 +13,10 @@ class AbstractSyntaxTree {
         return esquery(this.ast, selector);
     }
 
+    has (selector) {
+        return this.query(selector).length > 0;
+    }
+
 }
 
 module.exports = AbstractSyntaxTree;
