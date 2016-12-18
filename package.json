@@ -1,0 +1,30 @@
+{
+  "name": "@buxlabs/ast",
+  "version": "0.1.0",
+  "description": "abstract syntax tree class for js",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava \"test/spec/**/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buxlabs/ast.git"
+  },
+  "keywords": [
+    "ast",
+    "javascript"
+  ],
+  "author": "Emil Ajdyna <emil@ajdyna.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buxlabs/ast/issues"
+  },
+  "homepage": "https://github.com/buxlabs/ast#readme",
+  "devDependencies": {
+    "ava": "^0.17.0"
+  },
+  "dependencies": {
+    "acorn": "^4.0.3",
+    "esquery": "^0.4.0"
+  }
+}
