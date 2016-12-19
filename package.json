@@ -24,7 +24,7 @@
     "ava": "^0.17.0"
   },
   "dependencies": {
-    "acorn": "^4.0.3",
+    "acorn": "^4.0.4",
     "escodegen": "^1.8.1",
     "esquery": "^0.4.0",
     "estraverse": "^4.2.0"
