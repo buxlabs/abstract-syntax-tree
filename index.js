@@ -4,6 +4,7 @@ const acorn = require('acorn');
 const esquery = require('esquery');
 const escodegen = require('escodegen');
 const estraverse = require('estraverse');
+const comparify = require('comparify');
 
 class AbstractSyntaxTree {
 
@@ -35,11 +36,9 @@ class AbstractSyntaxTree {
     remove (node) {
         estraverse.replace(this.ast, {
             leave: function (current, parent) {
-                if (current.type === node.type &&
-                    current.value === node.value) {
+                if (comparify(current, node) || current.expression === null) {
                     return this.remove();
                 }
-                if (current.expression === null) { this.remove(); }
             }
         });
     }

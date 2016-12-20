@@ -27,6 +27,19 @@ test('it removes nodes', t => {
     t.truthy(ast.toSource() === 'var b = 4;');
 });
 
+test('it removes function declarations', t => {
+    var source = 'var a = 1; function hello () { return "world"; }';
+    var ast = new AbstractSyntaxTree(source);
+    ast.remove({
+        type: 'FunctionDeclaration',
+        id: {
+            type: 'Identifier',
+            name: 'hello'
+        }
+    });
+    t.truthy(ast.toSource() === 'var a = 1;');
+});
+
 test('it returns the first node', t => {
     var ast = new AbstractSyntaxTree('var a = 1; var b = 2;');
     var declaration = ast.first('VariableDeclaration');
