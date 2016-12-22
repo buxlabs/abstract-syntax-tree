@@ -9,7 +9,9 @@ const comparify = require('comparify');
 class AbstractSyntaxTree {
 
     constructor (source) {
-        this.ast = acorn.parse(source);
+        this.ast = acorn.parse(source, {
+            sourceType: 'module'
+        });
     }
 
     query (node, selector) {

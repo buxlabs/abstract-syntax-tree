@@ -52,3 +52,8 @@ test('it returns the last node', t => {
     t.truthy(declaration.declarations[0].id.name === 'd');
 });
 
+test('it works with imports', t => {
+    var source = `import _ from 'underscore';`;
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.toSource() === source);
+});
