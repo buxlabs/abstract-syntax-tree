@@ -37,9 +37,15 @@ class AbstractSyntaxTree {
 
     remove (node) {
         estraverse.replace(this.ast, {
+            enter: function (current, parent) {
+                if (comparify(current, node)) {
+                    this.remove();
+                }
+            },
             leave: function (current, parent) {
-                if (comparify(current, node) || current.expression === null) {
-                    return this.remove();
+                if (current.expression === null ||
+                    (current.type === 'VariableDeclaration' && current.declarations.length === 0)) {
+                    this.remove();
                 }
             }
         });

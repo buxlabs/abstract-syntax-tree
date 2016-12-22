@@ -40,6 +40,32 @@ test('it removes function declarations', t => {
     t.truthy(ast.toSource() === 'var a = 1;');
 });
 
+test('it keeps variable declarations', t => {
+    var source = 'var a = 1, b = 2; function hello () { return "world"; }';
+    var ast = new AbstractSyntaxTree(source);
+    ast.remove({
+        type: 'VariableDeclarator',
+        id: {
+            type: 'Identifier',
+            name: 'a'
+        }
+    });
+    t.truthy(ast.toSource() === `var b = 2;\nfunction hello() {\n    return 'world';\n}`);
+});
+
+test('it removes empty declarations', t => {
+    var source = 'var a = 1; function hello () { return "world"; }';
+    var ast = new AbstractSyntaxTree(source);
+    ast.remove({
+        type: 'VariableDeclarator',
+        id: {
+            type: 'Identifier',
+            name: 'a'
+        }
+    });
+    t.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`);
+});
+
 test('it returns the first node', t => {
     var ast = new AbstractSyntaxTree('var a = 1; var b = 2;');
     var declaration = ast.first('VariableDeclaration');
