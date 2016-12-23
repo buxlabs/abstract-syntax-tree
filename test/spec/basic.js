@@ -108,3 +108,9 @@ test('it supports comments', t => {
     var ast = new AbstractSyntaxTree(source);
     t.truthy(ast.toSource({ comments: true }) === source);
 });
+
+test('it supports different quote types', t => {
+    var source = `var a = 'hello';`;
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.toSource({ quotes: "double" }) === `var a = "hello";`);
+});

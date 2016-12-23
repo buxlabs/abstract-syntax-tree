@@ -62,7 +62,11 @@ class AbstractSyntaxTree {
 
     toSource (options) {
         options = options || {};
-        var source = escodegen.generate(this.ast);
+        var source = escodegen.generate(this.ast, {
+            format: {
+                quotes: options.quotes
+            }
+        });
 
         if (options.beautify) {
             source = beautify(source, {
