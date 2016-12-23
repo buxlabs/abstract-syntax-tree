@@ -96,3 +96,10 @@ test('it should be possible to beautify the source', t => {
     var ast = new AbstractSyntaxTree(source);
     t.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\nvar b = 2;\n');
 });
+
+test('it exposes a static parse method', t => {
+    var source = 'var a = 1;';
+    var ast = AbstractSyntaxTree.parse(source);
+    t.truthy(ast.type === 'Program');
+});
+

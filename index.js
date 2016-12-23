@@ -10,7 +10,7 @@ const beautify = require("js-beautify").js_beautify;
 class AbstractSyntaxTree {
 
     constructor (source) {
-        this.ast = acorn.parse(source, {
+        this.ast = this.constructor.parse(source, {
             sourceType: 'module'
         });
     }
@@ -67,6 +67,10 @@ class AbstractSyntaxTree {
             });
         }
         return source;
+    }
+    
+    static parse (source, options) {
+        return acorn.parse(source, options);
     }
 
 }
