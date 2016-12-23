@@ -5,6 +5,7 @@ const esquery = require('esquery');
 const escodegen = require('escodegen');
 const estraverse = require('estraverse');
 const comparify = require('comparify');
+const beautify = require("js-beautify").js_beautify;
 
 class AbstractSyntaxTree {
 
@@ -57,8 +58,15 @@ class AbstractSyntaxTree {
         });
     }
 
-    toSource () {
-        return escodegen.generate(this.ast);
+    toSource (options) {
+        options = options || {};
+        var source = escodegen.generate(this.ast);
+        if (options.beautify) {
+            return beautify(source, {
+                end_with_newline: true
+            });
+        }
+        return source;
     }
 
 }

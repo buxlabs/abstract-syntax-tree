@@ -90,3 +90,9 @@ test('it should be possible to remove the first element only', t => {
     ast.remove({ type: 'VariableDeclaration' }, { first: true });
     t.truthy(ast.toSource() === 'var b = 2;');
 });
+
+test('it should be possible to beautify the source', t => {
+    var source = 'var a = 1; var b = 2;';
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\nvar b = 2;\n');
+});
