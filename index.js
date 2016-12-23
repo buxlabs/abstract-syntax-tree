@@ -10,8 +10,10 @@ const beautify = require("js-beautify").js_beautify;
 class AbstractSyntaxTree {
 
     constructor (source) {
+        this.comments = [];
         this.ast = this.constructor.parse(source, {
-            sourceType: 'module'
+            sourceType: 'module',
+            onComment: this.comments
         });
     }
 
@@ -61,11 +63,26 @@ class AbstractSyntaxTree {
     toSource (options) {
         options = options || {};
         var source = escodegen.generate(this.ast);
+
         if (options.beautify) {
-            return beautify(source, {
+            source = beautify(source, {
                 end_with_newline: true
             });
         }
+
+        if (options.comments) {
+            // it would be great to find a better way to attach comments, 
+            // this solution simply puts all of the comments at the top of the file
+            // so you at least do not lose them
+            source = this.comments.map(comment => {
+                var value = comment.value.trim();
+                if (comment.type === "Block") {
+                    return "/* " + value + " */\n";
+                }
+                return "// " + value + "\n";
+            }).join("") + source;
+        }
+
         return source;
     }
     
