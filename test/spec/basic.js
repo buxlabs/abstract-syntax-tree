@@ -83,3 +83,10 @@ test('it works with imports', t => {
     var ast = new AbstractSyntaxTree(source);
     t.truthy(ast.toSource() === source);
 });
+
+test('it should be possible to remove the first element only', t => {
+    var source = 'var a = 1; var b = 2;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.remove({ type: 'VariableDeclaration' }, { first: true });
+    t.truthy(ast.toSource() === 'var b = 2;');
+});

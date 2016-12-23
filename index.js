@@ -35,17 +35,23 @@ class AbstractSyntaxTree {
         return this.find(selector).length > 0;
     }
 
-    remove (node) {
+    remove (node, options) {
+        options = options || {};
+        var count = 0;
         estraverse.replace(this.ast, {
             enter: function (current, parent) {
+                if (options.first && count === 1) {
+                    return this.break();
+                }
                 if (comparify(current, node)) {
-                    this.remove();
+                    count += 1;
+                    return this.remove();
                 }
             },
             leave: function (current, parent) {
                 if (current.expression === null ||
                     (current.type === 'VariableDeclaration' && current.declarations.length === 0)) {
-                    this.remove();
+                    return this.remove();
                 }
             }
         });
