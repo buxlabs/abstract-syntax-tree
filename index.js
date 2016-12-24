@@ -5,7 +5,7 @@ const esquery = require('esquery');
 const escodegen = require('escodegen');
 const estraverse = require('estraverse');
 const comparify = require('comparify');
-const beautify = require("js-beautify").js_beautify;
+const beautify = require('js-beautify').js_beautify;
 
 class AbstractSyntaxTree {
 
@@ -60,6 +60,14 @@ class AbstractSyntaxTree {
         });
     }
 
+    prepend (node) {
+        this.ast.body.unshift(node);
+    }
+
+    append (node) {
+        this.ast.body.push(node);
+    }
+
     toSource (options) {
         options = options || {};
         var source = escodegen.generate(this.ast, {
@@ -80,11 +88,11 @@ class AbstractSyntaxTree {
             // so you at least do not lose them
             source = this.comments.map(comment => {
                 var value = comment.value.trim();
-                if (comment.type === "Block") {
-                    return "/* " + value + " */\n";
+                if (comment.type === 'Block') {
+                    return '/* ' + value + ' */\n';
                 }
-                return "// " + value + "\n";
-            }).join("") + source;
+                return '// ' + value + '\n';
+            }).join('') + source;
         }
 
         return source;

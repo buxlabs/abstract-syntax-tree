@@ -114,3 +114,29 @@ test('it supports different quote types', t => {
     var ast = new AbstractSyntaxTree(source);
     t.truthy(ast.toSource({ quotes: "double" }) === `var a = "hello";`);
 });
+
+test('it prepends a node to body', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.prepend({
+        type: 'ExpressionStatement',
+        expression: {
+            type: 'Literal',
+            value: 'use strict'
+        }
+    });
+    t.truthy(ast.toSource() === '\'use strict\';\nvar a = 1;');
+});
+
+test('it appends a node to body', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.append({
+        type: 'ExpressionStatement',
+        expression: {
+            type: 'Literal',
+            value: 'use strict'
+        }
+    });
+    t.truthy(ast.toSource() === 'var a = 1;\n\'use strict\';');
+});
