@@ -60,6 +60,10 @@ class AbstractSyntaxTree {
         });
     }
 
+    replace (options) {
+        return estraverse.replace(this.ast, options);
+    }
+
     prepend (node) {
         this.ast.body.unshift(node);
     }

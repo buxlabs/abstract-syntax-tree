@@ -140,3 +140,17 @@ test('it appends a node to body', t => {
     });
     t.truthy(ast.toSource() === 'var a = 1;\n\'use strict\';');
 });
+
+test('it replaces nodes', t => {
+    var source = 'var a = 1';
+    var ast = new AbstractSyntaxTree(source);
+    ast.replace({
+        enter: function (node) {
+            if (node.type === 'VariableDeclaration') {
+                node.kind = 'let';
+            }
+            return node;
+        }
+    });
+    t.truthy(ast.toSource() === 'let a = 1;');
+});
