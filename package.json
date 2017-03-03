@@ -21,14 +21,14 @@
   },
   "homepage": "https://github.com/buxlabs/ast#readme",
   "devDependencies": {
-    "ava": "^0.18.2"
+    "ava": "0.18.2"
   },
   "dependencies": {
-    "acorn": "^4.0.10",
-    "comparify": "^0.2.0",
-    "escodegen": "^1.8.1",
-    "esquery": "^0.4.0",
-    "estraverse": "^4.2.0",
-    "js-beautify": "^1.6.11"
+    "acorn": "4.0.10",
+    "comparify": "0.2.0",
+    "escodegen": "1.8.1",
+    "esquery": "0.4.0",
+    "estraverse": "4.2.0",
+    "js-beautify": "1.6.11"
   }
 }
