@@ -65,7 +65,7 @@ You might find the class useful if you want to abstract away some ast manipulati
 
 ### prepend / append
 
-```
+```javascript
   var source = 'var a = 1;';
   var ast = new AbstractSyntaxTree(source);
   ast.prepend({
@@ -79,7 +79,7 @@ You might find the class useful if you want to abstract away some ast manipulati
 
 ### toSource
 
-```
+```javascript
   var source = 'var a = 1;';
   var ast = new AbstractSyntaxTree(source);
   ast.toSource(); // 'var a = 1;';
