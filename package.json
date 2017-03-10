@@ -30,7 +30,7 @@
     "acorn": "4.0.10",
     "comparify": "0.2.0",
     "escodegen": "1.8.1",
-    "esquery": "0.4.0",
+    "esquery": "1.0.0",
     "estraverse": "4.2.0",
     "js-beautify": "1.6.11"
   }
