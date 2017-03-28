@@ -27,7 +27,7 @@
     "ava": "0.18.2"
   },
   "dependencies": {
-    "acorn": "4.0.12",
+    "acorn": "5.0.0",
     "comparify": "0.2.0",
     "escodegen": "1.8.1",
     "esquery": "1.0.0",
