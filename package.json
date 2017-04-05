@@ -24,7 +24,7 @@
   ],
   "homepage": "https://github.com/buxlabs/ast#readme",
   "devDependencies": {
-    "ava": "0.18.2"
+    "ava": "0.19.0"
   },
   "dependencies": {
     "acorn": "5.0.3",
