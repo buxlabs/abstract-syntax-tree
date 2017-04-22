@@ -1,10 +1,11 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.1.11",
+  "version": "0.2.0",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
-    "test": "ava \"test/spec/**/*.js\""
+    "test": "ava \"test/spec/**/*.js\"",
+    "coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 npm test"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,8 @@
   ],
   "homepage": "https://github.com/buxlabs/ast#readme",
   "devDependencies": {
-    "ava": "0.19.1"
+    "ava": "0.19.1",
+    "nyc": "10.2.0"
   },
   "dependencies": {
     "acorn": "5.0.3",

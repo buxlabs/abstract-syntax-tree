@@ -103,7 +103,13 @@ test('it exposes a static parse method', t => {
     t.truthy(ast.type === 'Program');
 });
 
-test('it supports comments', t => {
+test('it supports single line comments', t => {
+    var source = '// hello\nvar a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.toSource({ comments: true }) === source);
+});
+
+test('it supports multi-line comments', t => {
     var source = '/* hello */\nvar a = 1;';
     var ast = new AbstractSyntaxTree(source);
     t.truthy(ast.toSource({ comments: true }) === source);
