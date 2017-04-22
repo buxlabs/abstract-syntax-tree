@@ -2,6 +2,8 @@
 
 You might find the class useful if you want to abstract away some ast manipulations such as adding, removing, replacing the nodes and others. The test folder is a good starting point for examples of usage. PRs are highly welcome.
 
+- [x] 100% coverage
+
 ## Installation
 
 `npm install --save @buxlabs/ast`
