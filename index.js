@@ -71,6 +71,10 @@ class AbstractSyntaxTree {
     append (node) {
         this.ast.body.push(node);
     }
+    
+    beautify (source, options) {
+        return beautify(source, options);
+    }
 
     toSource (options) {
         options = options || {};
@@ -81,7 +85,7 @@ class AbstractSyntaxTree {
         });
 
         if (options.beautify) {
-            source = beautify(source, {
+            source = this.beautify(source, {
                 end_with_newline: true
             });
         }

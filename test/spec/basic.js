@@ -160,3 +160,12 @@ test('it replaces nodes', t => {
     });
     t.truthy(ast.toSource() === 'let a = 1;');
 });
+
+test('it allows to override the beautify method', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.beautify = function (source) {
+        return source + '\n';
+    };
+    t.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\n');
+});
