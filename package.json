@@ -34,6 +34,6 @@
     "escodegen": "1.8.1",
     "esquery": "1.0.0",
     "estraverse": "4.2.0",
-    "js-beautify": "1.6.12"
+    "js-beautify": "1.6.14"
   }
 }
