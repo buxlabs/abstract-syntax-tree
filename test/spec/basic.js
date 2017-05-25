@@ -169,3 +169,49 @@ test('it allows to override the beautify method', t => {
     };
     t.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\n');
 });
+
+test('it has a minify noop method by default', t => {
+    var source = 'var hello = 1;'; 
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.toSource({ minify: true }) === 'var hello = 1;');
+});
+
+test('it allows to override the minify method', t => {
+    var source = 'var hello = 1;'; 
+    var ast = new AbstractSyntaxTree(source);
+    ast.minify = function (ast) {
+        ast.body[0].declarations[0].id.name = 'a';
+        return ast;
+    };
+    t.truthy(ast.toSource({ minify: true }) === 'var a = 1;');
+});
+
+test('it wraps the code', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.wrap(body => {
+        return [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [],
+                "defaults": [],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": body
+                },
+                "rest": null,
+                "generator": false,
+                "expression": false
+              },
+              "arguments": []
+            }
+          }
+        ];
+    });
+    t.truthy(ast.toSource().replace(/\s/g, '') === '(function(){vara=1;}());');
+});

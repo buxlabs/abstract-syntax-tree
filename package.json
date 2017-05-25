@@ -1,6 +1,6 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {

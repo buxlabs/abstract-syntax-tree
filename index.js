@@ -72,12 +72,25 @@ class AbstractSyntaxTree {
         this.ast.body.push(node);
     }
     
+    wrap (callback) {
+        this.ast.body = callback(this.ast.body);
+    }
+    
     beautify (source, options) {
         return beautify(source, options);
+    }
+    
+    minify (ast) {
+        return ast;
     }
 
     toSource (options) {
         options = options || {};
+        
+        if (options.minify) {
+            this.ast = this.minify(this.ast);
+        }
+        
         var source = escodegen.generate(this.ast, {
             format: {
                 quotes: options.quotes

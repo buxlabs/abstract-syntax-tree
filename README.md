@@ -12,6 +12,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 
 ### has
 
+Check if ast contains a node of given type.
+
 ```javascript
   var source = 'var a = "x";';
   var ast = new AbstractSyntaxTree(source);
@@ -19,6 +21,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 ```
 
 ### find
+
+Find all nodes of given type.
 
 ```javascript
   var source = 'var a = "x";';
@@ -28,6 +32,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 
 ### first
 
+First first node of given type.
+
 ```javascript
   var source = 'var a = "x";';
   var ast = new AbstractSyntaxTree(source);
@@ -35,6 +41,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 ```
 
 ### last
+
+Find last node of given type.
 
 ```javascript
   var source = 'var a = "x";';
@@ -44,6 +52,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 
 ### remove
 
+Remove all nodes that match the criteria.
+
 ```javascript
   var source = '"use strict"; var b = 4;';
   var ast = new AbstractSyntaxTree(source);
@@ -51,6 +61,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 ```
 
 ### replace
+
+Replace all nodes that match the criteria.
 
 ```javascript
   var source = 'var a = 1';
@@ -65,7 +77,9 @@ You might find the class useful if you want to abstract away some ast manipulati
   });
 ```
 
-### prepend / append
+### prepend
+
+Prepend a node to the body.
 
 ```javascript
   var source = 'var a = 1;';
@@ -79,7 +93,58 @@ You might find the class useful if you want to abstract away some ast manipulati
   });
 ```
 
+### append
+
+Append a node to the body.
+
+```javascript
+  var source = 'var a = 1;';
+  var ast = new AbstractSyntaxTree(source);
+  ast.append({
+    type: 'ExpressionStatement',
+    expression: {
+      type: 'Literal',
+      value: 'test'
+    }
+  });
+```
+
+### wrap
+
+Wrap body with given node.
+
+```javascript
+  var source = 'var a = 1;';
+  var ast = new AbstractSyntaxTree(source);
+  ast.wrap(body => {
+      return [
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "CallExpression",
+            "callee": {
+              "type": "FunctionExpression",
+              "id": null,
+              "params": [],
+              "defaults": [],
+              "body": {
+                "type": "BlockStatement",
+                "body": body
+              },
+              "rest": null,
+              "generator": false,
+              "expression": false
+            },
+            "arguments": []
+          }
+        }
+      ];
+  });
+```
+
 ### toSource
+
+Convert the ast to string.
 
 ```javascript
   var source = 'var a = 1;';
