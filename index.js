@@ -37,6 +37,10 @@ class AbstractSyntaxTree {
     has (selector) {
         return this.find(selector).length > 0;
     }
+    
+    is (node, expected) {
+        return comparify(node, expected);
+    }
 
     remove (node, options) {
         options = options || {};

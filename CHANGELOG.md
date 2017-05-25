@@ -1,3 +1,7 @@
+# 0.3.2
+
+- add: is method (you can compare nodes loosely)
+
 # 0.3.1
 
 - add: wrap method (you can wrap the code, e.g. with iife or amd)

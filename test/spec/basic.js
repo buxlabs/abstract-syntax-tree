@@ -147,6 +147,12 @@ test('it appends a node to body', t => {
     t.truthy(ast.toSource() === 'var a = 1;\n\'use strict\';');
 });
 
+test('it compares nodes', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.is({ type: 'ReturnStatement' }, { type: 'ReturnStatement' }));
+});
+
 test('it replaces nodes', t => {
     var source = 'var a = 1';
     var ast = new AbstractSyntaxTree(source);
