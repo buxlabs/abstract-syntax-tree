@@ -221,3 +221,17 @@ test('it wraps the code', t => {
     });
     t.truthy(ast.toSource().replace(/\s/g, '') === '(function(){vara=1;}());');
 });
+
+test('it unwraps the code in case of iife', t => {
+    var source = '(function () { console.log(1); }());';
+    var ast = new AbstractSyntaxTree(source);
+    ast.unwrap();
+    t.truthy(ast.toSource() === 'console.log(1);');
+});
+
+test('it unwraps code in case of amd', t => {
+    var source = 'define(function () { console.log(1); });';
+    var ast = new AbstractSyntaxTree(source);
+    ast.unwrap();
+    t.truthy(ast.toSource() === 'console.log(1);');
+});

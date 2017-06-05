@@ -1,3 +1,7 @@
+# 0.3.3
+
+- add: unwrap method (e.g. drop iife)
+
 # 0.3.2
 
 - add: is method (you can compare nodes loosely)

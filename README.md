@@ -142,6 +142,15 @@ Wrap body with given node.
   });
 ```
 
+### unwrap
+
+```javascript
+  var source = (function () { console.log(1); }());
+  var ast = new AbstractSyntaxTree(source);
+  ast.unwrap();
+  ast.toSource(); // 'console.log(1);'
+```
+
 ### toSource
 
 Convert the ast to string.

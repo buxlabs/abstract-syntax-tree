@@ -80,6 +80,11 @@ class AbstractSyntaxTree {
         this.ast.body = callback(this.ast.body);
     }
     
+    unwrap () {
+        let block = this.first('BlockStatement');
+        this.ast.body = block.body;
+    }
+    
     beautify (source, options) {
         return beautify(source, options);
     }
