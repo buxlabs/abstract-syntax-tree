@@ -1,3 +1,7 @@
+# 0.3.4
+
+- add: template method
+
 # 0.3.3
 
 - add: unwrap method (e.g. drop iife)

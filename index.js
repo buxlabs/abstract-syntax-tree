@@ -4,7 +4,9 @@ const acorn = require('acorn');
 const esquery = require('esquery');
 const escodegen = require('escodegen');
 const estraverse = require('estraverse');
+const template = require("estemplate");
 const comparify = require('comparify');
+const toAST = require('to-ast');
 const beautify = require('js-beautify').js_beautify;
 
 class AbstractSyntaxTree {
@@ -83,6 +85,14 @@ class AbstractSyntaxTree {
     unwrap () {
         let block = this.first('BlockStatement');
         this.ast.body = block.body;
+    }
+    
+    template (source, options) {
+        options = options || {};
+        if (typeof source === "string") {
+            return template(source, options).body;
+        }
+        return toAST(source, options);
     }
     
     beautify (source, options) {

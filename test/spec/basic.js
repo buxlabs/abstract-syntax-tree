@@ -235,3 +235,21 @@ test('it unwraps code in case of amd', t => {
     ast.unwrap();
     t.truthy(ast.toSource() === 'console.log(1);');
 });
+
+test('it generates ast from templates', t => {
+    var source = 'console.log(1);';
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.template('"use strict";')[0].type === 'ExpressionStatement');
+});
+
+test('it generates ast from templates with parameters', t => {
+    var source = 'console.log(1);';
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.template('var x = <%= value %>;', { value: { type: 'Literal', value: 1 } })[0].declarations[0].init.value === 1);
+});
+
+test('it generates ast from literals', t => {
+    var source = 'console.log(1);';
+    var ast = new AbstractSyntaxTree(source);
+    t.truthy(ast.template(1).type === 'Literal');
+});

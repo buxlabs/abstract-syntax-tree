@@ -1,4 +1,4 @@
-# @buxlabs/ast - AbstractSyntaxTree
+# AbstractSyntaxTree
 
 You might find the class useful if you want to abstract away some ast manipulations such as adding, removing, replacing the nodes and others. The test folder is a good starting point for examples of usage. PRs are highly welcome.
 
@@ -15,9 +15,9 @@ You might find the class useful if you want to abstract away some ast manipulati
 Check if ast contains a node of given type.
 
 ```javascript
-  var source = 'var a = "x";';
-  var ast = new AbstractSyntaxTree(source);
-  ast.has('VariableDeclaration'); // true
+var source = 'var a = "x";';
+var ast = new AbstractSyntaxTree(source);
+ast.has('VariableDeclaration'); // true
 ```
 
 ### find
@@ -25,9 +25,9 @@ Check if ast contains a node of given type.
 Find all nodes of given type.
 
 ```javascript
-  var source = 'var a = "x";';
-  var ast = new AbstractSyntaxTree(source);
-  ast.find('VariableDeclaration'); // [ { ... } ]
+var source = 'var a = "x";';
+var ast = new AbstractSyntaxTree(source);
+ast.find('VariableDeclaration'); // [ { ... } ]
 ```
 
 ### first
@@ -35,9 +35,9 @@ Find all nodes of given type.
 First first node of given type.
 
 ```javascript
-  var source = 'var a = "x";';
-  var ast = new AbstractSyntaxTree(source);
-  ast.first('VariableDeclaration'); // { ... }
+var source = 'var a = "x";';
+var ast = new AbstractSyntaxTree(source);
+ast.first('VariableDeclaration'); // { ... }
 ```
 
 ### last
@@ -45,9 +45,9 @@ First first node of given type.
 Find last node of given type.
 
 ```javascript
-  var source = 'var a = "x";';
-  var ast = new AbstractSyntaxTree(source);
-  ast.last('VariableDeclaration'); // { ... }
+var source = 'var a = "x";';
+var ast = new AbstractSyntaxTree(source);
+ast.last('VariableDeclaration'); // { ... }
 ```
 
 ### remove
@@ -55,9 +55,9 @@ Find last node of given type.
 Remove all nodes that match the criteria.
 
 ```javascript
-  var source = '"use strict"; var b = 4;';
-  var ast = new AbstractSyntaxTree(source);
-  ast.remove({ type: 'Literal', value: 'use strict' });
+var source = '"use strict"; var b = 4;';
+var ast = new AbstractSyntaxTree(source);
+ast.remove({ type: 'Literal', value: 'use strict' });
 ```
 
 ### replace
@@ -65,16 +65,16 @@ Remove all nodes that match the criteria.
 Replace all nodes that match the criteria.
 
 ```javascript
-  var source = 'var a = 1';
-  var ast = new AbstractSyntaxTree(source);
-  ast.replace({
-    enter: function (node) {
-      if (node.type === 'VariableDeclaration') {
-        node.kind = 'let';
-      }
-      return node;
+var source = 'var a = 1';
+var ast = new AbstractSyntaxTree(source);
+ast.replace({
+  enter: function (node) {
+    if (node.type === 'VariableDeclaration') {
+      node.kind = 'let';
     }
-  });
+    return node;
+  }
+});
 ```
 
 ### prepend
@@ -82,15 +82,15 @@ Replace all nodes that match the criteria.
 Prepend a node to the body.
 
 ```javascript
-  var source = 'var a = 1;';
-  var ast = new AbstractSyntaxTree(source);
-  ast.prepend({
-    type: 'ExpressionStatement',
-    expression: {
-      type: 'Literal',
-      value: 'use strict'
-    }
-  });
+var source = 'var a = 1;';
+var ast = new AbstractSyntaxTree(source);
+ast.prepend({
+  type: 'ExpressionStatement',
+  expression: {
+    type: 'Literal',
+    value: 'use strict'
+  }
+});
 ```
 
 ### append
@@ -98,15 +98,15 @@ Prepend a node to the body.
 Append a node to the body.
 
 ```javascript
-  var source = 'var a = 1;';
-  var ast = new AbstractSyntaxTree(source);
-  ast.append({
-    type: 'ExpressionStatement',
-    expression: {
-      type: 'Literal',
-      value: 'test'
-    }
-  });
+var source = 'var a = 1;';
+var ast = new AbstractSyntaxTree(source);
+ast.append({
+  type: 'ExpressionStatement',
+  expression: {
+    type: 'Literal',
+    value: 'test'
+  }
+});
 ```
 
 ### wrap
@@ -114,41 +114,53 @@ Append a node to the body.
 Wrap body with given node.
 
 ```javascript
-  var source = 'var a = 1;';
-  var ast = new AbstractSyntaxTree(source);
-  ast.wrap(body => {
-      return [
-        {
-          "type": "ExpressionStatement",
-          "expression": {
-            "type": "CallExpression",
-            "callee": {
-              "type": "FunctionExpression",
-              "id": null,
-              "params": [],
-              "defaults": [],
-              "body": {
-                "type": "BlockStatement",
-                "body": body
-              },
-              "rest": null,
-              "generator": false,
-              "expression": false
+var source = 'var a = 1;';
+var ast = new AbstractSyntaxTree(source);
+ast.wrap(body => {
+    return [
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "FunctionExpression",
+            "id": null,
+            "params": [],
+            "defaults": [],
+            "body": {
+              "type": "BlockStatement",
+              "body": body
             },
-            "arguments": []
-          }
+            "rest": null,
+            "generator": false,
+            "expression": false
+          },
+          "arguments": []
         }
-      ];
-  });
+      }
+    ];
+});
 ```
 
 ### unwrap
 
+Change the code to the first BlockStatement body
+
 ```javascript
-  var source = '(function () { console.log(1); }())';
-  var ast = new AbstractSyntaxTree(source);
-  ast.unwrap();
-  ast.toSource(); // 'console.log(1);'
+var source = '(function () { console.log(1); }())';
+var ast = new AbstractSyntaxTree(source);
+ast.unwrap();
+ast.toSource(); // 'console.log(1);'
+```
+
+### template
+
+Create ast partials from templates
+
+```javascript
+var source = 'console.log(1);';
+var ast = new AbstractSyntaxTree(source);
+ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } }); // [ { type: 'VariableDeclaration', declarations: [...] } ]
 ```
 
 ### toSource
@@ -156,7 +168,7 @@ Wrap body with given node.
 Convert the ast to string.
 
 ```javascript
-  var source = 'var a = 1;';
-  var ast = new AbstractSyntaxTree(source);
-  ast.toSource(); // 'var a = 1;';
+var source = 'var a = 1;';
+var ast = new AbstractSyntaxTree(source);
+ast.toSource(); // 'var a = 1;';
 ```
