@@ -13,6 +13,7 @@ class AbstractSyntaxTree {
 
     constructor (source) {
         this.comments = [];
+        this.source = source;
         this.ast = this.constructor.parse(source, {
             sourceType: 'module',
             onComment: this.comments
@@ -134,7 +135,7 @@ class AbstractSyntaxTree {
                 return '// ' + value + '\n';
             }).join('') + source;
         }
-
+        this.source = source;
         return source;
     }
     
