@@ -1,6 +1,6 @@
 'use strict';
 
-const acorn = require('acorn');
+const espree = require('espree');
 const esquery = require('esquery');
 const escodegen = require('escodegen');
 const estraverse = require('estraverse');
@@ -11,12 +11,13 @@ const beautify = require('js-beautify').js_beautify;
 
 class AbstractSyntaxTree {
 
-    constructor (source) {
-        this.comments = [];
+    constructor (source, options) {
+        options = options || {};
         this.source = source;
         this.ast = this.constructor.parse(source, {
             sourceType: 'module',
-            onComment: this.comments
+            comment: options.comments,
+            attachComment: options.comments
         });
     }
 
@@ -112,6 +113,7 @@ class AbstractSyntaxTree {
         }
         
         var source = escodegen.generate(this.ast, {
+            comment: options.comments,
             format: {
                 quotes: options.quotes
             }
@@ -122,25 +124,13 @@ class AbstractSyntaxTree {
                 end_with_newline: true
             });
         }
-
-        if (options.comments) {
-            // it would be great to find a better way to attach comments, 
-            // this solution simply puts all of the comments at the top of the file
-            // so you at least do not lose them
-            source = this.comments.map(comment => {
-                var value = comment.value.trim();
-                if (comment.type === 'Block') {
-                    return '/* ' + value + ' */\n';
-                }
-                return '// ' + value + '\n';
-            }).join('') + source;
-        }
         this.source = source;
+        
         return source;
     }
     
     static parse (source, options) {
-        return acorn.parse(source, options);
+        return espree.parse(source, options);
     }
 
 }

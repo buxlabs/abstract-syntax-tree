@@ -1,3 +1,8 @@
+# 0.4.0
+
+- edit: switch from acorn to espree
+- add: better comments support
+
 # 0.3.5
 
 - add: source field
