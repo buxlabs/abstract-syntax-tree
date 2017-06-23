@@ -46,8 +46,23 @@ class AbstractSyntaxTree {
         return comparify(node, expected);
     }
 
-    remove (node, options) {
+    remove (target, options) {
         options = options || {};
+        if (typeof target === 'string') {
+            return this._removeBySelector(target, options);
+        }
+        this._removeByNode(target, options);
+    }
+    
+    _removeBySelector (target, options) {
+        var nodes = this.find(target);
+        // this could be improved by traversing once and 
+        // comparing the current node to the found nodes
+        // one by one while making the array of nodes smaller too
+        nodes.forEach(node => this._removeByNode(node, options));
+    }
+    
+    _removeByNode (node, options) {
         var count = 0;
         estraverse.replace(this.ast, {
             enter: function (current, parent) {

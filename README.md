@@ -60,6 +60,12 @@ var ast = new AbstractSyntaxTree(source);
 ast.remove({ type: 'Literal', value: 'use strict' });
 ```
 
+```javascript
+var source = 'function hello () { var foo = "bar"; return "world"; }';
+var ast = new AbstractSyntaxTree(source);
+ast.remove('BlockStatement > VariableDeclaration');
+```
+
 ### replace
 
 Replace all nodes that match the criteria.

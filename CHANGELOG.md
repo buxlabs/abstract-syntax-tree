@@ -1,3 +1,7 @@
+# 0.4.1
+
+- add: handle string selector in the remove method
+
 # 0.4.0
 
 - edit: switch from acorn to espree

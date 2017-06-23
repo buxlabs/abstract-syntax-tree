@@ -66,6 +66,20 @@ test('it removes empty declarations', t => {
     t.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`);
 });
 
+test('it removes nodes if string is provided', t => {
+    var source = 'var a = 1; function hello () { return "world"; }';
+    var ast = new AbstractSyntaxTree(source);
+    ast.remove('VariableDeclaration');
+    t.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`);
+});
+
+test('it removes nodes via complex selectors', t => {
+    var source = 'var a = 1; function hello () { var b = 2; return "world"; }';
+    var ast = new AbstractSyntaxTree(source);
+    ast.remove('BlockStatement > VariableDeclaration');
+    t.truthy(ast.toSource() === `var a = 1;\nfunction hello() {\n    return 'world';\n}`);
+});
+
 test('it returns the first node', t => {
     var ast = new AbstractSyntaxTree('var a = 1; var b = 2;');
     var declaration = ast.first('VariableDeclaration');
