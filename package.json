@@ -27,7 +27,7 @@
   "homepage": "https://github.com/buxlabs/ast#readme",
   "devDependencies": {
     "ava": "0.19.1",
-    "nyc": "11.0.0"
+    "nyc": "11.0.3"
   },
   "dependencies": {
     "comparify": "0.2.0",
