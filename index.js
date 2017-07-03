@@ -37,9 +37,13 @@ class AbstractSyntaxTree {
         var nodes = this.find(selector);
         return nodes[nodes.length - 1];
     }
+    
+    count (selector) {
+        return this.find(selector).length;
+    }
 
     has (selector) {
-        return this.find(selector).length > 0;
+        return this.count(selector) > 0;
     }
     
     is (node, expected) {

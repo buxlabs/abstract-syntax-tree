@@ -20,6 +20,16 @@ var ast = new AbstractSyntaxTree(source);
 ast.has('VariableDeclaration'); // true
 ```
 
+### count
+
+Count ast nodes of given type.
+
+```javascript
+var source = 'var a = "x"; var b = "y";';
+var ast = new AbstractSyntaxTree(source);
+ast.count('VariableDeclaration'); // 2
+```
+
 ### find
 
 Find all nodes of given type.

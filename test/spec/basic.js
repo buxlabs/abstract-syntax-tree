@@ -16,6 +16,11 @@ test('it checks if node is in the syntax tree', t => {
     t.truthy(ast.has('VariableDeclaration'));
 });
 
+test('it counts nodes', t => {
+    var ast = new AbstractSyntaxTree('var z = 2; var x = 3;');
+    t.truthy(ast.count('VariableDeclaration') === 2);
+});
+
 test('it returns the source', t => {
     var ast = new AbstractSyntaxTree('var a = 3;');
     t.truthy(ast.toSource() === 'var a = 3;');
