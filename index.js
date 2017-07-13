@@ -28,6 +28,10 @@ class AbstractSyntaxTree {
     find (selector) {
         return this.query(this.ast, selector);
     }
+    
+    each (selector, callback) {
+        return this.find(selector).forEach(callback);
+    }
 
     first (selector) {
         return this.find(selector)[0];
@@ -134,7 +138,7 @@ class AbstractSyntaxTree {
         var source = escodegen.generate(this.ast, {
             comment: options.comments,
             format: {
-                quotes: options.quotes
+                quotes: options.quotes || 'auto'
             }
         });
 
@@ -146,6 +150,10 @@ class AbstractSyntaxTree {
         this.source = source;
         
         return source;
+    }
+    
+    toString(options) {
+        return this.toSource(options);
     }
     
     static parse (source, options) {

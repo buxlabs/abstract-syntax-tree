@@ -11,6 +11,14 @@ test('it queries the syntax tree', t => {
     t.truthy(declarations.length === 1);
 });
 
+test('it iterates over found nodes', t => {
+    var ast = new AbstractSyntaxTree('var y = 1;');
+    ast.each('Literal', node => {
+        node.value = 2;
+    });
+    t.truthy(ast.first('Literal').value === 2);
+});
+
 test('it checks if node is in the syntax tree', t => {
     var ast = new AbstractSyntaxTree('var z = 2;');
     t.truthy(ast.has('VariableDeclaration'));
@@ -184,6 +192,11 @@ test('it replaces nodes', t => {
         }
     });
     t.truthy(ast.toSource() === 'let a = 1;');
+});
+
+test('it has a toString alias for toSource', t => {
+    var ast = new AbstractSyntaxTree('var y = 1;');
+    t.truthy(ast.toString() === 'var y = 1;');
 });
 
 test('it allows to override the beautify method', t => {
