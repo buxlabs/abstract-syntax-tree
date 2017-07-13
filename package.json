@@ -27,7 +27,7 @@
   ],
   "homepage": "https://github.com/buxlabs/ast#readme",
   "devDependencies": {
-    "ava": "0.20.0",
+    "ava": "0.21.0",
     "benchmark": "2.1.4",
     "nyc": "11.0.3"
   },
