@@ -17,7 +17,7 @@ Check if ast contains a node of given type.
 ```javascript
 var source = 'var a = "x";';
 var ast = new AbstractSyntaxTree(source);
-ast.has('VariableDeclaration'); // true
+ast.has('VariableDeclaration');
 ```
 
 ### count
@@ -27,7 +27,7 @@ Count ast nodes of given type.
 ```javascript
 var source = 'var a = "x"; var b = "y";';
 var ast = new AbstractSyntaxTree(source);
-ast.count('VariableDeclaration'); // 2
+ast.count('VariableDeclaration');
 ```
 
 ### find
@@ -37,7 +37,19 @@ Find all nodes of given type.
 ```javascript
 var source = 'var a = "x";';
 var ast = new AbstractSyntaxTree(source);
-ast.find('VariableDeclaration'); // [ { ... } ]
+ast.find('VariableDeclaration');
+```
+
+### each
+
+Iterate over all nodes of given type.
+
+```javascript
+var source = 'var a = "x";';
+var ast = new AbstractSyntaxTree(source);
+ast.each('VariableDeclaration', node => {
+  console.log(node);
+});
 ```
 
 ### first
@@ -47,7 +59,7 @@ First first node of given type.
 ```javascript
 var source = 'var a = "x";';
 var ast = new AbstractSyntaxTree(source);
-ast.first('VariableDeclaration'); // { ... }
+ast.first('VariableDeclaration');
 ```
 
 ### last
@@ -57,7 +69,7 @@ Find last node of given type.
 ```javascript
 var source = 'var a = "x";';
 var ast = new AbstractSyntaxTree(source);
-ast.last('VariableDeclaration'); // { ... }
+ast.last('VariableDeclaration');
 ```
 
 ### remove
@@ -74,6 +86,35 @@ ast.remove({ type: 'Literal', value: 'use strict' });
 var source = 'function hello () { var foo = "bar"; return "world"; }';
 var ast = new AbstractSyntaxTree(source);
 ast.remove('BlockStatement > VariableDeclaration');
+```
+
+### walk
+
+Walks over all nodes
+
+```javascript
+var source = 'var a = 1';
+var ast = new AbstractSyntaxTree(source);
+ast.walk((node, parent) => {
+  console.log(node, parent); 
+});
+```
+
+### traverse
+
+Walks over all nodes
+
+```javascript
+var source = 'var a = 1';
+var ast = new AbstractSyntaxTree(source);
+ast.walk({
+  enter: function (node) {
+    console.log(node);
+  },
+  leave: function (node) {
+    console.log(node);
+  }
+});
 ```
 
 ### replace
@@ -166,7 +207,7 @@ Change the code to the first BlockStatement body
 var source = '(function () { console.log(1); }())';
 var ast = new AbstractSyntaxTree(source);
 ast.unwrap();
-ast.toSource(); // 'console.log(1);'
+ast.toSource();
 ```
 
 ### template
@@ -176,15 +217,15 @@ Create ast partials from templates
 ```javascript
 var source = 'console.log(1);';
 var ast = new AbstractSyntaxTree(source);
-ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } }); // [ { type: 'VariableDeclaration', declarations: [...] } ]
+ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } });
 ```
 
-### toSource
+### toSource / toString
 
 Convert the ast to string.
 
 ```javascript
 var source = 'var a = 1;';
 var ast = new AbstractSyntaxTree(source);
-ast.toSource(); // 'var a = 1;';
+ast.toSource();
 ```
