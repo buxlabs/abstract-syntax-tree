@@ -90,6 +90,14 @@ class AbstractSyntaxTree {
             }
         });
     }
+    
+    walk (callback) {
+        return estraverse.traverse(this.ast, { enter: callback });
+    }
+    
+    traverse (options) {
+        return estraverse.traverse(this.ast, options);
+    }
 
     replace (options) {
         return estraverse.replace(this.ast, options);

@@ -180,6 +180,32 @@ test('it compares nodes', t => {
     t.truthy(ast.is({ type: 'ReturnStatement' }, { type: 'ReturnStatement' }));
 });
 
+test('it walks through nodes', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.walk(node => {
+        if (node.type === 'VariableDeclaration') {
+            node.kind = 'let';
+        }
+        return node;
+    });
+    t.truthy(ast.toSource() === 'let a = 1;');
+});
+
+test('it exposes a traverse method', t => {
+    var source = 'var a = 1;';
+    var ast = new AbstractSyntaxTree(source);
+    ast.traverse({
+        enter: function (node) {
+            if (node.type === 'VariableDeclaration') {
+                node.kind = 'let';
+            }
+            return node;
+        }
+    });
+    t.truthy(ast.toSource() === 'let a = 1;');
+});
+
 test('it replaces nodes', t => {
     var source = 'var a = 1';
     var ast = new AbstractSyntaxTree(source);

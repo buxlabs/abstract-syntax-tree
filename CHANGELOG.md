@@ -1,3 +1,11 @@
+# 0.5.0
+
+- add: walk and traverse methods
+
+# 0.4.3
+
+- add: each and toString methods
+
 # 0.4.2
 
 - add: count method
