@@ -1,3 +1,7 @@
+# 0.6.0
+
+- add: support astq query engine for find and query methods
+
 # 0.5.0
 
 - add: walk and traverse methods

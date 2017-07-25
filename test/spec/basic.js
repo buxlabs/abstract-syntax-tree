@@ -11,6 +11,17 @@ test('it queries the syntax tree', t => {
     t.truthy(declarations.length === 1);
 });
 
+test('it supports astq for more complex query', t => {
+    var ast = new AbstractSyntaxTree('var y = 1;');
+    var declarations = ast.find(`
+        // VariableDeclarator [
+               /:id   Identifier [ @name  ]
+            && /:init Literal    [ @value ]
+        ]
+    `, { engine: 'astq' });
+    t.truthy(declarations.length === 1);
+});
+
 test('it iterates over found nodes', t => {
     var ast = new AbstractSyntaxTree('var y = 1;');
     ast.each('Literal', node => {

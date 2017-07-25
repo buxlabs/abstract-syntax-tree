@@ -40,6 +40,17 @@ var ast = new AbstractSyntaxTree(source);
 ast.find('VariableDeclaration');
 ```
 
+```javascript
+var source = 'var a = "x";';
+var ast = new AbstractSyntaxTree(source, { engine: 'astq' });
+ast.find(`
+    // VariableDeclarator [
+           /:id   Identifier [ @name  ]
+        && /:init Literal    [ @value ]
+    ]
+`, { engine: 'astq' });
+```
+
 ### each
 
 Iterate over all nodes of given type.

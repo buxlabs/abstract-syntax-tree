@@ -2,6 +2,7 @@
 
 const espree = require('espree');
 const esquery = require('esquery');
+const Query = require('astq');
 const escodegen = require('escodegen');
 const estraverse = require('estraverse');
 const template = require("estemplate");
@@ -21,12 +22,17 @@ class AbstractSyntaxTree {
         });
     }
 
-    query (node, selector) {
+    query (node, selector, options) {
+        options = options || {};
+        if (options.engine === 'astq') {
+            var engine = new Query();
+            return engine.query(node, selector);
+        }
         return esquery(node, selector);
     }
 
-    find (selector) {
-        return this.query(this.ast, selector);
+    find (selector, options) {
+        return this.query(this.ast, selector, options);
     }
     
     each (selector, callback) {
