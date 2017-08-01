@@ -8,7 +8,7 @@ const estraverse = require('estraverse');
 const template = require("estemplate");
 const comparify = require('comparify');
 const toAST = require('to-ast');
-const beautify = require('js-beautify').js_beautify;
+const prettier = require('prettier');
 
 class AbstractSyntaxTree {
 
@@ -135,7 +135,7 @@ class AbstractSyntaxTree {
     }
     
     beautify (source, options) {
-        return beautify(source, options);
+        return prettier.format(source, options);
     }
     
     minify (ast) {
@@ -157,9 +157,7 @@ class AbstractSyntaxTree {
         });
 
         if (options.beautify) {
-            source = this.beautify(source, {
-                end_with_newline: true
-            });
+            source = this.beautify(source, options.beautify);
         }
         this.source = source;
         

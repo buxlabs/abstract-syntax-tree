@@ -1,3 +1,7 @@
+# 0.7.0
+
+- edit: replace js-beautify with prettier
+
 # 0.6.0
 
 - add: support astq query engine for find and query methods
