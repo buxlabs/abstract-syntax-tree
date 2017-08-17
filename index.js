@@ -175,4 +175,3 @@ class AbstractSyntaxTree {
 }
 
 module.exports = AbstractSyntaxTree;
-
