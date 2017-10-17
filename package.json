@@ -9,6 +9,9 @@
     "benchmark": "ava \"test/spec/benchmark.js\"",
     "build": "browserify index.js -s=AbstractSyntaxTree -o=build/ast.js"
   },
+  "engines": {
+    "node": ">= 6.11.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/buxlabs/ast.git"
