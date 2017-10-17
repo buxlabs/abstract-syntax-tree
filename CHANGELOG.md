@@ -1,3 +1,7 @@
+# 0.7.1
+
+- add: browserified version in the build dir
+
 # 0.7.0
 
 - edit: replace js-beautify with prettier
