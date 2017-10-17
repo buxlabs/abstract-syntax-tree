@@ -10,7 +10,7 @@
     "build": "browserify index.js -s=AbstractSyntaxTree -o=build/ast.js"
   },
   "engines": {
-    "node": ">= 6.11.4"
+    "node": ">=6.11.4"
   },
   "repository": {
     "type": "git",
