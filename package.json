@@ -1,11 +1,12 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
     "test": "ava \"test/spec/basic.js\"",
     "coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 npm test",
+    "lint": "eslint index.js test/**/*.js",
     "benchmark": "ava \"test/spec/benchmark.js\"",
     "build": "browserify index.js -s=AbstractSyntaxTree -o=build/ast.js"
   },
@@ -33,18 +34,24 @@
   "devDependencies": {
     "ava": "^0.23.0",
     "benchmark": "^2.1.4",
-    "browserify": "^14.4.0",
-    "nyc": "^11.0.3"
+    "browserify": "^14.5.0",
+    "eslint": "^4.10.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "nyc": "^11.3.0"
   },
   "dependencies": {
-    "astq": "^2.0.2",
+    "astq": "^2.0.3",
     "comparify": "^0.2.0",
-    "escodegen": "^1.8.1",
-    "espree": "^3.4.3",
+    "escodegen": "^1.9.0",
+    "espree": "^3.5.1",
     "esquery": "^1.0.0",
     "estemplate": "^0.5.1",
     "estraverse": "^4.2.0",
-    "prettier": "^1.5.3",
+    "prettier": "^1.7.4",
     "to-ast": "^1.0.0"
   }
 }
