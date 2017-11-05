@@ -8,7 +8,7 @@
     "coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 npm test",
     "lint": "eslint index.js test/**/*.js",
     "benchmark": "ava \"test/spec/benchmark.js\"",
-    "build": "browserify index.js -s=AbstractSyntaxTree -o=build/ast.js"
+    "build": "browserify index.js -s=AbstractSyntaxTree | uglifyjs > build/ast.js"
   },
   "engines": {
     "node": ">=6.11.4"
@@ -41,7 +41,8 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "nyc": "^11.3.0"
+    "nyc": "^11.3.0",
+    "uglify-es": "^3.1.7"
   },
   "dependencies": {
     "astq": "^2.0.3",
