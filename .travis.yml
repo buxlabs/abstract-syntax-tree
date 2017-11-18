@@ -5,4 +5,6 @@ script:
   - npm install
   - npm run lint
   - npm test
+  - npm run benchmark
+  - npm run memory
   - npm run statistics

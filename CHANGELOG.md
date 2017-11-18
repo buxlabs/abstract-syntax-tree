@@ -1,3 +1,15 @@
+# 0.8.2
+
+- add: docs, tests
+
+# 0.8.1
+
+- add: docs
+
+# 0.8.0
+
+- remove: astq
+
 # 0.7.1
 
 - add: browserified version in the build dir

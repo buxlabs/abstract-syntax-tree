@@ -1,6 +1,6 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "statistics": "npm run coverage && nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint index.js test/**/*.js",
     "benchmark": "ava \"test/spec/benchmark.js\"",
+    "memory": "ava \"test/spec/memory.js\"",
     "build": "browserify index.js -s=AbstractSyntaxTree | uglifyjs > build/ast.js"
   },
   "engines": {
@@ -43,6 +44,7 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
+    "leakage": "^0.3.0",
     "nyc": "^11.3.0",
     "uglify-es": "^3.1.7"
   },
