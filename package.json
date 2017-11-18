@@ -10,7 +10,7 @@
     "lint": "eslint index.js test/**/*.js",
     "benchmark": "ava \"test/spec/benchmark.js\"",
     "memory": "ava \"test/spec/memory.js\"",
-    "build": "browserify index.js -s=AbstractSyntaxTree | uglifyjs > build/ast.js"
+    "build": "rollup -c config.js"
   },
   "engines": {
     "node": ">=8.9.1"
@@ -36,7 +36,6 @@
   "devDependencies": {
     "ava": "^0.23.0",
     "benchmark": "^2.1.4",
-    "browserify": "^14.5.0",
     "coveralls": "^3.0.0",
     "eslint": "^4.10.0",
     "eslint-config-standard": "^10.2.1",
@@ -46,7 +45,13 @@
     "eslint-plugin-standard": "^3.0.1",
     "leakage": "^0.3.0",
     "nyc": "^11.3.0",
-    "uglify-es": "^3.1.7"
+    "rollup": "^0.51.7",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "uglify-es": "^3.1.9"
   },
   "dependencies": {
     "comparify": "^0.2.0",
