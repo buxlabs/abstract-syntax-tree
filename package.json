@@ -11,7 +11,7 @@
     "build": "browserify index.js -s=AbstractSyntaxTree | uglifyjs > build/ast.js"
   },
   "engines": {
-    "node": ">=6.11.4"
+    "node": ">=8.9.1"
   },
   "repository": {
     "type": "git",
