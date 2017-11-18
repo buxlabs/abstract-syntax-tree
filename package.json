@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "ava \"test/spec/basic.js\"",
-    "coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 npm test",
+    "coverage": "nyc npm test",
+    "statistics": "npm run coverage && nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint index.js test/**/*.js",
     "benchmark": "ava \"test/spec/benchmark.js\"",
     "build": "browserify index.js -s=AbstractSyntaxTree | uglifyjs > build/ast.js"
@@ -35,6 +36,7 @@
     "ava": "^0.23.0",
     "benchmark": "^2.1.4",
     "browserify": "^14.5.0",
+    "coveralls": "^3.0.0",
     "eslint": "^4.10.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
