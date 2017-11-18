@@ -1,6 +1,6 @@
 # AbstractSyntaxTree
 
-[![Codeship](https://img.shields.io/codeship/b5a42860-956a-0135-6dcd-229add4b057c/master.svg)]() [![NSP Status](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6/badge)](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6)
+[![Codeship](https://img.shields.io/codeship/b5a42860-956a-0135-6dcd-229add4b057c/master.svg)]() [![Build Status](https://travis-ci.org/buxlabs/ast.svg?branch=master)](https://travis-ci.org/buxlabs/ast) [![NSP Status](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6/badge)](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6)
 
 You might find the class useful if you want to abstract away some ast manipulations such as adding, removing, replacing the nodes and others. The test folder is a good starting point for examples of usage. PRs are highly welcome.
 
