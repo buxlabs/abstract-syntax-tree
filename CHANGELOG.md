@@ -1,3 +1,9 @@
+# 0.9.0
+
+- add: toSourceMap method
+- edit: toSource accepts a sourceMap/sourceFile/sourceRoot options
+- edit: expose removeByNode and removeBySelector as public methods
+
 # 0.8.2
 
 - add: docs, tests

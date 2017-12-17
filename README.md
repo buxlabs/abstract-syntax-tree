@@ -220,12 +220,32 @@ var ast = new AbstractSyntaxTree(source)
 ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } })
 ```
 
-### toSource / toString
+### toSource
 
 Convert the ast to string.
 
 ```javascript
 var source = 'var a = 1;'
 var ast = new AbstractSyntaxTree(source)
-ast.toSource()
+var source = ast.toSource()
+console.log(source)
+```
+
+```javascript
+var source = 'var a = 1;'
+var ast = new AbstractSyntaxTree(source)
+var { source, map } = ast.toSource({ sourceMap: true })
+console.log(source)
+console.log(map)
+```
+
+### toSourceMap
+
+Generates a source map.
+
+```javascript
+var source = 'var a = 1;'
+var ast = new AbstractSyntaxTree(source)
+var map = ast.toSourceMap()
+console.log(map)
 ```

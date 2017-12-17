@@ -14,9 +14,10 @@ class AbstractSyntaxTree {
     options = options || {}
     this.source = source
     this.ast = this.constructor.parse(source, {
-      sourceType: 'module',
+      attachComment: options.comments,
       comment: options.comments,
-      attachComment: options.comments
+      loc: true,
+      sourceType: 'module'
     })
   }
 
@@ -56,20 +57,20 @@ class AbstractSyntaxTree {
   remove (target, options) {
     options = options || {}
     if (typeof target === 'string') {
-      return this._removeBySelector(target, options)
+      return this.removeBySelector(target, options)
     }
-    this._removeByNode(target, options)
+    this.removeByNode(target, options)
   }
 
-  _removeBySelector (target, options) {
+  removeBySelector (target, options) {
     var nodes = this.find(target)
     // this could be improved by traversing once and
     // comparing the current node to the found nodes
     // one by one while making the array of nodes smaller too
-    nodes.forEach(node => this._removeByNode(node, options))
+    nodes.forEach(node => this.removeByNode(node, options))
   }
 
-  _removeByNode (node, options) {
+  removeByNode (node, options) {
     var count = 0
     estraverse.replace(this.ast, {
       enter: function (current, parent) {
@@ -152,9 +153,26 @@ class AbstractSyntaxTree {
     if (options.beautify) {
       source = this.beautify(source, options.beautify)
     }
+
+    var map
+    if (options.sourceMap) {
+      map = this.toSourceMap(options)
+    }
+
     this.source = source
 
+    if (map) { return { map, source } }
     return source
+  }
+
+  toSourceMap (options) {
+    const source = this.source
+    return escodegen.generate(this.ast, {
+      sourceMap: options.sourceFile || 'UNKNOWN',
+      sourceMapRoot: options.sourceRoot || '',
+      sourceContent: source,
+      comment: options.comments
+    })
   }
 
   toString (options) {

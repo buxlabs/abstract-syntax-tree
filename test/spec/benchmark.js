@@ -2,7 +2,7 @@ import test from 'ava'
 import { Suite } from 'benchmark'
 import AbstractSyntaxTree from '../../index'
 
-test.cb('it favors inline code over template method usage in hot paths if not memoized', t => {
+test.cb('it favors inline code over template method usage in hot paths if not memoized', assert => {
   let ast = new AbstractSyntaxTree('console.log(1);')
   let suite = new Suite()
   suite
@@ -20,8 +20,8 @@ test.cb('it favors inline code over template method usage in hot paths if not me
       }]
     })
     .on('complete', function () {
-      t.truthy(this.filter('fastest').map('name')[0] === 'template#inline')
-      t.end()
+      assert.truthy(this.filter('fastest').map('name')[0] === 'template#inline')
+      assert.end()
     })
     .run({ 'async': true })
 })

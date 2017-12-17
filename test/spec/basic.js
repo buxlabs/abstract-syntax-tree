@@ -1,46 +1,46 @@
 import test from 'ava'
 import AbstractSyntaxTree from '../../index'
 
-test('it works', t => {
-  t.truthy(new AbstractSyntaxTree('var x = 0;'))
+test('it works', assert => {
+  assert.truthy(new AbstractSyntaxTree('var x = 0;'))
 })
 
-test('it queries the syntax tree', t => {
+test('it queries the syntax tree', assert => {
   var ast = new AbstractSyntaxTree('var y = 1;')
   var declarations = ast.find('VariableDeclaration')
-  t.truthy(declarations.length === 1)
+  assert.truthy(declarations.length === 1)
 })
 
-test('it iterates over found nodes', t => {
+test('it iterates over found nodes', assert => {
   var ast = new AbstractSyntaxTree('var y = 1;')
   ast.each('Literal', node => {
     node.value = 2
   })
-  t.truthy(ast.first('Literal').value === 2)
+  assert.truthy(ast.first('Literal').value === 2)
 })
 
-test('it checks if node is in the syntax tree', t => {
+test('it checks if node is in the syntax tree', assert => {
   var ast = new AbstractSyntaxTree('var z = 2;')
-  t.truthy(ast.has('VariableDeclaration'))
+  assert.truthy(ast.has('VariableDeclaration'))
 })
 
-test('it counts nodes', t => {
+test('it counts nodes', assert => {
   var ast = new AbstractSyntaxTree('var z = 2; var x = 3;')
-  t.truthy(ast.count('VariableDeclaration') === 2)
+  assert.truthy(ast.count('VariableDeclaration') === 2)
 })
 
-test('it returns the source', t => {
+test('it returns the source', assert => {
   var ast = new AbstractSyntaxTree('var a = 3;')
-  t.truthy(ast.toSource() === 'var a = 3;')
+  assert.truthy(ast.toSource() === 'var a = 3;')
 })
 
-test('it removes nodes', t => {
+test('it removes nodes', assert => {
   var ast = new AbstractSyntaxTree('"use strict"; var b = 4;')
   ast.remove({ type: 'Literal', value: 'use strict' })
-  t.truthy(ast.toSource() === 'var b = 4;')
+  assert.truthy(ast.toSource() === 'var b = 4;')
 })
 
-test('it removes function declarations', t => {
+test('it removes function declarations', assert => {
   var source = 'var a = 1; function hello () { return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove({
@@ -50,10 +50,10 @@ test('it removes function declarations', t => {
       name: 'hello'
     }
   })
-  t.truthy(ast.toSource() === 'var a = 1;')
+  assert.truthy(ast.toSource() === 'var a = 1;')
 })
 
-test('it keeps variable declarations', t => {
+test('it keeps variable declarations', assert => {
   var source = 'var a = 1, b = 2; function hello () { return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove({
@@ -63,10 +63,10 @@ test('it keeps variable declarations', t => {
       name: 'a'
     }
   })
-  t.truthy(ast.toSource() === `var b = 2;\nfunction hello() {\n    return 'world';\n}`)
+  assert.truthy(ast.toSource() === `var b = 2;\nfunction hello() {\n    return 'world';\n}`)
 })
 
-test('it removes empty declarations', t => {
+test('it removes empty declarations', assert => {
   var source = 'var a = 1; function hello () { return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove({
@@ -76,85 +76,85 @@ test('it removes empty declarations', t => {
       name: 'a'
     }
   })
-  t.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`)
+  assert.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`)
 })
 
-test('it removes nodes if string is provided', t => {
+test('it removes nodes if string is provided', assert => {
   var source = 'var a = 1; function hello () { return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove('VariableDeclaration')
-  t.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`)
+  assert.truthy(ast.toSource() === `function hello() {\n    return 'world';\n}`)
 })
 
-test('it removes nodes via complex selectors', t => {
+test('it removes nodes via complex selectors', assert => {
   var source = 'var a = 1; function hello () { var b = 2; return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove('BlockStatement > VariableDeclaration')
-  t.truthy(ast.toSource() === `var a = 1;\nfunction hello() {\n    return 'world';\n}`)
+  assert.truthy(ast.toSource() === `var a = 1;\nfunction hello() {\n    return 'world';\n}`)
 })
 
-test('it returns the first node', t => {
+test('it returns the first node', assert => {
   var ast = new AbstractSyntaxTree('var a = 1; var b = 2;')
   var declaration = ast.first('VariableDeclaration')
-  t.truthy(declaration.declarations[0].id.name === 'a')
+  assert.truthy(declaration.declarations[0].id.name === 'a')
 })
 
-test('it returns the last node', t => {
+test('it returns the last node', assert => {
   var ast = new AbstractSyntaxTree('var c = 3; var d = 4;')
   var declaration = ast.last('VariableDeclaration')
-  t.truthy(declaration.declarations[0].id.name === 'd')
+  assert.truthy(declaration.declarations[0].id.name === 'd')
 })
 
-test('it works with imports', t => {
+test('it works with imports', assert => {
   var source = `import _ from 'underscore';`
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.toSource() === source)
+  assert.truthy(ast.toSource() === source)
 })
 
-test('it should be possible to remove the first element only', t => {
+test('it should be possible to remove the first element only', assert => {
   var source = 'var a = 1; var b = 2;'
   var ast = new AbstractSyntaxTree(source)
   ast.remove({ type: 'VariableDeclaration' }, { first: true })
-  t.truthy(ast.toSource() === 'var b = 2;')
+  assert.truthy(ast.toSource() === 'var b = 2;')
 })
 
-test('it should be possible to beautify the source', t => {
+test('it should be possible to beautify the source', assert => {
   var source = 'var a = 1; var b = 2;'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\nvar b = 2;\n')
+  assert.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\nvar b = 2;\n')
 })
 
-test('it accepts parameters for the beautify method', t => {
+test('it accepts parameters for the beautify method', assert => {
   var source = 'var x = "y";'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.toSource({ beautify: { semi: false } }) === 'var x = "y"\n')
+  assert.truthy(ast.toSource({ beautify: { semi: false } }) === 'var x = "y"\n')
 })
 
-test('it exposes a static parse method', t => {
+test('it exposes a static parse method', assert => {
   var source = 'var a = 1;'
   var ast = AbstractSyntaxTree.parse(source)
-  t.truthy(ast.type === 'Program')
+  assert.truthy(ast.type === 'Program')
 })
 
-test('it supports single line comments', t => {
+test('it supports single line comments', assert => {
   var source = '// hello\nvar a = 1;'
   var ast = new AbstractSyntaxTree(source, { comments: true })
-  t.truthy(ast.toSource({ comments: true }) === source)
+  assert.truthy(ast.toSource({ comments: true }) === source)
 })
 
-test('it supports multi-line comments', t => {
+test('it supports multi-line comments', assert => {
   var source = '/* hello */\nvar a = 1;'
   var ast = new AbstractSyntaxTree(source, { comments: true })
-  t.truthy(ast.toSource({ comments: true }) === source)
+  assert.truthy(ast.toSource({ comments: true }) === source)
 })
 
-test('it supports different quote types', t => {
+test('it supports different quote types', assert => {
   var source = `var a = 'hello';`
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.toSource({ quotes: 'double' }) === `var a = "hello";`)
+  assert.truthy(ast.toSource({ quotes: 'double' }) === `var a = "hello";`)
 })
 
-test('it prepends a node to body', t => {
+test('it prepends a node to body', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.prepend({
@@ -164,10 +164,10 @@ test('it prepends a node to body', t => {
       value: 'use strict'
     }
   })
-  t.truthy(ast.toSource() === '\'use strict\';\nvar a = 1;')
+  assert.truthy(ast.toSource() === '\'use strict\';\nvar a = 1;')
 })
 
-test('it appends a node to body', t => {
+test('it appends a node to body', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.append({
@@ -177,16 +177,16 @@ test('it appends a node to body', t => {
       value: 'use strict'
     }
   })
-  t.truthy(ast.toSource() === 'var a = 1;\n\'use strict\';')
+  assert.truthy(ast.toSource() === 'var a = 1;\n\'use strict\';')
 })
 
-test('it compares nodes', t => {
+test('it compares nodes', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.is({ type: 'ReturnStatement' }, { type: 'ReturnStatement' }))
+  assert.truthy(ast.is({ type: 'ReturnStatement' }, { type: 'ReturnStatement' }))
 })
 
-test('it walks through nodes', t => {
+test('it walks through nodes', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.walk(node => {
@@ -195,10 +195,10 @@ test('it walks through nodes', t => {
     }
     return node
   })
-  t.truthy(ast.toSource() === 'let a = 1;')
+  assert.truthy(ast.toSource() === 'let a = 1;')
 })
 
-test('it exposes a traverse method', t => {
+test('it exposes a traverse method', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.traverse({
@@ -209,10 +209,10 @@ test('it exposes a traverse method', t => {
       return node
     }
   })
-  t.truthy(ast.toSource() === 'let a = 1;')
+  assert.truthy(ast.toSource() === 'let a = 1;')
 })
 
-test('it replaces nodes', t => {
+test('it replaces nodes', assert => {
   var source = 'var a = 1'
   var ast = new AbstractSyntaxTree(source)
   ast.replace({
@@ -223,40 +223,40 @@ test('it replaces nodes', t => {
       return node
     }
   })
-  t.truthy(ast.toSource() === 'let a = 1;')
+  assert.truthy(ast.toSource() === 'let a = 1;')
 })
 
-test('it has a toString alias for toSource', t => {
+test('it has a toString alias for toSource', assert => {
   var ast = new AbstractSyntaxTree('var y = 1;')
-  t.truthy(ast.toString() === 'var y = 1;')
+  assert.truthy(ast.toString() === 'var y = 1;')
 })
 
-test('it allows to override the beautify method', t => {
+test('it allows to override the beautify method', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.beautify = function (source) {
     return source + '\n'
   }
-  t.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\n')
+  assert.truthy(ast.toSource({ beautify: true }) === 'var a = 1;\n')
 })
 
-test('it has a minify noop method by default', t => {
+test('it has a minify noop method by default', assert => {
   var source = 'var hello = 1;'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.toSource({ minify: true }) === 'var hello = 1;')
+  assert.truthy(ast.toSource({ minify: true }) === 'var hello = 1;')
 })
 
-test('it allows to override the minify method', t => {
+test('it allows to override the minify method', assert => {
   var source = 'var hello = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.minify = function (ast) {
     ast.body[0].declarations[0].id.name = 'a'
     return ast
   }
-  t.truthy(ast.toSource({ minify: true }) === 'var a = 1;')
+  assert.truthy(ast.toSource({ minify: true }) === 'var a = 1;')
 })
 
-test('it wraps the code', t => {
+test('it wraps the code', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)
   ast.wrap(body => {
@@ -283,37 +283,48 @@ test('it wraps the code', t => {
       }
     ]
   })
-  t.truthy(ast.toSource().replace(/\s/g, '') === '(function(){vara=1;}());')
+  assert.truthy(ast.toSource().replace(/\s/g, '') === '(function(){vara=1;}());')
 })
 
-test('it unwraps the code in case of iife', t => {
+test('it unwraps the code in case of iife', assert => {
   var source = '(function () { console.log(1); }());'
   var ast = new AbstractSyntaxTree(source)
   ast.unwrap()
-  t.truthy(ast.toSource() === 'console.log(1);')
+  assert.truthy(ast.toSource() === 'console.log(1);')
 })
 
-test('it unwraps code in case of amd', t => {
+test('it unwraps code in case of amd', assert => {
   var source = 'define(function () { console.log(1); });'
   var ast = new AbstractSyntaxTree(source)
   ast.unwrap()
-  t.truthy(ast.toSource() === 'console.log(1);')
+  assert.truthy(ast.toSource() === 'console.log(1);')
 })
 
-test('it generates ast from templates', t => {
+test('it generates ast from templates', assert => {
   var source = 'console.log(1);'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.template('"use strict";')[0].type === 'ExpressionStatement')
+  assert.truthy(ast.template('"use strict";')[0].type === 'ExpressionStatement')
 })
 
-test('it generates ast from templates with parameters', t => {
+test('it generates ast from templates with parameters', assert => {
   var source = 'console.log(1);'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.template('var x = <%= value %>;', { value: { type: 'Literal', value: 1 } })[0].declarations[0].init.value === 1)
+  assert.truthy(ast.template('var x = <%= value %>;', { value: { type: 'Literal', value: 1 } })[0].declarations[0].init.value === 1)
 })
 
-test('it generates ast from literals', t => {
+test('it generates ast from literals', assert => {
   var source = 'console.log(1);'
   var ast = new AbstractSyntaxTree(source)
-  t.truthy(ast.template(1).type === 'Literal')
+  assert.truthy(ast.template(1).type === 'Literal')
+})
+
+test('it generates sourcemaps', assert => {
+  var ast = new AbstractSyntaxTree('var y = 1;')
+  ast.each('Literal', node => {
+    node.value = 2
+  })
+  assert.truthy(ast.first('Literal').value === 2)
+  const { source, map } = ast.toSource({ sourceMap: true })
+  assert.truthy(source)
+  assert.truthy(map)
 })
