@@ -130,12 +130,6 @@ test('it accepts parameters for the beautify method', assert => {
   assert.truthy(ast.toSource({ beautify: { semi: false } }) === 'var x = "y"\n')
 })
 
-test('it exposes a static parse method', assert => {
-  var source = 'var a = 1;'
-  var ast = AbstractSyntaxTree.parse(source)
-  assert.truthy(ast.type === 'Program')
-})
-
 test('it supports single line comments', assert => {
   var source = '// hello\nvar a = 1;'
   var ast = new AbstractSyntaxTree(source, { comments: true })

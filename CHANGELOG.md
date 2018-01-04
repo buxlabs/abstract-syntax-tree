@@ -1,3 +1,7 @@
+# 0.9.1
+
+- add: static walk method
+
 # 0.9.0
 
 - add: toSourceMap method

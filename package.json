@@ -1,16 +1,16 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
-    "test": "ava \"test/spec/basic.js\"",
+    "build": "rollup -c config.js",
+    "test": "ava \"test/spec/*\"",
     "coverage": "nyc npm test",
     "statistics": "npm run coverage && nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint index.js test/**/*.js",
-    "benchmark": "ava \"test/spec/benchmark.js\"",
-    "memory": "ava \"test/spec/memory.js\"",
-    "build": "rollup -c config.js"
+    "benchmark": "ava \"test/benchmark/*\"",
+    "memory": "ava \"test/memory/*\""
   },
   "engines": {
     "node": ">=8.9.1"

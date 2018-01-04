@@ -182,6 +182,10 @@ class AbstractSyntaxTree {
   static parse (source, options) {
     return espree.parse(source, options)
   }
+
+  static walk (node, callback) {
+    return estraverse.traverse(node, { enter: callback })
+  }
 }
 
 module.exports = AbstractSyntaxTree
