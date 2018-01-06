@@ -12,13 +12,17 @@ const prettier = require('prettier')
 class AbstractSyntaxTree {
   constructor (source, options) {
     options = options || {}
-    this.source = source
-    this.ast = this.constructor.parse(source, {
-      attachComment: options.comments,
-      comment: options.comments,
-      loc: true,
-      sourceType: 'module'
-    })
+    if (typeof source === 'string') {
+      this.source = source
+      this.ast = this.constructor.parse(source, {
+        attachComment: options.comments,
+        comment: options.comments,
+        loc: true,
+        sourceType: 'module'
+      })
+    } else {
+      this.ast = source
+    }
   }
 
   query (node, selector) {

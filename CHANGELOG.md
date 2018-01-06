@@ -1,3 +1,7 @@
+# 0.9.2
+
+- add: accept ast as a param of the constructor
+
 # 0.9.1
 
 - add: static walk method

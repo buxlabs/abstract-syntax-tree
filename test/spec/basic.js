@@ -5,6 +5,20 @@ test('it works', assert => {
   assert.truthy(new AbstractSyntaxTree('var x = 0;'))
 })
 
+test('it accepts abstract syntax tree', assert => {
+  assert.truthy(new AbstractSyntaxTree([{
+    type: 'Program',
+    body: [
+      {
+        type: 'FunctionDeclaration',
+        id: { 'type': 'Identifier', 'name': 'foo' },
+        params: [],
+        body: { 'type': 'BlockStatement', 'body': [] }
+      }
+    ]
+  }]))
+})
+
 test('it queries the syntax tree', assert => {
   var ast = new AbstractSyntaxTree('var y = 1;')
   var declarations = ast.find('VariableDeclaration')
