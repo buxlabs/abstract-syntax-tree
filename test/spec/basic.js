@@ -337,18 +337,25 @@ test('it generates sourcemaps', assert => {
   assert.truthy(map)
 })
 
+test('it lets you mark nodes', assert => {
+  var ast = new AbstractSyntaxTree('var a = 1;')
+  ast.mark()
+  assert.truthy(ast.first('Program').cid === 1)
+  assert.truthy(ast.first('VariableDeclaration').cid === 2)
+  assert.truthy(ast.first('VariableDeclarator').cid === 3)
+  assert.truthy(ast.first('Identifier').cid === 4)
+  assert.truthy(ast.first('Literal').cid === 5)
+})
+
 test('it lets you drop if statements', assert => {
   var ast = new AbstractSyntaxTree('if (true) { console.log(1); }')
-  ast.wrap(body => {
-    var result = []
-    body.map(node => {
-      if (node.type === 'IfStatement' && node.test.value === true) {
-        result = result.concat(node.consequent.body)
-      } else {
-        result.push(node)
-      }
-    })
-    return result
+  ast.mark()
+  ast.walk((node, parent) => {
+    if (node.type === 'IfStatement' && node.test.value === true) {
+      parent.body = parent.body.reduce((result, { id }) => {
+        return result.concat(node.id === id ? node.consequent.body : node)
+      }, [])
+    }
   })
   var source = ast.toString()
   assert.truthy(source === 'console.log(1);')

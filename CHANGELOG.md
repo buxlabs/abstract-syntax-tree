@@ -1,3 +1,8 @@
+# 0.9.3
+
+- add: mark method
+- add: tests that show how to calculate binary expressions or drop if statements
+
 # 0.9.2
 
 - add: accept ast as a param of the constructor

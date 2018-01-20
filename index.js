@@ -136,6 +136,14 @@ class AbstractSyntaxTree {
     return prettier.format(source, options)
   }
 
+  mark () {
+    let cid = 1
+    this.walk(node => {
+      node.cid = cid
+      cid += 1
+    })
+  }
+
   minify (ast) {
     return ast
   }

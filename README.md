@@ -220,6 +220,17 @@ var ast = new AbstractSyntaxTree(source)
 ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } })
 ```
 
+### mark
+
+Add cid to all nodes
+
+```javascript
+var ast = new AbstractSyntaxTree('var a = 1;')
+ast.mark()
+assert(ast.first('Program').cid === 1)
+assert(ast.first('VariableDeclaration').cid === 2)
+```
+
 ### toSource
 
 Convert the ast to string.
