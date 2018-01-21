@@ -352,8 +352,8 @@ test('it lets you drop if statements', assert => {
   ast.mark()
   ast.walk((node, parent) => {
     if (node.type === 'IfStatement' && node.test.value === true) {
-      parent.body = parent.body.reduce((result, { id }) => {
-        return result.concat(node.id === id ? node.consequent.body : node)
+      parent.body = parent.body.reduce((result, item) => {
+        return result.concat(node.id === item.id ? node.consequent.body : item)
       }, [])
     }
   })
