@@ -346,36 +346,3 @@ test('it lets you mark nodes', assert => {
   assert.truthy(ast.first('Identifier').cid === 4)
   assert.truthy(ast.first('Literal').cid === 5)
 })
-
-test('it lets you drop if statements', assert => {
-  var ast = new AbstractSyntaxTree('if (true) { console.log(1); }')
-  ast.mark()
-  ast.walk((node, parent) => {
-    if (node.type === 'IfStatement' && node.test.value === true) {
-      parent.body = parent.body.reduce((result, item) => {
-        return result.concat(node.id === item.id ? node.consequent.body : item)
-      }, [])
-    }
-  })
-  var source = ast.toString()
-  assert.truthy(source === 'console.log(1);')
-})
-
-test('it lets you calculate binary expressions', assert => {
-  var ast = new AbstractSyntaxTree('var a = 1 + 1;')
-  ast.replace({
-    enter: node => {
-      if (node.type === 'BinaryExpression' &&
-        node.left.type === 'Literal' && node.right.type === 'Literal' &&
-        typeof node.left.value === 'number' &&
-        typeof node.right.value === 'number') {
-        return {
-          type: 'Literal', value: node.left.value + node.right.value
-        }
-      }
-      return node
-    }
-  })
-  var source = ast.toString()
-  assert.truthy(source === 'var a = 2;')
-})
