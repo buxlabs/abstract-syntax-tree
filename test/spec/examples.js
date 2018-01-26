@@ -47,7 +47,7 @@ test('it lets you split multiple assignments', assert => {
           cache.push(node.expression.right.left)
           node.expression.right = node.expression.right.right
         }
-        cache = cache.map(current => {
+        cache = cache.reverse().map(current => {
           return {
             type: 'ExpressionStatement',
             expression: {
@@ -65,5 +65,5 @@ test('it lets you split multiple assignments', assert => {
     }
   })
   var source = ast.toString()
-  assert.deepEqual(source, 'var a, b;\na = 1;\nb = 1;')
+  assert.deepEqual(source, 'var a, b;\nb = 1;\na = 1;')
 })
