@@ -45,7 +45,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "leakage": "^0.3.0",
     "nyc": "^11.3.0",
-    "rollup": "^0.55.0",
+    "rollup": "^0.56.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-builtins": "^2.1.2",
