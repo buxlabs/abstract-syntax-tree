@@ -1,5 +1,9 @@
 # @buxlabs/ast changelog
 
+## 0.9.5
+
+* add: basic jsx support
+
 ## 0.9.4
 * add: support node >= 4.0.0 ([#40](https://github.com/buxlabs/ast/pull/40/files))
 

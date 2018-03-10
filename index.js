@@ -18,6 +18,9 @@ class AbstractSyntaxTree {
         attachComment: options.comments,
         comment: options.comments,
         loc: true,
+        ecmaFeatures: {
+          jsx: options.jsx
+        },
         sourceType: 'module'
       })
     } else {
