@@ -1,5 +1,9 @@
 # @buxlabs/ast changelog
 
+## 0.9.6
+
+* add: static generate method
+
 ## 0.9.5
 
 * add: basic jsx support

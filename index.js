@@ -158,7 +158,7 @@ class AbstractSyntaxTree {
       this.ast = this.minify(this.ast)
     }
 
-    var source = escodegen.generate(this.ast, {
+    var source = this.constructor.generate(this.ast, {
       comment: options.comments,
       format: {
         quotes: options.quotes || 'auto'
@@ -182,7 +182,7 @@ class AbstractSyntaxTree {
 
   toSourceMap (options) {
     const source = this.source
-    return escodegen.generate(this.ast, {
+    return this.constructor.generate(this.ast, {
       sourceMap: options.sourceFile || 'UNKNOWN',
       sourceMapRoot: options.sourceRoot || '',
       sourceContent: source,
@@ -192,6 +192,10 @@ class AbstractSyntaxTree {
 
   toString (options) {
     return this.toSource(options)
+  }
+
+  static generate (ast, options) {
+    return escodegen.generate(ast, options)
   }
 
   static parse (source, options) {
