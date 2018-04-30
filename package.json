@@ -13,7 +13,7 @@
     "memory": "ava \"test/memory/*\""
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.11.1"
   },
   "repository": {
     "type": "git",

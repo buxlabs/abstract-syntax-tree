@@ -4,6 +4,7 @@
 
 * edit: change espree to cherow
 * remove: comments support
+* remove: drop node 4.0.0 support (LTS end of life)
 
 ## 0.9.6
 
