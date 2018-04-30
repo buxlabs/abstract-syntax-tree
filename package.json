@@ -1,6 +1,6 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.9.6",
+  "version": "0.10.0",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
@@ -54,9 +54,9 @@
     "uglify-es": "^3.1.9"
   },
   "dependencies": {
+    "cherow": "^1.4.16",
     "comparify": "^0.2.0",
     "escodegen": "^1.9.1",
-    "espree": "^3.5.1",
     "esquery": "^1.0.1",
     "estemplate": "^0.5.1",
     "estraverse": "^4.2.0",
