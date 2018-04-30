@@ -144,18 +144,6 @@ test('it accepts parameters for the beautify method', assert => {
   assert.truthy(ast.toSource({ beautify: { semi: false } }) === 'var x = "y"\n')
 })
 
-test('it supports single line comments', assert => {
-  var source = '// hello\nvar a = 1;'
-  var ast = new AbstractSyntaxTree(source, { comments: true })
-  assert.truthy(ast.toSource({ comments: true }) === source)
-})
-
-test('it supports multi-line comments', assert => {
-  var source = '/* hello */\nvar a = 1;'
-  var ast = new AbstractSyntaxTree(source, { comments: true })
-  assert.truthy(ast.toSource({ comments: true }) === source)
-})
-
 test('it supports different quote types', assert => {
   var source = `var a = 'hello';`
   var ast = new AbstractSyntaxTree(source)

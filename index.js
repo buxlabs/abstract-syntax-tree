@@ -1,6 +1,6 @@
 'use strict'
 
-const espree = require('espree')
+const cherow = require('cherow')
 const esquery = require('esquery')
 const escodegen = require('escodegen')
 const estraverse = require('estraverse')
@@ -15,13 +15,8 @@ class AbstractSyntaxTree {
     if (typeof source === 'string') {
       this.source = source
       this.ast = this.constructor.parse(source, {
-        attachComment: options.comments,
-        comment: options.comments,
         loc: true,
-        ecmaFeatures: {
-          jsx: options.jsx
-        },
-        sourceType: 'module'
+        jsx: options.jsx
       })
     } else {
       this.ast = source
@@ -159,7 +154,6 @@ class AbstractSyntaxTree {
     }
 
     var source = this.constructor.generate(this.ast, {
-      comment: options.comments,
       format: {
         quotes: options.quotes || 'auto'
       }
@@ -185,8 +179,7 @@ class AbstractSyntaxTree {
     return this.constructor.generate(this.ast, {
       sourceMap: options.sourceFile || 'UNKNOWN',
       sourceMapRoot: options.sourceRoot || '',
-      sourceContent: source,
-      comment: options.comments
+      sourceContent: source
     })
   }
 
@@ -199,7 +192,7 @@ class AbstractSyntaxTree {
   }
 
   static parse (source, options) {
-    return espree.parse(source, options)
+    return cherow.parseModule(source, options)
   }
 
   static walk (node, callback) {
