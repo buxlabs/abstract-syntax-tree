@@ -296,6 +296,12 @@ test('it unwraps code in case of amd', assert => {
   assert.truthy(ast.toSource() === 'console.log(1);')
 })
 
+test('it returns the body', assert => {
+  var source = 'var a = 1;'
+  var ast = new AbstractSyntaxTree(source)
+  assert.truthy(ast.body() === ast.ast.body)
+})
+
 test('it generates ast from templates', assert => {
   var source = 'console.log(1);'
   var ast = new AbstractSyntaxTree(source)

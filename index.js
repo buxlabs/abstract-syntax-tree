@@ -113,6 +113,10 @@ class AbstractSyntaxTree {
     this.ast.body.push(node)
   }
 
+  body () {
+    return this.ast.body
+  }
+
   wrap (callback) {
     this.ast.body = callback(this.ast.body)
   }

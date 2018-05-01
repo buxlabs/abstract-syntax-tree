@@ -1,5 +1,9 @@
 # @buxlabs/ast changelog
 
+## 0.10.1
+
+* add: body method, as a shortcut for accessing tree.ast.body
+
 ## 0.10.0
 
 * edit: change espree to cherow
