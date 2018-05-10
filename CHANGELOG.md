@@ -1,5 +1,9 @@
 # @buxlabs/ast changelog
 
+## 0.10.2
+
+* add: static replace method
+
 ## 0.10.1
 
 * add: body method, as a shortcut for accessing tree.ast.body
