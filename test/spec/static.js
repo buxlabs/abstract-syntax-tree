@@ -2,7 +2,8 @@ import test from 'ava'
 import {
   generate,
   parse,
-  walk
+  walk,
+  replace
 } from '../../index'
 
 test('it exposes a static parse method', assert => {
@@ -31,4 +32,19 @@ test('it exposes a static generate method', assert => {
   }
   var source = generate(ast)
   assert.deepEqual(source, '42;')
+})
+
+test('it replaces nodes', assert => {
+  var source = 'var a = 1;'
+  var ast = parse(source)
+  replace(ast, node => {
+    if (node.type === 'Identifier' && node.name === 'a') {
+      return {
+        type: 'Identifier',
+        name: 'b'
+      }
+    }
+    return node
+  })
+  assert.deepEqual(generate(ast), 'var b = 1;')
 })

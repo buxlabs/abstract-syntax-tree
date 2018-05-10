@@ -202,6 +202,10 @@ class AbstractSyntaxTree {
   static walk (node, callback) {
     return estraverse.traverse(node, { enter: callback })
   }
+
+  static replace (node, callback) {
+    return estraverse.replace(node, { enter: callback })
+  }
 }
 
 module.exports = AbstractSyntaxTree
