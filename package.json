@@ -47,7 +47,7 @@
     "nyc": "^11.7.1",
     "rollup": "^0.58.2",
     "rollup-plugin-commonjs": "^9.1.2",
-    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^3.0.0",
