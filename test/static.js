@@ -1,10 +1,10 @@
-import test from 'ava'
-import {
+const test = require('./helpers/test')
+const {
   generate,
   parse,
   walk,
   replace
-} from '../../index'
+} = require('..')
 
 test('it exposes a static parse method', assert => {
   var source = 'var a = 1;'

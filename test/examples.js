@@ -1,5 +1,5 @@
-import test from 'ava'
-import AbstractSyntaxTree from '../../index'
+const test = require('./helpers/test')
+const AbstractSyntaxTree = require('..')
 
 test('it lets you drop if statements', assert => {
   var ast = new AbstractSyntaxTree('if (true) { console.log(1); }')
@@ -12,7 +12,7 @@ test('it lets you drop if statements', assert => {
     }
   })
   var source = ast.toString()
-  assert.truthy(source === 'console.log(1);')
+  assert.ok(source === 'console.log(1);')
 })
 
 test('it lets you calculate binary expressions', assert => {
@@ -31,7 +31,7 @@ test('it lets you calculate binary expressions', assert => {
     }
   })
   var source = ast.toString()
-  assert.truthy(source === 'var a = 2;')
+  assert.ok(source === 'var a = 2;')
 })
 
 test('it lets you split multiple assignments', assert => {

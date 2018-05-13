@@ -4,13 +4,10 @@
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c config.js",
-    "test": "ava \"test/spec/*\"",
-    "coverage": "nyc npm test",
-    "statistics": "npm run coverage && nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint index.js test/**/*.js",
-    "benchmark": "ava \"test/benchmark/*\"",
-    "memory": "ava \"test/memory/*\""
+    "test": "node test/basic.js && node test/examples.js && node test/jsx.js && node test/static.js",
+    "lint": "standard",
+    "benchmark": "node test/benchmark.js",
+    "memory": "node test/memory.js"
   },
   "engines": {
     "node": ">=8.11.1"
@@ -34,24 +31,9 @@
   ],
   "homepage": "https://github.com/buxlabs/ast#readme",
   "devDependencies": {
-    "ava": "^0.25.0",
     "benchmark": "^2.1.4",
-    "coveralls": "^3.0.0",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.1.0",
     "leakage": "^0.3.0",
-    "nyc": "^11.7.1",
-    "rollup": "^0.58.2",
-    "rollup-plugin-commonjs": "^9.1.2",
-    "rollup-plugin-json": "^3.0.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^3.0.0",
-    "uglify-es": "^3.1.9"
+    "standard": "^11.0.1"
   },
   "dependencies": {
     "cherow": "^1.4.16",
