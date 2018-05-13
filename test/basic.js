@@ -45,13 +45,13 @@ test('it counts nodes', assert => {
 
 test('it returns the source', assert => {
   var ast = new AbstractSyntaxTree('var a = 3;')
-  assert.ok(ast.toSource() === 'var a = 3;')
+  assert.ok(ast.toSource() === 'var a = 3;\n')
 })
 
 test('it removes nodes', assert => {
   var ast = new AbstractSyntaxTree('"use strict"; var b = 4;')
   ast.remove({ type: 'Literal', value: 'use strict' })
-  assert.ok(ast.toSource() === 'var b = 4;')
+  assert.ok(ast.toSource() === 'var b = 4;\n')
 })
 
 test('it removes function declarations', assert => {
@@ -64,7 +64,7 @@ test('it removes function declarations', assert => {
       name: 'hello'
     }
   })
-  assert.ok(ast.toSource() === 'var a = 1;')
+  assert.ok(ast.toSource() === 'var a = 1;\n')
 })
 
 test('it keeps variable declarations', assert => {
@@ -77,7 +77,7 @@ test('it keeps variable declarations', assert => {
       name: 'a'
     }
   })
-  assert.ok(ast.toSource() === `var b = 2;\nfunction hello() {\n    return 'world';\n}`)
+  assert.ok(ast.toSource() === 'var b = 2;\nfunction hello() {\n  return "world";\n}\n')
 })
 
 test('it removes empty declarations', assert => {
@@ -90,21 +90,21 @@ test('it removes empty declarations', assert => {
       name: 'a'
     }
   })
-  assert.ok(ast.toSource() === `function hello() {\n    return 'world';\n}`)
+  assert.ok(ast.toSource() === 'function hello() {\n  return "world";\n}\n')
 })
 
 test('it removes nodes if string is provided', assert => {
   var source = 'var a = 1; function hello () { return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove('VariableDeclaration')
-  assert.ok(ast.toSource() === `function hello() {\n    return 'world';\n}`)
+  assert.deepEqual(ast.toSource(), 'function hello() {\n  return "world";\n}\n')
 })
 
 test('it removes nodes via complex selectors', assert => {
   var source = 'var a = 1; function hello () { var b = 2; return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove('BlockStatement > VariableDeclaration')
-  assert.ok(ast.toSource() === `var a = 1;\nfunction hello() {\n    return 'world';\n}`)
+  assert.deepEqual(ast.toSource(), `var a = 1;\nfunction hello() {\n  return "world";\n}\n`)
 })
 
 test('it returns the first node', assert => {
@@ -120,16 +120,16 @@ test('it returns the last node', assert => {
 })
 
 test('it works with imports', assert => {
-  var source = `import _ from 'underscore';`
+  var source = 'import foo from "bar";'
   var ast = new AbstractSyntaxTree(source)
-  assert.ok(ast.toSource() === source)
+  assert.deepEqual(ast.toSource(), source + '\n')
 })
 
 test('it should be possible to remove the first element only', assert => {
   var source = 'var a = 1; var b = 2;'
   var ast = new AbstractSyntaxTree(source)
   ast.remove({ type: 'VariableDeclaration' }, { first: true })
-  assert.ok(ast.toSource() === 'var b = 2;')
+  assert.ok(ast.toSource() === 'var b = 2;\n')
 })
 
 test('it should be possible to beautify the source', assert => {
@@ -144,10 +144,10 @@ test('it accepts parameters for the beautify method', assert => {
   assert.ok(ast.toSource({ beautify: { semi: false } }) === 'var x = "y"\n')
 })
 
-test('it supports different quote types', assert => {
+test('it supports double quotes by default', assert => {
   var source = `var a = 'hello';`
   var ast = new AbstractSyntaxTree(source)
-  assert.ok(ast.toSource({ quotes: 'double' }) === `var a = "hello";`)
+  assert.ok(ast.toSource() === `var a = "hello";\n`)
 })
 
 test('it prepends a node to body', assert => {
@@ -160,7 +160,7 @@ test('it prepends a node to body', assert => {
       value: 'use strict'
     }
   })
-  assert.ok(ast.toSource() === '\'use strict\';\nvar a = 1;')
+  assert.deepEqual(ast.toSource(), '"use strict";\nvar a = 1;\n')
 })
 
 test('it appends a node to body', assert => {
@@ -173,7 +173,7 @@ test('it appends a node to body', assert => {
       value: 'use strict'
     }
   })
-  assert.ok(ast.toSource() === 'var a = 1;\n\'use strict\';')
+  assert.deepEqual(ast.toSource(), 'var a = 1;\n"use strict";\n')
 })
 
 test('it compares nodes', assert => {
@@ -191,7 +191,7 @@ test('it walks through nodes', assert => {
     }
     return node
   })
-  assert.ok(ast.toSource() === 'let a = 1;')
+  assert.deepEqual(ast.toSource(), 'let a = 1;\n')
 })
 
 test('it exposes a traverse method', assert => {
@@ -205,7 +205,7 @@ test('it exposes a traverse method', assert => {
       return node
     }
   })
-  assert.ok(ast.toSource() === 'let a = 1;')
+  assert.deepEqual(ast.toSource(), 'let a = 1;\n')
 })
 
 test('it replaces nodes', assert => {
@@ -219,12 +219,12 @@ test('it replaces nodes', assert => {
       return node
     }
   })
-  assert.ok(ast.toSource() === 'let a = 1;')
+  assert.deepEqual(ast.toSource(), 'let a = 1;\n')
 })
 
 test('it has a toString alias for toSource', assert => {
   var ast = new AbstractSyntaxTree('var y = 1;')
-  assert.ok(ast.toString() === 'var y = 1;')
+  assert.ok(ast.toString() === 'var y = 1;\n')
 })
 
 test('it allows to override the beautify method', assert => {
@@ -233,13 +233,13 @@ test('it allows to override the beautify method', assert => {
   ast.beautify = function (source) {
     return source + '\n'
   }
-  assert.ok(ast.toSource({ beautify: true }) === 'var a = 1;\n')
+  assert.deepEqual(ast.toSource({ beautify: true }), 'var a = 1;\n\n')
 })
 
 test('it has a minify noop method by default', assert => {
   var source = 'var hello = 1;'
   var ast = new AbstractSyntaxTree(source)
-  assert.ok(ast.toSource({ minify: true }) === 'var hello = 1;')
+  assert.deepEqual(ast.toSource({ minify: true }), 'var hello = 1;\n')
 })
 
 test('it allows to override the minify method', assert => {
@@ -249,7 +249,7 @@ test('it allows to override the minify method', assert => {
     ast.body[0].declarations[0].id.name = 'a'
     return ast
   }
-  assert.ok(ast.toSource({ minify: true }) === 'var a = 1;')
+  assert.deepEqual(ast.toSource({ minify: true }), 'var a = 1;\n')
 })
 
 test('it wraps the code', assert => {
@@ -258,42 +258,42 @@ test('it wraps the code', assert => {
   ast.wrap(body => {
     return [
       {
-        'type': 'ExpressionStatement',
-        'expression': {
-          'type': 'CallExpression',
-          'callee': {
-            'type': 'FunctionExpression',
-            'id': null,
-            'params': [],
-            'defaults': [],
-            'body': {
-              'type': 'BlockStatement',
-              'body': body
+        type: 'ExpressionStatement',
+        expression: {
+          type: 'CallExpression',
+          callee: {
+            type: 'FunctionExpression',
+            id: null,
+            params: [],
+            defaults: [],
+            body: {
+              type: 'BlockStatement',
+              body
             },
-            'rest': null,
-            'generator': false,
-            'expression': false
+            rest: null,
+            generator: false,
+            expression: false
           },
-          'arguments': []
+          arguments: []
         }
       }
     ]
   })
-  assert.ok(ast.toSource().replace(/\s/g, '') === '(function(){vara=1;}());')
+  assert.deepEqual(ast.toSource().replace(/\s/g, ''), '(function(){vara=1;})();')
 })
 
 test('it unwraps the code in case of iife', assert => {
   var source = '(function () { console.log(1); }());'
   var ast = new AbstractSyntaxTree(source)
   ast.unwrap()
-  assert.ok(ast.toSource() === 'console.log(1);')
+  assert.ok(ast.toSource() === 'console.log(1);\n')
 })
 
 test('it unwraps code in case of amd', assert => {
   var source = 'define(function () { console.log(1); });'
   var ast = new AbstractSyntaxTree(source)
   ast.unwrap()
-  assert.ok(ast.toSource() === 'console.log(1);')
+  assert.ok(ast.toSource() === 'console.log(1);\n')
 })
 
 test('it returns the body', assert => {

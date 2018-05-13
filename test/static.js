@@ -46,5 +46,5 @@ test('it replaces nodes', assert => {
     }
     return node
   })
-  assert.deepEqual(generate(ast), 'var b = 1;')
+  assert.deepEqual(generate(ast), 'var b = 1;\n')
 })

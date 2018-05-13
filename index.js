@@ -1,13 +1,12 @@
-'use strict'
-
 const cherow = require('cherow')
 const esquery = require('esquery')
-const escodegen = require('escodegen')
+const astring = require('astring')
 const estraverse = require('estraverse')
 const template = require('estemplate')
 const comparify = require('comparify')
 const toAST = require('to-ast')
 const prettier = require('prettier')
+const sourcemap = require('source-map')
 
 class AbstractSyntaxTree {
   constructor (source, options) {
@@ -157,11 +156,7 @@ class AbstractSyntaxTree {
       this.ast = this.minify(this.ast)
     }
 
-    var source = this.constructor.generate(this.ast, {
-      format: {
-        quotes: options.quotes || 'auto'
-      }
-    })
+    var source = this.constructor.generate(this.ast)
 
     if (options.beautify) {
       source = this.beautify(source, options.beautify)
@@ -179,11 +174,11 @@ class AbstractSyntaxTree {
   }
 
   toSourceMap (options) {
-    const source = this.source
+    const map = new sourcemap.SourceMapGenerator({
+      file: options.sourceFile || 'UNKNOWN'
+    })
     return this.constructor.generate(this.ast, {
-      sourceMap: options.sourceFile || 'UNKNOWN',
-      sourceMapRoot: options.sourceRoot || '',
-      sourceContent: source
+      sourceMap: map
     })
   }
 
@@ -191,8 +186,8 @@ class AbstractSyntaxTree {
     return this.toSource(options)
   }
 
-  static generate (ast, options) {
-    return escodegen.generate(ast, options)
+  static generate (tree, options) {
+    return astring.generate(tree, options)
   }
 
   static parse (source, options) {

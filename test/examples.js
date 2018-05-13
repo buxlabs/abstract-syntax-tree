@@ -12,7 +12,7 @@ test('it lets you drop if statements', assert => {
     }
   })
   var source = ast.toString()
-  assert.ok(source === 'console.log(1);')
+  assert.deepEqual(source, 'console.log(1);\n')
 })
 
 test('it lets you calculate binary expressions', assert => {
@@ -31,7 +31,7 @@ test('it lets you calculate binary expressions', assert => {
     }
   })
   var source = ast.toString()
-  assert.ok(source === 'var a = 2;')
+  assert.deepEqual(source, 'var a = 2;\n')
 })
 
 test('it lets you split multiple assignments', assert => {
@@ -65,5 +65,5 @@ test('it lets you split multiple assignments', assert => {
     }
   })
   var source = ast.toString()
-  assert.deepEqual(source, 'var a, b;\nb = 1;\na = 1;')
+  assert.deepEqual(source, 'var a, b;\nb = 1;\na = 1;\n')
 })

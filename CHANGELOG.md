@@ -1,7 +1,8 @@
 # @buxlabs/ast changelog
 
-## 0.10.3
+## 0.11.0
 
+* edit: replace escodegen with astring
 * edit: pass npm audit
 
 ## 0.10.2

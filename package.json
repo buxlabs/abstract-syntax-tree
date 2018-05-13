@@ -1,6 +1,6 @@
 {
   "name": "@buxlabs/ast",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "description": "abstract syntax tree class for js",
   "main": "index.js",
   "scripts": {
@@ -36,13 +36,14 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
+    "astring": "^1.3.0",
     "cherow": "^1.4.16",
     "comparify": "^0.2.0",
-    "escodegen": "^1.9.1",
     "esquery": "^1.0.1",
     "estemplate": "^0.5.1",
     "estraverse": "^4.2.0",
     "prettier": "^1.12.1",
+    "source-map": "^0.7.2",
     "to-ast": "^1.0.0"
   }
 }
