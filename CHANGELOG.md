@@ -1,5 +1,9 @@
 # @buxlabs/ast changelog
 
+## 0.10.3
+
+* edit: pass npm audit
+
 ## 0.10.2
 
 * add: static replace method
