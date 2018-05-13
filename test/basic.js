@@ -328,7 +328,7 @@ test('it generates sourcemaps', assert => {
   assert.ok(ast.first('Literal').value === 2)
   const { source, map } = ast.toSource({ sourceMap: true })
   assert.ok(source)
-  assert.ok(map)
+  assert.deepEqual(map, '{"version":3,"sources":["UNKNOWN"],"names":["y"],"mappings":"IAAIA,IAAI","file":"UNKNOWN"}')
 })
 
 test('it lets you mark nodes', assert => {

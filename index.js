@@ -177,9 +177,10 @@ class AbstractSyntaxTree {
     const map = new sourcemap.SourceMapGenerator({
       file: options.sourceFile || 'UNKNOWN'
     })
-    return this.constructor.generate(this.ast, {
+    this.constructor.generate(this.ast, {
       sourceMap: map
     })
+    return map.toString()
   }
 
   toString (options) {
