@@ -1,4 +1,4 @@
-const test = require('../helpers/test')
+const test = require('./helpers/test')
 const { Suite } = require('benchmark')
 const AbstractSyntaxTree = require('..')
 

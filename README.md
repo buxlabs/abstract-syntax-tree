@@ -1,6 +1,6 @@
 # AbstractSyntaxTree
 
-[![Codeship](https://img.shields.io/codeship/b5a42860-956a-0135-6dcd-229add4b057c/master.svg)]() [![Build Status](https://travis-ci.org/buxlabs/ast.svg?branch=master)](https://travis-ci.org/buxlabs/ast) [![Coverage Status](https://coveralls.io/repos/github/buxlabs/ast/badge.svg?branch=master)](https://coveralls.io/github/buxlabs/ast?branch=master) [![NSP Status](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6/badge)](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6)
+[![Build Status](https://travis-ci.org/buxlabs/ast.svg?branch=master)](https://travis-ci.org/buxlabs/ast) [![NSP Status](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6/badge)](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6)
 
 You might find the class useful if you want to abstract away some ast manipulations such as adding, removing, replacing the nodes and others. The test folder is a good starting point for examples of usage. PRs are highly welcome.
 
@@ -15,8 +15,8 @@ You might find the class useful if you want to abstract away some ast manipulati
 Check if ast contains a node of given type.
 
 ```javascript
-var source = 'var a = "x";'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = "x";'
+const ast = new AbstractSyntaxTree(source)
 ast.has('VariableDeclaration')
 ```
 
@@ -25,8 +25,8 @@ ast.has('VariableDeclaration')
 Count ast nodes of given type.
 
 ```javascript
-var source = 'var a = "x"; var b = "y";'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = "x"; const b = "y";'
+const ast = new AbstractSyntaxTree(source)
 ast.count('VariableDeclaration')
 ```
 
@@ -35,8 +35,8 @@ ast.count('VariableDeclaration')
 Find all nodes of given type.
 
 ```javascript
-var source = 'var a = "x";'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = "x";'
+const ast = new AbstractSyntaxTree(source)
 ast.find('VariableDeclaration')
 ```
 
@@ -45,11 +45,9 @@ ast.find('VariableDeclaration')
 Iterate over all nodes of given type.
 
 ```javascript
-var source = 'var a = "x";'
-var ast = new AbstractSyntaxTree(source)
-ast.each('VariableDeclaration', node => {
-  console.log(node)
-})
+const source = 'const a = "x";'
+const ast = new AbstractSyntaxTree(source)
+ast.each('VariableDeclaration', node => {})
 ```
 
 ### first
@@ -57,8 +55,8 @@ ast.each('VariableDeclaration', node => {
 First first node of given type.
 
 ```javascript
-var source = 'var a = "x";'
-var ast = new AbstractSyntaxTree(source)
+const source = 'var a = "x";'
+const ast = new AbstractSyntaxTree(source)
 ast.first('VariableDeclaration')
 ```
 
@@ -67,8 +65,8 @@ ast.first('VariableDeclaration')
 Find last node of given type.
 
 ```javascript
-var source = 'var a = "x";'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = "x";'
+const ast = new AbstractSyntaxTree(source)
 ast.last('VariableDeclaration')
 ```
 
@@ -77,14 +75,14 @@ ast.last('VariableDeclaration')
 Remove all nodes that match the criteria.
 
 ```javascript
-var source = '"use strict"; var b = 4;'
-var ast = new AbstractSyntaxTree(source)
+const source = '"use strict"; const b = 4;'
+const ast = new AbstractSyntaxTree(source)
 ast.remove({ type: 'Literal', value: 'use strict' })
 ```
 
 ```javascript
-var source = 'function hello () { var foo = "bar"; return "world"; }'
-var ast = new AbstractSyntaxTree(source)
+const source = 'function hello () { const foo = "bar"; return "world"; }'
+const ast = new AbstractSyntaxTree(source)
 ast.remove('BlockStatement > VariableDeclaration')
 ```
 
@@ -93,11 +91,9 @@ ast.remove('BlockStatement > VariableDeclaration')
 Walks over all nodes
 
 ```javascript
-var source = 'var a = 1'
-var ast = new AbstractSyntaxTree(source)
-ast.walk((node, parent) => {
-  console.log(node, parent) 
-})
+const source = 'const a = 1'
+const ast = new AbstractSyntaxTree(source)
+ast.walk((node, parent) => {})
 ```
 
 ### traverse
@@ -105,15 +101,11 @@ ast.walk((node, parent) => {
 Walks over all nodes
 
 ```javascript
-var source = 'var a = 1'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = 1'
+const ast = new AbstractSyntaxTree(source)
 ast.walk({
-  enter (node) {
-    console.log(node)
-  },
-  leave (node) {
-    console.log(node)
-  }
+  enter (node) {},
+  leave (node) {}
 })
 ```
 
@@ -122,8 +114,8 @@ ast.walk({
 Replace all nodes that match the criteria.
 
 ```javascript
-var source = 'var a = 1'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = 1'
+const ast = new AbstractSyntaxTree(source)
 ast.replace({
   enter (node) {
     if (node.type === 'VariableDeclaration') {
@@ -139,8 +131,8 @@ ast.replace({
 Prepend a node to the body.
 
 ```javascript
-var source = 'var a = 1;'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = 1;'
+const ast = new AbstractSyntaxTree(source)
 ast.prepend({
   type: 'ExpressionStatement',
   expression: {
@@ -155,8 +147,8 @@ ast.prepend({
 Append a node to the body.
 
 ```javascript
-var source = 'var a = 1;'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = 1;'
+const ast = new AbstractSyntaxTree(source)
 ast.append({
   type: 'ExpressionStatement',
   expression: {
@@ -171,28 +163,23 @@ ast.append({
 Wrap body with given node.
 
 ```javascript
-var source = 'var a = 1;'
-var ast = new AbstractSyntaxTree(source)
+const source = 'const a = 1;'
+const ast = new AbstractSyntaxTree(source)
 ast.wrap(body => {
     return [
       {
-        "type": "ExpressionStatement",
-        "expression": {
-          "type": "CallExpression",
-          "callee": {
-            "type": "FunctionExpression",
-            "id": null,
-            "params": [],
-            "defaults": [],
-            "body": {
-              "type": "BlockStatement",
-              "body": body
-            },
-            "rest": null,
-            "generator": false,
-            "expression": false
+        type: 'ExpressionStatement',
+        expression: {
+          type: 'CallExpression',
+          callee: {
+            type: 'FunctionExpression',
+            params: [],
+            body: {
+              type: 'BlockStatement',
+              body
+            }
           },
-          "arguments": []
+          arguments: []
         }
       }
     ]
@@ -204,8 +191,8 @@ ast.wrap(body => {
 Change the code to the first BlockStatement body
 
 ```javascript
-var source = '(function () { console.log(1); }())'
-var ast = new AbstractSyntaxTree(source)
+const source = '(function () { console.log(1); }())'
+const ast = new AbstractSyntaxTree(source)
 ast.unwrap()
 ast.toSource()
 ```
@@ -215,9 +202,9 @@ ast.toSource()
 Create ast partials from templates
 
 ```javascript
-var source = 'console.log(1);'
-var ast = new AbstractSyntaxTree(source)
-ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } })
+const source = 'console.log(1);'
+const ast = new AbstractSyntaxTree(source)
+ast.template('const foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } })
 ```
 
 ### mark
@@ -225,7 +212,7 @@ ast.template('var foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } })
 Add cid to all nodes
 
 ```javascript
-var ast = new AbstractSyntaxTree('var a = 1;')
+const ast = new AbstractSyntaxTree('const a = 1;')
 ast.mark()
 assert(ast.first('Program').cid === 1)
 assert(ast.first('VariableDeclaration').cid === 2)
@@ -236,18 +223,15 @@ assert(ast.first('VariableDeclaration').cid === 2)
 Convert the ast to string.
 
 ```javascript
-var source = 'var a = 1;'
-var ast = new AbstractSyntaxTree(source)
-var source = ast.toSource()
-console.log(source)
+const source = 'const a = 1;'
+const ast = new AbstractSyntaxTree(source)
+const source = ast.toSource()
 ```
 
 ```javascript
-var source = 'var a = 1;'
-var ast = new AbstractSyntaxTree(source)
-var { source, map } = ast.toSource({ sourceMap: true })
-console.log(source)
-console.log(map)
+const source = 'const a = 1;'
+const ast = new AbstractSyntaxTree(source)
+const { source, map } = ast.toSource({ sourceMap: true })
 ```
 
 ### toSourceMap
@@ -255,8 +239,8 @@ console.log(map)
 Generates a source map.
 
 ```javascript
-var source = 'var a = 1;'
-var ast = new AbstractSyntaxTree(source)
-var map = ast.toSourceMap()
-console.log(map)
+const source = 'const a = 1;'
+const ast = new AbstractSyntaxTree(source)
+const map = ast.toSourceMap()
 ```
+

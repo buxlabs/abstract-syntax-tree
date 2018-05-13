@@ -1,4 +1,4 @@
-const test = require('../helpers/test')
+const test = require('./helpers/test')
 const { iterate } = require('leakage')
 const AbstractSyntaxTree = require('..')
 
