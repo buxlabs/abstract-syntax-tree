@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buxlabs/ast.git"
+    "url": "git+https://github.com/buxlabs/abstract-syntax-tree.git"
   },
   "keywords": [
     "ast",
@@ -24,12 +24,12 @@
   "author": "Emil Ajdyna <emil@ajdyna.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buxlabs/ast/issues"
+    "url": "https://github.com/buxlabs/abstract-syntax-tree/issues"
   },
   "files": [
     "index.js"
   ],
-  "homepage": "https://github.com/buxlabs/ast#readme",
+  "homepage": "https://github.com/buxlabs/abstract-syntax-tree#readme",
   "devDependencies": {
     "benchmark": "^2.1.4",
     "leakage": "^0.3.0",
