@@ -32,7 +32,7 @@
   "homepage": "https://github.com/buxlabs/abstract-syntax-tree#readme",
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "leakage": "^0.3.0",
+    "leakage": "^0.4.0",
     "standard": "^11.0.1"
   },
   "dependencies": {
