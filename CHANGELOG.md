@@ -1,4 +1,8 @@
-# @buxlabs/ast changelog
+# abstract-syntax-tree changelog
+
+## 1.0.3
+
+* edit: update cherow to 1.6.8
 
 ## 0.11.0
 
@@ -28,7 +32,7 @@
 * add: basic jsx support
 
 ## 0.9.4
-* add: support node >= 4.0.0 ([#40](https://github.com/buxlabs/ast/pull/40/files))
+* add: support node >= 4.0.0 ([#40](https://github.com/buxlabs/abstract-syntax-tree/pull/40/files))
 
 ## 0.9.3
 * add: mark method
