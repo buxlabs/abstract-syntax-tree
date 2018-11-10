@@ -33,6 +33,7 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "leakage": "^0.4.0",
+    "prettier": "^1.15.1",
     "standard": "^11.0.1"
   },
   "dependencies": {
@@ -42,7 +43,6 @@
     "esquery": "^1.0.1",
     "estemplate": "^0.5.1",
     "estraverse": "^4.2.0",
-    "prettier": "^1.12.1",
     "source-map": "^0.7.2",
     "to-ast": "^1.0.0"
   }

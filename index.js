@@ -134,6 +134,8 @@ class AbstractSyntaxTree {
   }
 
   beautify (source, options) {
+    if (typeof options === 'boolean') { options = {} }
+    options = { parser: 'babylon', ...options }
     return prettier.format(source, options)
   }
 
