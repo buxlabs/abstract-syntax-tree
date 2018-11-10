@@ -1,6 +1,7 @@
 # abstract-syntax-tree
 
-[![Build Status](https://travis-ci.org/buxlabs/abstract-syntax-tree.svg?branch=master)](https://travis-ci.org/buxlabs/ast) [![NSP Status](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6/badge)](https://nodesecurity.io/orgs/buxlabs/projects/4b0bfe3e-43d0-4597-b407-dd44cec2f3d6)
+
+![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg) [![Build Status](https://travis-ci.org/buxlabs/abstract-syntax-tree.svg?branch=master)](https://travis-ci.org/buxlabs/ast)
 
 ## Key Features
 
