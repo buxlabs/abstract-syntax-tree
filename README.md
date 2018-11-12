@@ -1,7 +1,60 @@
 # abstract-syntax-tree
 
-
 ![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg) [![Build Status](https://travis-ci.org/buxlabs/abstract-syntax-tree.svg?branch=master)](https://travis-ci.org/buxlabs/ast)
+
+## What is an abstract syntax tree?
+
+An abstract syntax tree is a way to represent the source code. In case of this library it is represented in the [estree](https://github.com/estree/estree) format.
+
+For example, the following source code:
+
+```js
+const answer = 42
+```
+
+Has the following representation:
+
+```json
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "answer"
+          },
+          "init": {
+            "type": "Literal",
+            "value": 42
+          }
+        }
+      ],
+      "kind": "const"
+    }
+  ]
+}
+```
+
+## What are abstract syntax trees used for?
+
+They're used e.g. for code's:
+- highligthing
+- linting
+- refactoring
+- transformations
+- analysis
+- minification
+- obfuscation
+- generation
+- source maps
+
+## Installation
+
+`npm install abstract-syntax-tree`
 
 ## Key Features
 
@@ -10,31 +63,7 @@
 - ast traversal
 - ast manipulation
 
-## Installation
-
-`npm install abstract-syntax-tree`
-
 ## Methods
-
-### has
-
-Check if ast contains a node of given type.
-
-```javascript
-const source = 'const a = "x";'
-const ast = new AbstractSyntaxTree(source)
-ast.has('VariableDeclaration')
-```
-
-### count
-
-Count ast nodes of given type.
-
-```javascript
-const source = 'const a = "x"; const b = "y";'
-const ast = new AbstractSyntaxTree(source)
-ast.count('VariableDeclaration')
-```
 
 ### find
 
@@ -54,6 +83,26 @@ Iterate over all nodes of given type.
 const source = 'const a = "x";'
 const ast = new AbstractSyntaxTree(source)
 ast.each('VariableDeclaration', node => {})
+```
+
+### has
+
+Check if ast contains a node of given type.
+
+```javascript
+const source = 'const a = "x";'
+const ast = new AbstractSyntaxTree(source)
+ast.has('VariableDeclaration')
+```
+
+### count
+
+Count ast nodes of given type.
+
+```javascript
+const source = 'const a = "x"; const b = "y";'
+const ast = new AbstractSyntaxTree(source)
+ast.count('VariableDeclaration')
 ```
 
 ### first
