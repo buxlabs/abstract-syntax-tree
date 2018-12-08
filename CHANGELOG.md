@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 1.1.1
+
+* edit: move prettier to deps
+
 ## 1.1.0
 
 * add: update replace method to handle array and null value
