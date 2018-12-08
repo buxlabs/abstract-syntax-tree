@@ -7,6 +7,7 @@ const comparify = require('comparify')
 const toAST = require('to-ast')
 const prettier = require('prettier')
 const sourcemap = require('source-map')
+const replace = require('./src/replace')
 
 class AbstractSyntaxTree {
   constructor (source, options) {
@@ -101,7 +102,7 @@ class AbstractSyntaxTree {
   }
 
   replace (options) {
-    return estraverse.replace(this.ast, options)
+    return replace(this.ast, options)
   }
 
   prepend (node) {
@@ -202,7 +203,7 @@ class AbstractSyntaxTree {
   }
 
   static replace (node, callback) {
-    return estraverse.replace(node, { enter: callback })
+    return replace(node, { enter: callback })
   }
 }
 

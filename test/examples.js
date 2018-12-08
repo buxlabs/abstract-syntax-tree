@@ -15,13 +15,32 @@ test('it lets you drop if statements', assert => {
   assert.deepEqual(source, 'console.log(1);\n')
 })
 
-test.skip('it lets you replace nodes when nothing', assert => {
-  var ast = new AbstractSyntaxTree('if (true) { console.log(1); }')
-  ast.replace((node, parent) => {
-
+test('it lets you replace multiple nodes', assert => {
+  var ast = new AbstractSyntaxTree('if (true) { console.log(1); console.log(2); }')
+  ast.replace({
+    enter: (node, parent) => {
+      if (node.type === 'IfStatement' && node.test.value === true) {
+        return node.consequent.body
+      }
+      return node
+    }
   })
   var source = ast.toString()
-  assert.deepEqual(source, 'console.log(1);\n')
+  assert.deepEqual(source, 'console.log(1);\nconsole.log(2);\n')
+})
+
+test('it lets you remove nodes', assert => {
+  var ast = new AbstractSyntaxTree('if (false) { console.log(1); }')
+  ast.replace({
+    enter (node, parent) {
+      if (node.type === 'IfStatement' && node.test.value === false) {
+        return null
+      }
+      return node
+    }
+  })
+  var source = ast.toString()
+  assert.deepEqual(source, '')
 })
 
 test('it lets you calculate binary expressions', assert => {
