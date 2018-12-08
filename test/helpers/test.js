@@ -1,6 +1,6 @@
 const assert = require('assert')
 
-module.exports = async function (description, callback) {
+async function test (description, callback) {
   try {
     await callback(assert)
   } catch (exception) {
@@ -8,3 +8,7 @@ module.exports = async function (description, callback) {
     console.log(`Test failed: ${description}`)
   }
 }
+
+test.skip = function () {}
+
+module.exports = test

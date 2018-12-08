@@ -10,7 +10,7 @@
     "memory": "node test/memory.js"
   },
   "engines": {
-    "node": ">=8.11.1"
+    "node": ">=10.14.1"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,6 @@
   "homepage": "https://github.com/buxlabs/abstract-syntax-tree#readme",
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "leakage": "^0.4.0",
     "prettier": "^1.15.1",
     "standard": "^11.0.1"
   },
