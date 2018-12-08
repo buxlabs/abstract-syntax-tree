@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 1.1.2
+
+* edit: add src dir to files in package.json
+
 ## 1.1.1
 
 * edit: move prettier to deps
