@@ -1,5 +1,15 @@
 # abstract-syntax-tree changelog
 
+## 2.0.0
+
+* add: static methods: find, each, first, last, count, has, remove, equal and traverse
+* add: getters -> type, body, source and map
+* edit: replace method now accepts options object instead of a callback
+* edit: removed the `is` method, please use static `equal` method instead
+* edit: ast property has been replaced with _tree
+* remove: `minify` and `beautify` methods
+* remove: `toSource`, `toSourceMap` and `toString` methods
+
 ## 1.1.2
 
 * edit: add src dir to files in package.json

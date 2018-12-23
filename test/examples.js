@@ -11,7 +11,7 @@ test('it lets you drop if statements', assert => {
       }, [])
     }
   })
-  var source = ast.toString()
+  var source = ast.source
   assert.deepEqual(source, 'console.log(1);\n')
 })
 
@@ -25,7 +25,7 @@ test('it lets you replace multiple nodes', assert => {
       return node
     }
   })
-  var source = ast.toString()
+  var source = ast.source
   assert.deepEqual(source, 'console.log(1);\nconsole.log(2);\n')
 })
 
@@ -39,7 +39,7 @@ test('it lets you remove nodes', assert => {
       return node
     }
   })
-  var source = ast.toString()
+  var source = ast.source
   assert.deepEqual(source, '')
 })
 
@@ -58,7 +58,7 @@ test('it lets you calculate binary expressions', assert => {
       return node
     }
   })
-  var source = ast.toString()
+  var source = ast.source
   assert.deepEqual(source, 'var a = 2;\n')
 })
 
@@ -92,6 +92,6 @@ test('it lets you split multiple assignments', assert => {
       }
     }
   })
-  var source = ast.toString()
+  var source = ast.source
   assert.deepEqual(source, 'var a, b;\nb = 1;\na = 1;\n')
 })

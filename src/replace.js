@@ -15,8 +15,8 @@ function complexReplace (method, node, parent) {
   }
 }
 
-module.exports = function replace (ast, options) {
-  return estraverse.replace(ast, {
+module.exports = function replace (tree, options) {
+  return estraverse.replace(tree, {
     enter (node, parent) {
       if (options.enter) {
         const replacement = complexReplace(options.enter, node, parent)

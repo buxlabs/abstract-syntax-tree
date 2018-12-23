@@ -40,139 +40,93 @@ Has the following representation:
 }
 ```
 
-## What are abstract syntax trees used for?
-
-They're used e.g. for code's:
-- highligthing
-- linting
-- refactoring
-- transformations
-- analysis
-- minification
-- obfuscation
-- generation
-- source maps
-
 ## Installation
 
 `npm install abstract-syntax-tree`
 
-## Key Features
+## How does it work?
 
-- source to ast conversion
-- ast to source generation
-- ast traversal
-- ast manipulation
+The library exposes a set of utility methods that can be useful for analysis or transformation of abstract syntax trees. It supports functional and object-oriented programming style.
 
-## Methods
+## Examples
 
-### find
-
-Find all nodes of given type.
-
-```javascript
-const source = 'const a = "x";'
-const ast = new AbstractSyntaxTree(source)
-ast.find('VariableDeclaration')
+```js
+const { parse, find } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(find(tree, 'Literal')) // [ { type: 'Literal', value: 42 } ]
 ```
 
-### each
-
-Iterate over all nodes of given type.
-
-```javascript
-const source = 'const a = "x";'
-const ast = new AbstractSyntaxTree(source)
-ast.each('VariableDeclaration', node => {})
+```js
+const AbstractSyntaxTree = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = new AbstractSyntaxTree(source)
+console.log(tree.find('Literal')) // [ { type: 'Literal', value: 42 } ]
 ```
 
-### has
+## API
 
-Check if ast contains a node of given type.
+### Static Methods
+
+#### parse
 
 ```javascript
-const source = 'const a = "x";'
-const ast = new AbstractSyntaxTree(source)
-ast.has('VariableDeclaration')
+const { parse } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(tree) // { type: 'Program', body: [ ... ] }
 ```
 
-### count
-
-Count ast nodes of given type.
+#### generate
 
 ```javascript
-const source = 'const a = "x"; const b = "y";'
-const ast = new AbstractSyntaxTree(source)
-ast.count('VariableDeclaration')
+const { parse, generate } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(generate(tree)) // 'const answer = 42;'
 ```
 
-### first
-
-First first node of given type.
+#### walk
 
 ```javascript
-const source = 'var a = "x";'
-const ast = new AbstractSyntaxTree(source)
-ast.first('VariableDeclaration')
+const { parse, walk } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+walk(tree, (node, parent) => {
+  console.log(node)
+  console.log(parent)
+})
 ```
 
-### last
-
-Find last node of given type.
+#### find
 
 ```javascript
-const source = 'const a = "x";'
-const ast = new AbstractSyntaxTree(source)
-ast.last('VariableDeclaration')
+const { parse, find } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+const nodes = find(tree, 'VariableDeclaration')
+console.log(nodes)
 ```
 
-### remove
-
-Remove all nodes that match the criteria.
+#### traverse
 
 ```javascript
-const source = '"use strict"; const b = 4;'
-const ast = new AbstractSyntaxTree(source)
-ast.remove({ type: 'Literal', value: 'use strict' })
-```
-
-```javascript
-const source = 'function hello () { const foo = "bar"; return "world"; }'
-const ast = new AbstractSyntaxTree(source)
-ast.remove('BlockStatement > VariableDeclaration')
-```
-
-### walk
-
-Walks over all nodes
-
-```javascript
-const source = 'const a = 1'
-const ast = new AbstractSyntaxTree(source)
-ast.walk((node, parent) => {})
-```
-
-### traverse
-
-Walks over all nodes
-
-```javascript
-const source = 'const a = 1'
-const ast = new AbstractSyntaxTree(source)
-ast.walk({
+const { parse, traverse } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+traverse(tree, {
   enter (node) {},
   leave (node) {}
 })
 ```
 
-### replace
-
-Replace all nodes that match the criteria.
+#### replace
 
 ```javascript
-const source = 'const a = 1'
-const ast = new AbstractSyntaxTree(source)
-ast.replace({
+const { parse, replace } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+replace(tree, {
   enter (node) {
     if (node.type === 'VariableDeclaration') {
       node.kind = 'let'
@@ -182,14 +136,92 @@ ast.replace({
 })
 ```
 
-### prepend
+#### remove
+
+```javascript
+const { parse, remove, generate } = require('abstract-syntax-tree')
+const source = '"use strict"; const b = 4;'
+const ast = parse(source)
+remove(tree, { type: 'Literal', value: 'use strict' })
+console.log(generate(tree)) // 'const b = 4;'
+```
+
+#### each
+
+```javascript
+const { parse, each } = require('abstract-syntax-tree')
+const source = 'const foo = 1; const bar = 2;'
+const tree = parse(source)
+each(tree, 'VariableDeclaration', node => {
+  console.log(node)
+})
+```
+
+#### first
+
+```javascript
+const { parse, first } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(first(tree, 'VariableDeclaration')) // { type: 'VariableDeclaration', ... }
+```
+
+#### last
+
+```javascript
+const { parse, last } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(last(tree, 'VariableDeclaration')) // { type: 'VariableDeclaration', ... }
+```
+
+#### has
+
+```javascript
+const { parse, has } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(has(tree, 'VariableDeclaration')) // true
+```
+
+#### count
+
+```javascript
+const { parse, count } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(count(tree, 'VariableDeclaration')) // 1
+```
+
+#### equal
+
+```javascript
+const { equal } = require('abstract-syntax-tree')
+console.log(equal({ type: 'Literal', value: 42 }, { type: 'Literal', value: 42 })) // true
+console.log(equal({ type: 'Literal', value: 41 }, { type: 'Literal', value: 42 })) // false
+````
+
+#### template
+
+```javascript
+const { template } = require('abstract-syntax-tree')
+const literal = template(42)
+const nodes = template('const foo = <%= bar %>;', { bar: { type: 'Literal', value: 1 } })
+```
+
+### Instance Methods
+
+Almost all of the static methods (excluding parse, generate, template and equal) have their instance equivalents. There are few extra instance methods:
+
+#### prepend
 
 Prepend a node to the body.
 
 ```javascript
+const AbstractSyntaxTree = require('abstract-syntax-tree')
 const source = 'const a = 1;'
-const ast = new AbstractSyntaxTree(source)
-ast.prepend({
+const tree = new AbstractSyntaxTree(source)
+tree.prepend({
   type: 'ExpressionStatement',
   expression: {
     type: 'Literal',
@@ -198,14 +230,15 @@ ast.prepend({
 })
 ```
 
-### append
+#### append
 
 Append a node to the body.
 
 ```javascript
-const source = 'const a = 1;'
-const ast = new AbstractSyntaxTree(source)
-ast.append({
+const AbstractSyntaxTree = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = new AbstractSyntaxTree(source)
+tree.append({
   type: 'ExpressionStatement',
   expression: {
     type: 'Literal',
@@ -214,14 +247,27 @@ ast.append({
 })
 ```
 
-### wrap
+#### mark
+
+Add cid to all nodes
+
+```javascript
+const AbstractSyntaxTree = require('abstract-syntax-tree')
+const tree = new AbstractSyntaxTree('const a = 1')
+tree.mark()
+console.log(tree.first('Program').cid) // 1
+console.log(tree.first('VariableDeclaration').cid) // 2
+```
+
+#### wrap
 
 Wrap body with given node.
 
 ```javascript
-const source = 'const a = 1;'
-const ast = new AbstractSyntaxTree(source)
-ast.wrap(body => {
+const AbstractSyntaxTree = require('abstract-syntax-tree')
+const source = 'const a = 1'
+const tree = new AbstractSyntaxTree(source)
+tree.wrap(body => {
     return [
       {
         type: 'ExpressionStatement',
@@ -242,61 +288,26 @@ ast.wrap(body => {
 })
 ```
 
-### unwrap
-
-Change the code to the first BlockStatement body
+#### unwrap
 
 ```javascript
+const AbstractSyntaxTree = require('abstract-syntax-tree')
 const source = '(function () { console.log(1); }())'
-const ast = new AbstractSyntaxTree(source)
-ast.unwrap()
-ast.toSource()
+const tree = new AbstractSyntaxTree(source)
+tree.unwrap()
+console.log(tree.source) // 'console.log(1);'
 ```
 
-### template
+### Getters
 
-Create ast partials from templates
+#### type
 
-```javascript
-const source = 'console.log(1);'
-const ast = new AbstractSyntaxTree(source)
-ast.template('const foo = <%= bar %>;' { bar: { type: 'Literal', value: 1 } })
-```
+#### body
 
-### mark
+#### source
 
-Add cid to all nodes
+#### map
 
-```javascript
-const ast = new AbstractSyntaxTree('const a = 1;')
-ast.mark()
-assert(ast.first('Program').cid === 1)
-assert(ast.first('VariableDeclaration').cid === 2)
-```
+### Setters
 
-### toSource
-
-Convert the ast to string.
-
-```javascript
-const source = 'const a = 1;'
-const ast = new AbstractSyntaxTree(source)
-const source = ast.toSource()
-```
-
-```javascript
-const source = 'const a = 1;'
-const ast = new AbstractSyntaxTree(source)
-const { source, map } = ast.toSource({ sourceMap: true })
-```
-
-### toSourceMap
-
-Generates a source map.
-
-```javascript
-const source = 'const a = 1;'
-const ast = new AbstractSyntaxTree(source)
-const map = ast.toSourceMap()
-```
-
+#### body

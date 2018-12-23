@@ -1,209 +1,173 @@
-const cherow = require('cherow')
-const esquery = require('esquery')
-const astring = require('astring')
-const estraverse = require('estraverse')
-const template = require('estemplate')
-const comparify = require('comparify')
-const toAST = require('to-ast')
-const prettier = require('prettier')
-const sourcemap = require('source-map')
+const find = require('./src/find')
+const each = require('./src/each')
+const first = require('./src/first')
+const last = require('./src/last')
+const count = require('./src/count')
+const equal = require('./src/equal')
+const has = require('./src/has')
+const remove = require('./src/remove')
+const prepend = require('./src/prepend')
+const append = require('./src/append')
 const replace = require('./src/replace')
+const walk = require('./src/walk')
+const traverse = require('./src/traverse')
+const generate = require('./src/generate')
+const parse = require('./src/parse')
+const template = require('./src/template')
+const sourcemap = require('./src/sourcemap')
+const mark = require('./src/mark')
 
 class AbstractSyntaxTree {
-  constructor (source, options) {
-    options = options || {}
-    if (typeof source === 'string') {
-      this.source = source
-      this.ast = this.constructor.parse(source, {
-        loc: true,
-        jsx: options.jsx
-      })
-    } else {
-      this.ast = source
-    }
+  static find (tree, selector) {
+    return find(tree, selector)
   }
 
-  query (node, selector) {
-    return esquery(node, selector)
+  static each (tree, selector, callback) {
+    return each(tree, selector, callback)
   }
 
-  find (selector, options) {
-    return this.query(this.ast, selector, options)
+  static first (tree, selector) {
+    return first(tree, selector)
   }
 
-  each (selector, callback) {
-    return this.find(selector).forEach(callback)
+  static last (tree, selector) {
+    return last(tree, selector)
   }
 
-  first (selector) {
-    return this.find(selector)[0]
+  static count (tree, selector) {
+    return count(tree, selector)
   }
 
-  last (selector) {
-    var nodes = this.find(selector)
-    return nodes[nodes.length - 1]
+  static has (tree, selector) {
+    return has(tree, selector)
   }
 
-  count (selector) {
-    return this.find(selector).length
+  static remove (tree, target, options) {
+    return remove(tree, target, options)
   }
 
-  has (selector) {
-    return this.count(selector) > 0
+  static prepend (tree, node) {
+    return prepend(tree, node)
   }
 
-  is (node, expected) {
-    return comparify(node, expected)
+  static append (tree, node) {
+    return append(tree, node)
   }
 
-  remove (target, options) {
-    options = options || {}
-    if (typeof target === 'string') {
-      return this.removeBySelector(target, options)
-    }
-    this.removeByNode(target, options)
-  }
-
-  removeBySelector (target, options) {
-    var nodes = this.find(target)
-    // this could be improved by traversing once and
-    // comparing the current node to the found nodes
-    // one by one while making the array of nodes smaller too
-    nodes.forEach(node => this.removeByNode(node, options))
-  }
-
-  removeByNode (node, options) {
-    var count = 0
-    estraverse.replace(this.ast, {
-      enter: function (current, parent) {
-        if (options.first && count === 1) {
-          return this.break()
-        }
-        if (comparify(current, node)) {
-          count += 1
-          return this.remove()
-        }
-      },
-      leave: function (current, parent) {
-        if (current.expression === null ||
-                  (current.type === 'VariableDeclaration' && current.declarations.length === 0)) {
-          return this.remove()
-        }
-      }
-    })
-  }
-
-  walk (callback) {
-    return estraverse.traverse(this.ast, { enter: callback })
-  }
-
-  traverse (options) {
-    return estraverse.traverse(this.ast, options)
-  }
-
-  replace (options) {
-    return replace(this.ast, options)
-  }
-
-  prepend (node) {
-    this.ast.body.unshift(node)
-  }
-
-  append (node) {
-    this.ast.body.push(node)
-  }
-
-  body () {
-    return this.ast.body
-  }
-
-  wrap (callback) {
-    this.ast.body = callback(this.ast.body)
-  }
-
-  unwrap () {
-    let block = this.first('BlockStatement')
-    this.ast.body = block.body
-  }
-
-  template (source, options) {
-    options = options || {}
-    if (typeof source === 'string') {
-      return template(source, options).body
-    }
-    return toAST(source, options)
-  }
-
-  beautify (source, options) {
-    if (typeof options === 'boolean') { options = {} }
-    options = { parser: 'babylon', ...options }
-    return prettier.format(source, options)
-  }
-
-  mark () {
-    let cid = 1
-    this.walk(node => {
-      node.cid = cid
-      cid += 1
-    })
-  }
-
-  minify (ast) {
-    return ast
-  }
-
-  toSource (options) {
-    options = options || {}
-
-    if (options.minify) {
-      this.ast = this.minify(this.ast)
-    }
-
-    var source = this.constructor.generate(this.ast)
-
-    if (options.beautify) {
-      source = this.beautify(source, options.beautify)
-    }
-
-    var map
-    if (options.sourceMap) {
-      map = this.toSourceMap(options)
-    }
-
-    this.source = source
-
-    if (map) { return { map, source } }
-    return source
-  }
-
-  toSourceMap (options) {
-    const map = new sourcemap.SourceMapGenerator({
-      file: options.sourceFile || 'UNKNOWN'
-    })
-    this.constructor.generate(this.ast, {
-      sourceMap: map
-    })
-    return map.toString()
-  }
-
-  toString (options) {
-    return this.toSource(options)
+  static equal (node1, node2) {
+    return equal(node1, node2)
   }
 
   static generate (tree, options) {
-    return astring.generate(tree, options)
+    return generate(tree, options)
   }
 
   static parse (source, options) {
-    return cherow.parseModule(source, options)
+    return parse(source, options)
   }
 
-  static walk (node, callback) {
-    return estraverse.traverse(node, { enter: callback })
+  static walk (tree, callback) {
+    return walk(tree, callback)
   }
 
-  static replace (node, callback) {
-    return replace(node, { enter: callback })
+  static traverse (tree, callback) {
+    return traverse(tree, callback)
+  }
+
+  static replace (tree, callback) {
+    return replace(tree, callback)
+  }
+
+  static template (source, options) {
+    return template(source, options)
+  }
+
+  constructor (source, options = {}) {
+    if (typeof source === 'string') {
+      this._tree = typeof source === 'string' ? parse(source, { loc: true, ...options }) : source
+    } else {
+      this._tree = source
+    }
+  }
+
+  get type () {
+    return this._tree.type
+  }
+
+  get body () {
+    return this._tree.body
+  }
+
+  get source () {
+    return generate(this._tree)
+  }
+
+  get map () {
+    return sourcemap(this._tree).map
+  }
+
+  set body (body) {
+    this._tree.body = body
+  }
+
+  find (selector) {
+    return find(this._tree, selector)
+  }
+
+  each (selector, callback) {
+    return each(this._tree, selector, callback)
+  }
+
+  first (selector) {
+    return first(this._tree, selector)
+  }
+
+  last (selector) {
+    return last(this._tree, selector)
+  }
+
+  count (selector) {
+    return count(this._tree, selector)
+  }
+
+  has (selector) {
+    return has(this._tree, selector)
+  }
+
+  remove (target, options) {
+    return remove(this._tree, target, options)
+  }
+
+  walk (callback) {
+    return walk(this._tree, callback)
+  }
+
+  traverse (options) {
+    return traverse(this._tree, options)
+  }
+
+  replace (options) {
+    return replace(this._tree, options)
+  }
+
+  prepend (node) {
+    return prepend(this._tree, node)
+  }
+
+  append (node) {
+    return append(this._tree, node)
+  }
+
+  wrap (callback) {
+    this._tree.body = callback(this._tree.body)
+  }
+
+  unwrap () {
+    this._tree.body = first(this._tree, 'BlockStatement').body
+  }
+
+  mark () {
+    return mark(this._tree)
   }
 }
 
