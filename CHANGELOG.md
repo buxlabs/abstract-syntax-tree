@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.0.1
+
+* edit: remove nodes only if null is returned in the replace method
+
 ## 2.0.0
 
 * add: static methods: find, each, first, last, count, has, remove, equal and traverse
