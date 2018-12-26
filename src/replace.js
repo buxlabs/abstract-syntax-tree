@@ -8,7 +8,7 @@ function complexReplace (method, node, parent) {
     }, [])
   } else if (replacement) {
     return replacement
-  } else {
+  } else if (replacement === null) {
     parent.body = parent.body.reduce((result, leaf) => {
       return result.concat(node === leaf ? null : leaf)
     }, []).filter(Boolean)

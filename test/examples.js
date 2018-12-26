@@ -43,6 +43,20 @@ test('it lets you remove nodes', assert => {
   assert.deepEqual(source, '')
 })
 
+test('it does not replace node when undefined is passed', assert => {
+  var ast = new AbstractSyntaxTree('if (false) { console.log(1); }')
+  ast.replace({
+    enter (node, parent) {
+      if (node.type === 'IfStatement' && node.test.value === false) {
+        return undefined
+      }
+      return node
+    }
+  })
+  var source = ast.source
+  assert.deepEqual(source, 'if (false) {\n  console.log(1);\n}\n')
+})
+
 test('it lets you calculate binary expressions', assert => {
   var ast = new AbstractSyntaxTree('var a = 1 + 1;')
   ast.replace({
