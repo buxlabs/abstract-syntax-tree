@@ -1,5 +1,18 @@
 const esquery = require('esquery')
+const traverse = require('./traverse')
+const equal = require('./equal')
 
 module.exports = function find (tree, selector) {
-  return esquery(tree, selector)
+  if (typeof selector === 'string') {
+    return esquery(tree, selector)
+  }
+  let nodes = []
+  traverse(tree, {
+    enter (node) {
+      if (equal(node, selector)) {
+        nodes.push(node)
+      }
+    }
+  })
+  return nodes
 }

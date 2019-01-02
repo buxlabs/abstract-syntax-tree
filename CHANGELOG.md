@@ -1,5 +1,11 @@
 # abstract-syntax-tree changelog
 
+## 2.1.0
+
+* add: support object selector in the find, has and count methods
+* edit: better performance for the remove method (string selector)
+* remove: obsolete config.js file
+
 ## 2.0.1
 
 * edit: remove nodes only if null is returned in the replace method

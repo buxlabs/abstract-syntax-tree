@@ -1,6 +1,6 @@
 {
   "name": "abstract-syntax-tree",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "abstract syntax tree",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "coverage": "nyc npm test"
   },
   "engines": {
-    "node": ">=10.14.1"
+    "node": ">=10.15.0"
   },
   "repository": {
     "type": "git",

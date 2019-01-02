@@ -104,8 +104,8 @@ walk(tree, (node, parent) => {
 const { parse, find } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
 const tree = parse(source)
-const nodes = find(tree, 'VariableDeclaration')
-console.log(nodes)
+console.log(find(tree, 'VariableDeclaration')) // [ { type: 'VariableDeclaration', ... } ]
+console.log(find(tree, { type: 'VariableDeclaration' })) // [ { type: 'VariableDeclaration', ... } ]
 ```
 
 #### traverse
@@ -182,6 +182,7 @@ const { parse, has } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
 const tree = parse(source)
 console.log(has(tree, 'VariableDeclaration')) // true
+console.log(has(tree, { type: 'VariableDeclaration' })) // true
 ```
 
 #### count
@@ -191,6 +192,7 @@ const { parse, count } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
 const tree = parse(source)
 console.log(count(tree, 'VariableDeclaration')) // 1
+console.log(count(tree, { type: 'VariableDeclaration' })) // 1
 ```
 
 #### equal

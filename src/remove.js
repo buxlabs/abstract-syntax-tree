@@ -2,27 +2,31 @@ const estraverse = require('estraverse')
 const find = require('./find')
 const equal = require('./equal')
 
-function removeBySelector (tree, target, options) {
-  var nodes = find(tree, target)
-  // this could be improved by traversing once and
-  // comparing the current node to the found nodes
-  // one by one while making the array of nodes smaller too
-  nodes.forEach(node => removeByNode(tree, node, options))
+function removeBySelector (tree, selector, options) {
+  const nodes = find(tree, selector)
+  removeByNode(tree, leaf => {
+    for (let i = 0, ilen = nodes.length; i < ilen; i += 1) {
+      if (equal(leaf, nodes[i])) {
+        return true
+      }
+    }
+    return false
+  }, options)
 }
 
-function removeByNode (tree, target, options) {
-  var count = 0
+function removeByNode (tree, compare, options) {
+  let count = 0
   estraverse.replace(tree, {
-    enter: function (current, parent) {
+    enter (current, parent) {
       if (options.first && count === 1) {
         return this.break()
       }
-      if (equal(current, target)) {
+      if (compare(current)) {
         count += 1
         return this.remove()
       }
     },
-    leave: function (current, parent) {
+    leave (current, parent) {
       if (
         current.expression === null ||
         (
@@ -36,9 +40,9 @@ function removeByNode (tree, target, options) {
   })
 }
 
-module.exports = function remove (tree, target, options = {}) {
-  if (typeof target === 'string') {
-    return removeBySelector(tree, target, options)
+module.exports = function remove (tree, selector, options = {}) {
+  if (typeof selector === 'string') {
+    return removeBySelector(tree, selector, options)
   }
-  removeByNode(tree, target, options)
+  removeByNode(tree, node => equal(node, selector), options)
 }

@@ -4,6 +4,7 @@ const {
   each,
   first,
   last,
+  has,
   count,
   generate,
   parse,
@@ -20,10 +21,17 @@ test('parse', assert => {
   assert.deepEqual(tree.type, 'Program')
 })
 
-test('find', assert => {
+test('find: string selector', assert => {
   var source = 'var a = 1;'
   var tree = parse(source)
   var node = find(tree, 'VariableDeclaration')
+  assert.truthy(node)
+})
+
+test('find: object selector', assert => {
+  var source = 'var a = 1;'
+  var tree = parse(source)
+  var node = find(tree, { type: 'VariableDeclaration' })
   assert.truthy(node)
 })
 
@@ -51,18 +59,44 @@ test('last', assert => {
   assert.deepEqual(node.id.name, 'b')
 })
 
-test('count', assert => {
+test('has: string selector', assert => {
+  var source = 'var a = 1;'
+  var tree = parse(source)
+  assert.truthy(has(tree, 'VariableDeclaration'))
+})
+
+test('has: object selector', assert => {
+  var source = 'var a = 1;'
+  var tree = parse(source)
+  assert.truthy(has(tree, { type: 'VariableDeclaration' }))
+})
+
+test('count: string selector', assert => {
   var source = 'var a = 1, b = 2;'
   var tree = parse(source)
   var number = count(tree, 'VariableDeclarator')
   assert.deepEqual(number, 2)
 })
 
-test('remove', assert => {
+test('count: object selector', assert => {
+  var source = 'var a = 1, b = 2;'
+  var tree = parse(source)
+  var number = count(tree, { type: 'VariableDeclarator' })
+  assert.deepEqual(number, 2)
+})
+
+test('remove: string selector', assert => {
   var source = 'var a = 1, b = 2;'
   var tree = parse(source)
   remove(tree, 'VariableDeclarator[id.name="a"]')
   assert.deepEqual(generate(tree), 'var b = 2;\n')
+})
+
+test('remove: object selector', assert => {
+  var source = 'var a = 1, b = 2;'
+  var tree = parse(source)
+  remove(tree, { type: 'VariableDeclarator', id: { name: 'b' } })
+  assert.deepEqual(generate(tree), 'var a = 1;\n')
 })
 
 test('walk', assert => {

@@ -1,3 +1,3 @@
-All contributions are highly appreciated! 
+All contributions are highly appreciated!
 
-The lib follows the tdd approach and is expected to have 100% coverage at all times.
+The lib follows the tdd approach and is expected to have a high code coverage.
