@@ -195,6 +195,36 @@ console.log(count(tree, 'VariableDeclaration')) // 1
 console.log(count(tree, { type: 'VariableDeclaration' })) // 1
 ```
 
+#### prepend
+
+```javascript
+const { parse, prepend } = require('abstract-syntax-tree')
+const source = 'const a = 1;'
+const tree = parse(source)
+prepend(tree, {
+  type: 'ExpressionStatement',
+  expression: {
+    type: 'Literal',
+    value: 'use strict'
+  }
+})
+```
+
+#### append
+
+```javascript
+const { parse, append } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+append(tree, {
+  type: 'ExpressionStatement',
+  expression: {
+    type: 'Literal',
+    value: 'test'
+  }
+})
+```
+
 #### equal
 
 ```javascript
@@ -215,43 +245,7 @@ const nodes = template('const foo = <%= bar %>;', { bar: { type: 'Literal', valu
 
 Almost all of the static methods (excluding parse, generate, template and equal) have their instance equivalents. There are few extra instance methods:
 
-#### prepend
-
-Prepend a node to the body.
-
-```javascript
-const AbstractSyntaxTree = require('abstract-syntax-tree')
-const source = 'const a = 1;'
-const tree = new AbstractSyntaxTree(source)
-tree.prepend({
-  type: 'ExpressionStatement',
-  expression: {
-    type: 'Literal',
-    value: 'use strict'
-  }
-})
-```
-
-#### append
-
-Append a node to the body.
-
-```javascript
-const AbstractSyntaxTree = require('abstract-syntax-tree')
-const source = 'const answer = 42'
-const tree = new AbstractSyntaxTree(source)
-tree.append({
-  type: 'ExpressionStatement',
-  expression: {
-    type: 'Literal',
-    value: 'test'
-  }
-})
-```
-
 #### mark
-
-Add cid to all nodes
 
 ```javascript
 const AbstractSyntaxTree = require('abstract-syntax-tree')
@@ -262,8 +256,6 @@ console.log(tree.first('VariableDeclaration').cid) // 2
 ```
 
 #### wrap
-
-Wrap body with given node.
 
 ```javascript
 const AbstractSyntaxTree = require('abstract-syntax-tree')
