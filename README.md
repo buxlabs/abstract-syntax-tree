@@ -88,6 +88,24 @@ const source = 'const answer = 42'
 const tree = parse(source)
 console.log(tree) // { type: 'Program', body: [ ... ] }
 ```
+The library uses [cherow](https://github.com/cherow/cherow) to create an [estree](https://github.com/estree/estree) compatible abstract syntax tree. All [cherow parsing options](https://github.com/cherow/cherow#options) can be passed to the static parse method.
+
+```js
+const { parse } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source, {
+  loc: true,
+  ranges: true
+})
+console.log(tree) // { type: 'Program', body: [ ... ], loc: {...} }
+```
+
+```js
+const { parse } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+console.log(tree) // { type: 'Program', body: [ ... ] }
+```
 
 #### generate
 
