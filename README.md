@@ -52,6 +52,8 @@ Has the following representation:
 }
 ```
 
+The goal of this library is to consolidate common abstract syntax tree operations in one place. It uses a variety of libriaries under the hood based on their performance and flexibility, e.g. [cherow](https://github.com/cherow/cherow) for parsing and [astring](https://github.com/davidbonnet/astring) for source code generation.
+
 The library exposes a set of utility methods that can be useful for analysis or transformation of abstract syntax trees. It supports functional and object-oriented programming style.
 
 ## Install
@@ -109,6 +111,8 @@ const source = 'const answer = 42'
 const tree = parse(source)
 console.log(generate(tree)) // 'const answer = 42;'
 ```
+
+The library uses [astring](https://github.com/davidbonnet/astring) to generate the source code. All [astring generate options](https://github.com/davidbonnet/astring#api) can be passed to the generate method.
 
 #### walk
 
