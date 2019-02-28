@@ -283,3 +283,4 @@ test('it lets you mark nodes', assert => {
   assert.truthy(ast.first('Identifier').cid === 4)
   assert.truthy(ast.first('Literal').cid === 5)
 })
+

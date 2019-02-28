@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.1.2
+
+add: reduce method
+
 ## 2.1.1
 
 * edit: update deps

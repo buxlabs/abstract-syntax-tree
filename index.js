@@ -13,6 +13,7 @@ const walk = require('./src/walk')
 const traverse = require('./src/traverse')
 const generate = require('./src/generate')
 const parse = require('./src/parse')
+const reduce = require('./src/reduce')
 const template = require('./src/template')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
@@ -82,6 +83,10 @@ class AbstractSyntaxTree {
     return template(source, options)
   }
 
+  static reduce (tree, callback, accumulator) {
+    return reduce(tree, callback, accumulator)
+  }
+
   constructor (source, options = {}) {
     if (typeof source === 'string') {
       this._tree = typeof source === 'string' ? parse(source, { loc: true, ...options }) : source
@@ -148,6 +153,10 @@ class AbstractSyntaxTree {
 
   replace (options) {
     return replace(this._tree, options)
+  }
+
+  reduce (callback, accumulator) {
+    return reduce(this._tree, callback, accumulator)
   }
 
   prepend (node) {

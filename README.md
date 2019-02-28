@@ -203,6 +203,21 @@ const tree = parse(source)
 console.log(last(tree, 'VariableDeclaration')) // { type: 'VariableDeclaration', ... }
 ```
 
+#### reduce
+
+```js
+const { parse, reduce } = require('abstract-syntax-tree')
+const source = 'const a = 1, b = 2'
+const tree = parse(source)
+const value = reduce(tree, (sum, node) => {
+  if (node.type === 'Literal') {
+    sum += node.value
+  }
+  return sum
+}, 0)
+console.log(value) // 3
+```
+
 #### has
 
 ```js
