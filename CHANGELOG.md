@@ -1,8 +1,12 @@
 # abstract-syntax-tree changelog
 
+## 2.1.3
+
+* edit: update nyc
+
 ## 2.1.2
 
-add: reduce method
+* add: reduce method
 
 ## 2.1.1
 
