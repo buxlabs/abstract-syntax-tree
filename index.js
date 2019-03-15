@@ -87,7 +87,7 @@ class AbstractSyntaxTree {
     return reduce(tree, callback, accumulator)
   }
 
-  constructor (source, options = {}) {
+  constructor (source = '', options = {}) {
     if (typeof source === 'string') {
       this._tree = typeof source === 'string' ? parse(source, { loc: true, ...options }) : source
     } else {

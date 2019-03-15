@@ -1,6 +1,18 @@
 const test = require('./helpers/test')
 const AbstractSyntaxTree = require('..')
 
+test('it lets you create an empty tree and append nodes to it', assert => {
+  const tree = new AbstractSyntaxTree()
+  tree.append({
+    type: 'ExpressionStatement',
+    expression: {
+      type: 'Literal',
+      value: 'use strict'
+    }
+  })
+  assert.deepEqual(tree.source, '"use strict";\n')
+})
+
 test('it lets you drop if statements', assert => {
   var ast = new AbstractSyntaxTree('if (true) { console.log(1); }')
   ast.mark()

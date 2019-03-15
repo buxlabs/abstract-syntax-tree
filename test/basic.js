@@ -1,7 +1,7 @@
 const test = require('./helpers/test')
 const AbstractSyntaxTree = require('..')
 
-test('it works', assert => {
+test('it accepts source', assert => {
   assert.truthy(new AbstractSyntaxTree('var x = 0;'))
 })
 
