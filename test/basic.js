@@ -138,32 +138,6 @@ test('it supports double quotes by default', assert => {
   assert.truthy(ast.source === `var a = "hello";\n`)
 })
 
-test('it prepends a node to body', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
-  ast.prepend({
-    type: 'ExpressionStatement',
-    expression: {
-      type: 'Literal',
-      value: 'use strict'
-    }
-  })
-  assert.deepEqual(ast.source, '"use strict";\nvar a = 1;\n')
-})
-
-test('it appends a node to body', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
-  ast.append({
-    type: 'ExpressionStatement',
-    expression: {
-      type: 'Literal',
-      value: 'use strict'
-    }
-  })
-  assert.deepEqual(ast.source, 'var a = 1;\n"use strict";\n')
-})
-
 test('it walks through nodes', assert => {
   var source = 'var a = 1;'
   var ast = new AbstractSyntaxTree(source)

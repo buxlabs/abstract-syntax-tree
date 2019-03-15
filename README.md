@@ -169,7 +169,7 @@ replace(tree, {
 ```js
 const { parse, remove, generate } = require('abstract-syntax-tree')
 const source = '"use strict"; const b = 4;'
-const ast = parse(source)
+const tree = parse(source)
 remove(tree, { type: 'Literal', value: 'use strict' })
 console.log(generate(tree)) // 'const b = 4;'
 ```
@@ -238,7 +238,52 @@ console.log(count(tree, 'VariableDeclaration')) // 1
 console.log(count(tree, { type: 'VariableDeclaration' })) // 1
 ```
 
+#### append
+
+Append lets you to push nodes to the body of the abstract syntax tree. It accepts estree nodes as input.
+
+```js
+const { parse, append } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+append(tree, {
+  type: 'ExpressionStatement',
+  expression:  {
+    type: "CallExpression",
+    callee: {
+      type: 'MemberExpression',
+      object: {
+        type: 'Identifier',
+        name: 'console'
+      },
+      property: {
+        type: 'Identifier',
+        name: 'log'
+      },
+      computed: false
+    },
+    arguments: [
+      {
+        type: 'Identifier',
+        name: 'answer'
+      }
+    ]
+  }
+})
+```
+
+It also lets you pass raw strings that will be converted into abstract syntax tree under the hood. Please note that this approach might make the code run a bit slower due to an extra interpretation step.
+
+```js
+const { parse, append } = require('abstract-syntax-tree')
+const source = 'const answer = 42'
+const tree = parse(source)
+append(tree, 'console.log(answer)')
+```
+
 #### prepend
+
+Prepend lets you unshift nodes to the body of the abstract syntax tree. Accepts estree nodes or strings as input, same as append.
 
 ```js
 const { parse, prepend } = require('abstract-syntax-tree')
@@ -249,21 +294,6 @@ prepend(tree, {
   expression: {
     type: 'Literal',
     value: 'use strict'
-  }
-})
-```
-
-#### append
-
-```js
-const { parse, append } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
-const tree = parse(source)
-append(tree, {
-  type: 'ExpressionStatement',
-  expression: {
-    type: 'Literal',
-    value: 'test'
   }
 })
 ```

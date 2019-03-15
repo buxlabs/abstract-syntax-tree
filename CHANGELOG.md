@@ -1,5 +1,11 @@
 # abstract-syntax-tree changelog
 
+## 2.2.0
+
+* add: possibility to create a new abstract syntax tree instance without params
+* add: append and prepend accept string as input
+* update: ava
+
 ## 2.1.3
 
 * edit: update nyc
