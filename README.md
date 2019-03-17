@@ -1,6 +1,6 @@
 # abstract-syntax-tree
 
-![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg) ![build](https://img.shields.io/codeship/c6391230-e90c-0136-c202-269c372fd6f7/master.svg)
+![build](https://img.shields.io/codeship/c6391230-e90c-0136-c202-269c372fd6f7/master.svg) ![Codecov](https://img.shields.io/codecov/c/github/buxlabs/abstract-syntax-tree.svg) ![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)
 
 > Abstract Syntax Tree
 
