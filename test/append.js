@@ -18,3 +18,24 @@ test('it appends source to the body', assert => {
   tree.append('"use strict"')
   assert.deepEqual(tree.source, 'const a = 1;\n"use strict";\n')
 })
+
+test('it appends multiple nodes', assert => {
+  const tree = new AbstractSyntaxTree('const a = 1')
+  tree.append([
+    {
+      type: 'ExpressionStatement',
+      expression: {
+        type: 'Literal',
+        value: 'foo'
+      }
+    },
+    {
+      type: 'ExpressionStatement',
+      expression: {
+        type: 'Literal',
+        value: 'bar'
+      }
+    }
+  ])
+  assert.deepEqual(tree.source, 'const a = 1;\n"foo";\n"bar";\n')
+})
