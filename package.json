@@ -8,7 +8,7 @@
     "lint": "standard",
     "benchmark": "ava 'test/benchmarks/*.js'",
     "coverage": "nyc npm test",
-    "coverage:report": "npm run coverage -- --reporter=text-lcov > coverage.lcov && codecov"
+    "coverage:report": "nyc --reporter=text-lcov npm test > coverage.lcov && codecov"
   },
   "engines": {
     "node": ">=10.15.0"
