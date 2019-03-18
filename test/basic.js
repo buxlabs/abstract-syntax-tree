@@ -150,20 +150,6 @@ test('it walks through nodes', assert => {
   assert.deepEqual(ast.source, 'let a = 1;\n')
 })
 
-test('it exposes a traverse method', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
-  ast.traverse({
-    enter: function (node) {
-      if (node.type === 'VariableDeclaration') {
-        node.kind = 'let'
-      }
-      return node
-    }
-  })
-  assert.deepEqual(ast.source, 'let a = 1;\n')
-})
-
 test('it replaces nodes', assert => {
   var source = 'var a = 1'
   var ast = new AbstractSyntaxTree(source)

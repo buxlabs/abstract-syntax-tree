@@ -39,3 +39,10 @@ test('it prepends multiple nodes', assert => {
   ])
   assert.deepEqual(tree.source, '"foo";\n"bar";\nconst a = 1;\n')
 })
+
+test('it is exposed as a static method', assert => {
+  const { parse, prepend, generate } = AbstractSyntaxTree
+  const tree = parse('const a = 1')
+  prepend(tree, '"use strict"')
+  assert.deepEqual(generate(tree), '"use strict";\nconst a = 1;\n')
+})

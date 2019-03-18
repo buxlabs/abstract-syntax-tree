@@ -89,7 +89,7 @@ class AbstractSyntaxTree {
 
   constructor (source = '', options = {}) {
     if (typeof source === 'string') {
-      this._tree = typeof source === 'string' ? parse(source, { loc: true, ...options }) : source
+      this._tree = parse(source, { loc: true, ...options })
     } else {
       this._tree = source
     }

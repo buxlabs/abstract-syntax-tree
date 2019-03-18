@@ -39,3 +39,10 @@ test('it appends multiple nodes', assert => {
   ])
   assert.deepEqual(tree.source, 'const a = 1;\n"foo";\n"bar";\n')
 })
+
+test('it is exposed as a static method', assert => {
+  const { parse, append, generate } = AbstractSyntaxTree
+  const tree = parse('const a = 1')
+  append(tree, '"use strict"')
+  assert.deepEqual(generate(tree), 'const a = 1;\n"use strict";\n')
+})
