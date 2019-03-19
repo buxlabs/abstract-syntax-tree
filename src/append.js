@@ -1,22 +1,24 @@
 const template = require('./template')
 
-function getNode (input) {
+function normalizeInput (input) {
   if (typeof input === 'string') return template(input)
   return input
 }
 
-function addNode (tree, node) {
-  if (Array.isArray(node)) return tree.concat(node)
-  tree.push(node)
-  return tree
+function appendInput (tree, input) {
+  if (Array.isArray(input)) {
+    input.forEach(node => tree.push(node))
+  } else {
+    tree.push(input)
+  }
 }
 
 module.exports = function append (tree, input) {
-  const node = getNode(input)
+  input = normalizeInput(input)
   if (Array.isArray(tree)) {
-    tree = addNode(tree, node)
+    appendInput(tree, input)
   } else if (Array.isArray(tree.body)) {
-    tree.body = addNode(tree.body, node)
+    appendInput(tree.body, input)
   }
   return tree
 }

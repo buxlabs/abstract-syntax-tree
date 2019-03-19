@@ -150,20 +150,6 @@ test('it walks through nodes', assert => {
   assert.deepEqual(ast.source, 'let a = 1;\n')
 })
 
-test('it replaces nodes', assert => {
-  var source = 'var a = 1'
-  var ast = new AbstractSyntaxTree(source)
-  ast.replace({
-    enter: function (node) {
-      if (node.type === 'VariableDeclaration') {
-        node.kind = 'let'
-      }
-      return node
-    }
-  })
-  assert.deepEqual(ast.source, 'let a = 1;\n')
-})
-
 test('it has a toString alias for toSource', assert => {
   var ast = new AbstractSyntaxTree('var y = 1;')
   assert.truthy(ast.source === 'var y = 1;\n')
