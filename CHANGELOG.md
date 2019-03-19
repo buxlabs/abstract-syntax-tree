@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.3.0
+
+* edit: append and prepend mutate existing arrays
+
 ## 2.2.0
 
 * add: possibility to create a new abstract syntax tree instance without params

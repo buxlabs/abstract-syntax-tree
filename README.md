@@ -84,14 +84,14 @@ console.log(tree.find('Literal')) // [ { type: 'Literal', value: 42 } ]
 
 #### parse
 
+The library uses [cherow](https://github.com/cherow/cherow) to create an [estree](https://github.com/estree/estree) compatible abstract syntax tree. All [cherow parsing options](https://github.com/cherow/cherow#options) can be passed to the parse method.
+
 ```js
 const { parse } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
 const tree = parse(source)
 console.log(tree) // { type: 'Program', body: [ ... ] }
 ```
-
-The library uses [cherow](https://github.com/cherow/cherow) to create an [estree](https://github.com/estree/estree) compatible abstract syntax tree. All [cherow parsing options](https://github.com/cherow/cherow#options) can be passed to the parse method.
 
 ```js
 const { parse } = require('abstract-syntax-tree')
@@ -105,6 +105,8 @@ console.log(tree) // { type: 'Program', body: [ ... ], loc: {...} }
 
 #### generate
 
+The library uses [astring](https://github.com/davidbonnet/astring) to generate the source code. All [astring generate options](https://github.com/davidbonnet/astring#api) can be passed to the generate method.
+
 ```js
 const { parse, generate } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
@@ -112,9 +114,9 @@ const tree = parse(source)
 console.log(generate(tree)) // 'const answer = 42;'
 ```
 
-The library uses [astring](https://github.com/davidbonnet/astring) to generate the source code. All [astring generate options](https://github.com/davidbonnet/astring#api) can be passed to the generate method.
-
 #### walk
+
+Walk method is a thin layer over [estraverse](https://github.com/estools/estraverse).
 
 ```js
 const { parse, walk } = require('abstract-syntax-tree')
@@ -128,6 +130,8 @@ walk(tree, (node, parent) => {
 
 #### find
 
+Find supports two traversal methods. You can pass an [esquery](https://github.com/estools/esquery) compatible selector or pass an object that will be compared to every node in the tree. The method returns an array of nodes.
+
 ```js
 const { parse, find } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
@@ -137,6 +141,8 @@ console.log(find(tree, { type: 'VariableDeclaration' })) // [ { type: 'VariableD
 ```
 
 #### traverse
+
+Traverse method accepts a configuration object with enter and leave callbacks. It allows multiple transformations in one traversal.
 
 ```js
 const { parse, traverse } = require('abstract-syntax-tree')
@@ -149,6 +155,8 @@ traverse(tree, {
 ```
 
 #### replace
+
+Replace extends [estraverse](https://github.com/estools/estraverse) by handling replacement of give node with multiple nodes. It will also remove given node if `null` is returned.
 
 ```js
 const { parse, replace } = require('abstract-syntax-tree')
@@ -240,7 +248,7 @@ console.log(count(tree, { type: 'VariableDeclaration' })) // 1
 
 #### append
 
-Append lets you to push nodes to the body of the abstract syntax tree. It accepts estree nodes as input.
+Append pushes nodes to the body of the abstract syntax tree. It accepts estree nodes as input.
 
 ```js
 const { parse, append } = require('abstract-syntax-tree')
@@ -272,7 +280,7 @@ append(tree, {
 })
 ```
 
-It also lets you pass raw strings that will be converted into abstract syntax tree under the hood. Please note that this approach might make the code run a bit slower due to an extra interpretation step.
+Strings will be converted into abstract syntax tree under the hood. Please note that this approach might make the code run a bit slower due to an extra interpretation step.
 
 ```js
 const { parse, append } = require('abstract-syntax-tree')
@@ -283,7 +291,7 @@ append(tree, 'console.log(answer)')
 
 #### prepend
 
-Prepend lets you unshift nodes to the body of the abstract syntax tree. Accepts estree nodes or strings as input, same as append.
+Prepend unshifts nodes to the body of the abstract syntax tree. Accepts estree nodes or strings as input, same as append.
 
 ```js
 const { parse, prepend } = require('abstract-syntax-tree')
@@ -369,11 +377,11 @@ console.log(tree.source) // console.log(1);
 
 #### body
 
-Gives you the body of the root node.
+Gives the body of the root node.
 
 #### source
 
-Gives you access to the source code representation of the abstract syntax tree.
+Gives access to the source code representation of the abstract syntax tree.
 
 ```js
 const AbstractSyntaxTree = require('abstract-syntax-tree')
@@ -384,13 +392,13 @@ console.log(tree.source) // const foo = "bar";
 
 #### map
 
-Gives you the source map of the source code.
+Gives the source map of the source code.
 
 ### Setters
 
 #### body
 
-Lets you set the body of the root node.
+Sets the body of the root node.
 
 ## Maintainers
 
