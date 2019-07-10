@@ -14,10 +14,25 @@ function removeBySelector (tree, selector, options) {
   }, options)
 }
 
+function removeByCallback (tree, callback, options) {
+  estraverse.replace(tree, {
+    enter (current) {
+      if (callback(current) === null) {
+        return this.remove()
+      }
+    },
+    leave (current) {
+      if (isNodeEmpty(current)) {
+        return this.remove()
+      }
+    }
+  })
+}
+
 function removeByNode (tree, compare, options) {
   let count = 0
   estraverse.replace(tree, {
-    enter (current, parent) {
+    enter (current) {
       if (options.first && count === 1) {
         return this.break()
       }
@@ -26,23 +41,31 @@ function removeByNode (tree, compare, options) {
         return this.remove()
       }
     },
-    leave (current, parent) {
-      if (
-        current.expression === null ||
-        (
-          current.type === 'VariableDeclaration' &&
-          current.declarations.length === 0
-        )
-      ) {
+    leave (current) {
+      if (isNodeEmpty(current)) {
         return this.remove()
       }
     }
   })
 }
 
-module.exports = function remove (tree, selector, options = {}) {
-  if (typeof selector === 'string') {
-    return removeBySelector(tree, selector, options)
+function isExpressionEmpty (node) {
+  return node.expression === null
+}
+
+function isVariableDeclarationEmpty (node) {
+  return node.type === 'VariableDeclaration' && node.declarations.length === 0
+}
+
+function isNodeEmpty (node) {
+  return isExpressionEmpty(node) || isVariableDeclarationEmpty(node)
+}
+
+module.exports = function remove (tree, handle, options = {}) {
+  if (typeof handle === 'string') {
+    return removeBySelector(tree, handle, options)
+  } else if (typeof handle === 'function') {
+    return removeByCallback(tree, handle, options)
   }
-  removeByNode(tree, node => equal(node, selector), options)
+  removeByNode(tree, node => equal(node, handle), options)
 }
