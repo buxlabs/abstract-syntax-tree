@@ -174,11 +174,23 @@ replace(tree, {
 
 #### remove
 
+Remove uses [estraverse](https://github.com/estools/estraverse) and ensures that no useless nodes are left in the tree. It accepts a string, object or callback as the matching strategy.
+
 ```js
 const { parse, remove, generate } = require('abstract-syntax-tree')
 const source = '"use strict"; const b = 4;'
 const tree = parse(source)
-remove(tree, { type: 'Literal', value: 'use strict' })
+remove(tree, 'Literal[value="use strict"]')
+
+// or
+// remove(tree, { type: 'Literal', value: 'use strict' })
+
+// or
+// remove(tree, (node) => {
+//   if (node.type === 'Literal' && node.value === 'use strict') return null
+//   return node 
+// })
+
 console.log(generate(tree)) // 'const b = 4;'
 ```
 
