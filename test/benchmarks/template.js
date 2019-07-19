@@ -3,7 +3,7 @@ const { Suite } = require('benchmark')
 const { template } = require('../..')
 
 test.cb('it favors inline code over template method usage in hot paths if not memoized', assert => {
-  let suite = new Suite()
+  const suite = new Suite()
   suite
     .add('template#string', function () {
       return template('var add = function (a, b) { return a + b; }')
@@ -22,5 +22,5 @@ test.cb('it favors inline code over template method usage in hot paths if not me
       assert.truthy(this.filter('fastest').map('name')[0] === 'template#inline')
       assert.end()
     })
-    .run({ 'async': true })
+    .run({ async: true })
 })

@@ -6,7 +6,7 @@ module.exports = function find (tree, selector) {
   if (typeof selector === 'string') {
     return esquery(tree, selector)
   }
-  let nodes = []
+  const nodes = []
   traverse(tree, {
     enter (node) {
       if (equal(node, selector)) {

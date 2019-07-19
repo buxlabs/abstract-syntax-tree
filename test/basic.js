@@ -11,9 +11,9 @@ test('it accepts abstract syntax tree', assert => {
     body: [
       {
         type: 'FunctionDeclaration',
-        id: { 'type': 'Identifier', 'name': 'foo' },
+        id: { type: 'Identifier', name: 'foo' },
         params: [],
-        body: { 'type': 'BlockStatement', 'body': [] }
+        body: { type: 'BlockStatement', body: [] }
       }
     ]
   }))
