@@ -52,7 +52,7 @@ Has the following representation:
 }
 ```
 
-The goal of this library is to consolidate common abstract syntax tree operations in one place. It uses a variety of libriaries under the hood based on their performance and flexibility, e.g. [cherow](https://github.com/cherow/cherow) for parsing and [astring](https://github.com/davidbonnet/astring) for source code generation.
+The goal of this library is to consolidate common abstract syntax tree operations in one place. It uses a variety of libriaries under the hood based on their performance and flexibility, e.g. [meriyah](https://github.com/meriyah/meriyah) for parsing and [astring](https://github.com/davidbonnet/astring) for source code generation.
 
 The library exposes a set of utility methods that can be useful for analysis or transformation of abstract syntax trees. It supports functional and object-oriented programming style.
 
@@ -84,7 +84,7 @@ console.log(tree.find('Literal')) // [ { type: 'Literal', value: 42 } ]
 
 #### parse
 
-The library uses [cherow](https://github.com/cherow/cherow) to create an [estree](https://github.com/estree/estree) compatible abstract syntax tree. All [cherow parsing options](https://github.com/cherow/cherow#options) can be passed to the parse method.
+The library uses [meriyah](https://github.com/meriyah/meriyah) to create an [estree](https://github.com/estree/estree) compatible abstract syntax tree. All [meriyah parsing options](https://github.com/meriyah/meriyah#api) can be passed to the parse method.
 
 ```js
 const { parse } = require('abstract-syntax-tree')

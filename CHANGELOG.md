@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.5.0
+
+* edit: change cherow to meriyah
+
 ## 2.3.0
 
 * edit: append and prepend mutate existing arrays
