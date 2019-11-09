@@ -1,5 +1,5 @@
-const cherow = require('cherow')
+const meriyah = require('meriyah')
 
 module.exports = function parse (source, options) {
-  return cherow.parseModule(source, options)
+  return meriyah.parseModule(source, options)
 }
