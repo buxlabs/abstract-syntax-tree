@@ -34,7 +34,7 @@
   "devDependencies": {
     "ava": "^3.5.0",
     "benchmark": "^2.1.4",
-    "nyc": "^14.1.1",
+    "nyc": "^15.0.0",
     "standard": "^13.0.2"
   },
   "dependencies": {
