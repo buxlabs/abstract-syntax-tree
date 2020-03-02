@@ -57,7 +57,7 @@ test('it removes nodes via complex selectors', assert => {
   var source = 'var a = 1; function hello () { var b = 2; return "world"; }'
   var ast = new AbstractSyntaxTree(source)
   ast.remove('BlockStatement > VariableDeclaration')
-  assert.deepEqual(ast.source, `var a = 1;\nfunction hello() {\n  return "world";\n}\n`)
+  assert.deepEqual(ast.source, 'var a = 1;\nfunction hello() {\n  return "world";\n}\n')
 })
 
 test('it should be possible to remove the first element only', assert => {
