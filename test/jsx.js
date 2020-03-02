@@ -1,4 +1,4 @@
-const test = require('./helpers/test')
+const test = require('ava')
 const AbstractSyntaxTree = require('..')
 
 test('it works for jsx', assert => {

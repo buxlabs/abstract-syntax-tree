@@ -1,4 +1,4 @@
-const test = require('./helpers/test')
+const test = require('ava')
 const {
   find,
   each,

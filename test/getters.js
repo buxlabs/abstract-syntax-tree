@@ -1,4 +1,4 @@
-const test = require('./helpers/test')
+const test = require('ava')
 const AbstractSyntaxTree = require('..')
 
 test('it lets you set the body of the program', assert => {
