@@ -1,4 +1,4 @@
-const test = require('./helpers/test')
+const test = require('ava')
 const AbstractSyntaxTree = require('..')
 
 test('it prepends nodes to the body', assert => {
