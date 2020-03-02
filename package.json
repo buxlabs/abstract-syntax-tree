@@ -7,8 +7,7 @@
     "test": "ava test/*.js",
     "lint": "standard",
     "benchmark": "ava test/benchmarks/*.js",
-    "coverage": "nyc npm test",
-    "coverage:report": "nyc --reporter=text-lcov npm test > coverage.lcov && codecov"
+    "coverage": "nyc npm test"
   },
   "engines": {
     "node": ">=10.15.0"
@@ -35,7 +34,6 @@
   "devDependencies": {
     "ava": "^2.4.0",
     "benchmark": "^2.1.4",
-    "codecov": "^3.6.1",
     "nyc": "^14.1.1",
     "standard": "^13.0.2"
   },
