@@ -67,9 +67,9 @@ test('it works with imports', assert => {
 })
 
 test('it supports double quotes by default', assert => {
-  var source = `var a = 'hello';`
+  var source = 'var a = \'hello\';'
   var ast = new AbstractSyntaxTree(source)
-  assert.truthy(ast.source === `var a = "hello";\n`)
+  assert.truthy(ast.source === 'var a = "hello";\n')
 })
 
 test('it walks through nodes', assert => {
