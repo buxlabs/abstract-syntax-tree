@@ -16,16 +16,18 @@ function complexReplace (method, node, parent) {
 }
 
 module.exports = function replace (tree, options) {
+  const enter = typeof options === 'function' ? options : options.enter
+  const leave = options && options.leave
   return estraverse.replace(tree, {
     enter (node, parent) {
-      if (options.enter) {
-        const replacement = complexReplace(options.enter, node, parent)
+      if (enter) {
+        const replacement = complexReplace(enter, node, parent)
         if (replacement) { return replacement }
       }
     },
     leave (node, parent) {
-      if (options.leave) {
-        const replacement = complexReplace(options.leave, node, parent)
+      if (leave) {
+        const replacement = complexReplace(leave, node, parent)
         if (replacement) { return replacement }
       }
     }

@@ -162,13 +162,11 @@ Replace extends [estraverse](https://github.com/estools/estraverse) by handling 
 const { parse, replace } = require('abstract-syntax-tree')
 const source = 'const answer = 42'
 const tree = parse(source)
-replace(tree, {
-  enter (node) {
-    if (node.type === 'VariableDeclaration') {
-      node.kind = 'let'
-    }
-    return node
+replace(tree, node => {
+  if (node.type === 'VariableDeclaration') {
+    node.kind = 'let'
   }
+  return node
 })
 ```
 
