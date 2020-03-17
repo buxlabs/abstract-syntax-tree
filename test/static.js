@@ -11,7 +11,6 @@ const {
   walk,
   replace,
   remove,
-  equal,
   template
 } = require('..')
 
@@ -136,10 +135,6 @@ test('replace', assert => {
     }
   })
   assert.deepEqual(generate(tree), 'var b = 1;\n')
-})
-
-test('equal', assert => {
-  assert.truthy(equal({ type: 'ReturnStatement' }, { type: 'ReturnStatement' }))
 })
 
 test('template: from string', assert => {
