@@ -1,6 +1,8 @@
+# ![abstract-syntax-tree][logo]
+
 # abstract-syntax-tree
 
-![build](https://img.shields.io/codeship/c6391230-e90c-0136-c202-269c372fd6f7/master.svg) ![Codecov](https://img.shields.io/codecov/c/github/buxlabs/abstract-syntax-tree.svg) ![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)
+[![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)](https://www.npmjs.com/package/abstract-syntax-tree) [![build](https://github.com/buxlabs/abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/buxlabs/abstract-syntax-tree/actions) 
 
 > A library for working with abstract syntax trees.
 
@@ -423,3 +425,5 @@ The lib follows the tdd approach and is expected to have a high code coverage. P
 ## License
 
 MIT © buxlabs
+
+[logo]:  https://repository-images.githubusercontent.com/76797104/ad058700-68a3-11ea-8c0d-2952747fa4ff
