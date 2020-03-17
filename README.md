@@ -1,5 +1,3 @@
-# ![abstract-syntax-tree][logo]
-
 # abstract-syntax-tree
 
 [![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)](https://www.npmjs.com/package/abstract-syntax-tree) [![build](https://github.com/buxlabs/abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/buxlabs/abstract-syntax-tree/actions) 
@@ -425,5 +423,3 @@ The lib follows the tdd approach and is expected to have a high code coverage. P
 ## License
 
 MIT © buxlabs
-
-[logo]: https://repository-images.githubusercontent.com/76797104/c5c36c00-68a6-11ea-85e9-963262e4f794
