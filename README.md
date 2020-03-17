@@ -426,4 +426,4 @@ The lib follows the tdd approach and is expected to have a high code coverage. P
 
 MIT © buxlabs
 
-[logo]:  https://repository-images.githubusercontent.com/76797104/ad058700-68a3-11ea-8c0d-2952747fa4ff
+[logo]: https://repository-images.githubusercontent.com/76797104/c5c36c00-68a6-11ea-85e9-963262e4f794
