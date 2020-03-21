@@ -11,6 +11,7 @@ const {
   walk,
   replace,
   remove,
+  serialize,
   template
 } = require('..')
 
@@ -147,4 +148,34 @@ test('template: from string with params', assert => {
 
 test('template: from numbers', assert => {
   assert.truthy(template(1).type === 'Literal')
+})
+
+test('serialize: literals', assert => {
+  assert.truthy(serialize({ type: 'Literal', value: 'foo' }) === 'foo')
+})
+
+test('serialize: arrays', assert => {
+  assert.deepEqual(serialize({
+    type: 'ArrayExpression',
+    elements: [
+      { type: 'Literal', value: 1 },
+      { type: 'Literal', value: 2 },
+      { type: 'Literal', value: 3 },
+      { type: 'Literal', value: 4 },
+      { type: 'Literal', value: 5 }
+    ]
+  }), [1, 2, 3, 4, 5])
+})
+
+test('serialize: objects', assert => {
+  assert.deepEqual(serialize({
+    type: 'ObjectExpression',
+    properties: [
+      {
+        type: 'Property',
+        key: { type: 'Identifier', name: 'foo' },
+        value: { type: 'Literal', value: 42 }
+      }
+    ]
+  }), { foo: 42 })
 })

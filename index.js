@@ -15,6 +15,7 @@ const generate = require('./src/generate')
 const parse = require('./src/parse')
 const reduce = require('./src/reduce')
 const template = require('./src/template')
+const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
 
@@ -69,6 +70,10 @@ class AbstractSyntaxTree {
 
   static walk (tree, callback) {
     return walk(tree, callback)
+  }
+
+  static serialize (node) {
+    return serialize(node)
   }
 
   static traverse (tree, callback) {

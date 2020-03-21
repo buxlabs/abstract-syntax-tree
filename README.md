@@ -140,6 +140,27 @@ console.log(find(tree, 'VariableDeclaration')) // [ { type: 'VariableDeclaration
 console.log(find(tree, { type: 'VariableDeclaration' })) // [ { type: 'VariableDeclaration', ... } ]
 ```
 
+#### serialize
+
+Serialize can transform nodes into values. More documentation can be found here [asttv](https://github.com/buxlabs/asttv).
+
+```js
+const { serialize } = require('abstract-syntax-tree')
+const node = {
+  type: 'ArrayExpression',
+  elements: [
+    { type: 'Literal', value: 1 },
+    { type: 'Literal', value: 2 },
+    { type: 'Literal', value: 3 },
+    { type: 'Literal', value: 4 },
+    { type: 'Literal', value: 5 }
+  ]
+}
+const result = serialize(node)
+
+console.log(result) // [1, 2, 3, 4, 5]
+```
+
 #### traverse
 
 Traverse method accepts a configuration object with enter and leave callbacks. It allows multiple transformations in one traversal.
