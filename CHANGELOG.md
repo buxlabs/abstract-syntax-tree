@@ -1,5 +1,13 @@
 # abstract-syntax-tree changelog
 
+## 2.8.1
+
+* edit: fix README
+
+## 2.8.0
+
+* edit: add optimization techniques
+
 ## 2.5.0
 
 * edit: change cherow to meriyah
