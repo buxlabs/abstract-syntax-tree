@@ -11,6 +11,7 @@
 - [Usage](#usage)
 - [API](#api)
 - [REPL](https://buxlabs.pl/en/tools/js/ast)
+- [Optimizations](#optimizations)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
 - [License](#license)
@@ -430,6 +431,397 @@ Gives the source map of the source code.
 #### body
 
 Sets the body of the root node.
+
+## Optimizations
+
+### How can you optimize an abstract syntax tree?
+
+Abstract syntax tree is a tree-like structure that represents your program. The program is interpreted at some point, e.g. in your browser. Everything takes time, and the same applies to the interpretation. Some of the operations, e.g. adding numbers can be done at compile time, so that the interpreter has less work to do. Having less work to do means that your program will run faster.
+
+### Usage
+
+You can import methods individually:
+
+```js
+const binaryExpressionReduction = require('abstract-syntax-tree/src/optimize/binaryExpressionReduction')
+```
+
+### What optimization techniques are available?
+
+#### binaryExpressionReduction
+
+```js
+const number = 2 + 2
+```
+
+In the example above we have added two numbers. We could optimize the code by:
+
+```js
+const number = 4
+```
+
+The tree would be translated from:
+
+```json
+{
+  "type": "BinaryExpression",
+  "left": { "type": "Literal", "value": 2 },
+  "right": { "type": "Literal", "value": 2 }
+}
+```
+
+to
+
+```json
+{ "type": "Literal", "value": 4 }
+```
+
+Usage:
+
+```js
+const { binaryExpressionReduction } = require('astoptech')
+```
+
+#### ifStatementRemoval
+
+```js
+if (true) {
+  console.log('foo')
+} else {
+  console.log('bar')
+}
+```
+
+It seems that we'll only enter the true path. We can simplify the code to:
+
+```js
+console.log('foo')
+```
+
+The tree would be translated from:
+
+```json
+{
+      "type": "IfStatement",
+      "test": {
+        "type": "Literal",
+        "value": true
+      },
+      "consequent": {
+        "type": "BlockStatement",
+        "body": [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "object": {
+                  "type": "Identifier",
+                  "name": "console"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "log"
+                },
+                "computed": false
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "foo"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "alternate": {
+        "type": "BlockStatement",
+        "body": [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "object": {
+                  "type": "Identifier",
+                  "name": "console"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "log"
+                },
+                "computed": false
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "bar"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+```
+
+to:
+
+```js
+{
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "object": {
+            "type": "Identifier",
+            "name": "console"
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "log"
+          },
+          "computed": false
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "foo"
+          }
+        ]
+      }
+```
+
+Usage:
+
+```js
+const { ifStatementRemoval } = require('astoptech')
+```
+
+#### negationOperatorRemoval
+
+```js
+if (!(foo === bar)) {
+  console.log('foo')
+}
+```
+
+It seems that our negation operator could be a part of the condition inside the brackets.
+
+```js
+if (foo !== bar)  {
+  console.log('foo')
+}
+```
+
+The tree would be translated from:
+
+```json
+{
+  "type": "UnaryExpression",
+  "operator": "!",
+  "prefix": true,
+  "argument": {
+    "type": "BinaryExpression",
+    "left": {
+      "type": "Identifier",
+      "name": "foo"
+    },
+    "operator": "===",
+    "right": {
+      "type": "Identifier",
+      "name": "bar"
+    }
+  }
+}
+```
+
+to
+
+```json
+{
+  "type": "BinaryExpression",
+  "left": {
+    "type": "Identifier",
+    "name": "foo"
+  },
+  "operator": "!==",
+  "right": {
+    "type": "Identifier",
+    "name": "bar"
+  }
+}
+```
+
+#### logicalExpressionReduction
+
+```js
+const foo = "bar" || "baz"
+```
+
+The first value is truthy so it's safe to simplify the code.
+
+```js
+const foo = "bar"
+```
+
+The tree would be translated from:
+
+```json
+{
+  "type": "LogicalExpression",
+  "left": {
+    "type": "Literal",
+    "value": "bar"
+  },
+  "operator": "||",
+  "right": {
+    "type": "Literal",
+    "value": "baz"
+  }
+}
+```
+
+To:
+
+```json
+{
+  "type": "Literal",
+  "value": "bar"
+}
+```
+
+#### ternaryOperatorReduction
+
+```js
+const foo = true ? "bar": "baz"
+```
+
+Given a known value of the conditional expression it's possible to get the right value immediately.
+
+```js
+const foo = "bar"
+```
+
+The tree would be translated from:
+
+```json
+{
+  "type": "ConditionalExpression",
+  "test": {
+    "type": "Literal",
+    "value": true
+  },
+  "consequent": {
+    "type": "Literal",
+    "value": "bar"
+  },
+  "alternate": {
+    "type": "Literal",
+    "value": "baz"
+  }
+}
+```
+
+To:
+
+```json
+{
+  "type": "Literal",
+  "value": "bar"
+}
+```
+
+#### typeofOperatorReduction
+
+```js
+const foo = typeof "bar"
+```
+
+It's possible to determine the type of some variables during analysis.
+
+```js
+const foo = "string"
+```
+
+The tree would be translated from:
+
+```json
+{
+  "type": "UnaryExpression",
+  "operator": "typeof",
+  "prefix": true,
+  "argument": {
+    "type": "Literal",
+    "value": "foo"
+  }
+}
+```
+
+To:
+
+```json
+{
+  "type": "Literal",
+  "value": "string"
+}
+```
+
+#### memberExpressionReduction
+
+```js
+const foo = ({ bar: "baz" }).bar
+```
+
+Given an inlined object expression it's possible to retrieve the value immediately.
+
+```js
+const foo = "baz"
+```
+
+The tree would be translated from:
+
+```json
+{
+  "type": "MemberExpression",
+  "object": {
+    "type": "ObjectExpression",
+    "properties": [
+      {
+        "type": "Property",
+        "method": false,
+        "shorthand": false,
+        "computed": false,
+        "key": {
+          "type": "Identifier",
+          "name": "bar"
+        },
+        "value": {
+          "type": "Literal",
+          "value": "baz"
+        },
+        "kind": "init"
+      }
+    ]
+  },
+  "property": {
+    "type": "Identifier",
+    "name": "baz"
+  },
+  "computed": false
+}
+```
+
+To:
+
+```json
+{
+  "type": "Literal",
+  "value": "baz"
+}
+```
 
 ## Maintainers
 

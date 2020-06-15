@@ -2,3 +2,4 @@
 test
 coverage
 coverage.lcov
+.DS_Store
