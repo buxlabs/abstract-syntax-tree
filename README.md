@@ -476,12 +476,6 @@ to
 { "type": "Literal", "value": 4 }
 ```
 
-Usage:
-
-```js
-const { binaryExpressionReduction } = require('astoptech')
-```
-
 #### ifStatementRemoval
 
 ```js
@@ -592,12 +586,6 @@ to:
           }
         ]
       }
-```
-
-Usage:
-
-```js
-const { ifStatementRemoval } = require('astoptech')
 ```
 
 #### negationOperatorRemoval
