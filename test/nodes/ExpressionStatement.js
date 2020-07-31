@@ -1,0 +1,12 @@
+ const test = require('ava')
+const { ExpressionStatement } = require('../..')
+
+test('it sets a correct type', assert => {
+  const node = new ExpressionStatement()
+  assert.deepEqual(node.type, 'ExpressionStatement')
+})
+
+test('it sets expression to null', assert => {
+  const node = new ExpressionStatement()
+  assert.deepEqual(node.expression, null)
+})

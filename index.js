@@ -20,6 +20,7 @@ const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
 const EmptyStatement = require('./src/nodes/EmptyStatement')
 const BlockStatement = require('./src/nodes/BlockStatement')
+const ExpressionStatement = require('./src/nodes/ExpressionStatement')
 const BinaryExpression = require('./src/nodes/BinaryExpression')
 
 class AbstractSyntaxTree {
@@ -191,6 +192,7 @@ class AbstractSyntaxTree {
 
 AbstractSyntaxTree.EmptyStatement = EmptyStatement
 AbstractSyntaxTree.BlockStatement = BlockStatement
+AbstractSyntaxTree.ExpressionStatement = ExpressionStatement
 AbstractSyntaxTree.BinaryExpression = BinaryExpression
 
 module.exports = AbstractSyntaxTree
