@@ -1,4 +1,4 @@
- const test = require('ava')
+const test = require('ava')
 const { ExpressionStatement } = require('../..')
 
 test('it sets a correct type', assert => {

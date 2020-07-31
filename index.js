@@ -192,7 +192,6 @@ class AbstractSyntaxTree {
   }
 }
 
-
 AbstractSyntaxTree.EmptyStatement = EmptyStatement
 AbstractSyntaxTree.BlockStatement = BlockStatement
 AbstractSyntaxTree.ExpressionStatement = ExpressionStatement
