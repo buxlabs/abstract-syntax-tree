@@ -18,6 +18,9 @@ const template = require('./src/template')
 const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
+const EmptyStatement = require('./src/nodes/EmptyStatement')
+const BlockStatement = require('./src/nodes/BlockStatement')
+const BinaryExpression = require('./src/nodes/BinaryExpression')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {
@@ -184,5 +187,10 @@ class AbstractSyntaxTree {
     return mark(this._tree)
   }
 }
+
+
+AbstractSyntaxTree.EmptyStatement = EmptyStatement
+AbstractSyntaxTree.BlockStatement = BlockStatement
+AbstractSyntaxTree.BinaryExpression = BinaryExpression
 
 module.exports = AbstractSyntaxTree

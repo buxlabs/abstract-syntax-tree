@@ -4,7 +4,7 @@
   "description": "abstract syntax tree",
   "main": "index.js",
   "scripts": {
-    "test": "ava test/*.js",
+    "test": "ava 'test/**/*.js'",
     "lint": "standard",
     "coverage": "nyc npm test"
   },
