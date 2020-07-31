@@ -22,6 +22,9 @@ const EmptyStatement = require('./src/nodes/EmptyStatement')
 const BlockStatement = require('./src/nodes/BlockStatement')
 const ExpressionStatement = require('./src/nodes/ExpressionStatement')
 const BinaryExpression = require('./src/nodes/BinaryExpression')
+const MemberExpression = require('./src/nodes/MemberExpression')
+const Literal = require('./src/nodes/Literal')
+const Identifier = require('./src/nodes/Identifier')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {
@@ -194,5 +197,8 @@ AbstractSyntaxTree.EmptyStatement = EmptyStatement
 AbstractSyntaxTree.BlockStatement = BlockStatement
 AbstractSyntaxTree.ExpressionStatement = ExpressionStatement
 AbstractSyntaxTree.BinaryExpression = BinaryExpression
+AbstractSyntaxTree.MemberExpression = MemberExpression
+AbstractSyntaxTree.Literal = Literal
+AbstractSyntaxTree.Identifier = Identifier
 
 module.exports = AbstractSyntaxTree
