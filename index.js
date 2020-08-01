@@ -25,6 +25,10 @@ const BinaryExpression = require('./src/nodes/BinaryExpression')
 const MemberExpression = require('./src/nodes/MemberExpression')
 const Literal = require('./src/nodes/Literal')
 const Identifier = require('./src/nodes/Identifier')
+const Program = require('./src/nodes/Program')
+const Function = require('./src/nodes/Function')
+const Node = require('./src/nodes/Node')
+const SourceLocation = require('./src/nodes/SourceLocation')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {
@@ -199,5 +203,9 @@ AbstractSyntaxTree.BinaryExpression = BinaryExpression
 AbstractSyntaxTree.MemberExpression = MemberExpression
 AbstractSyntaxTree.Literal = Literal
 AbstractSyntaxTree.Identifier = Identifier
+AbstractSyntaxTree.Program = Program
+AbstractSyntaxTree.Function = Function
+AbstractSyntaxTree.Node = Node
+AbstractSyntaxTree.SourceLocation = SourceLocation
 
 module.exports = AbstractSyntaxTree
