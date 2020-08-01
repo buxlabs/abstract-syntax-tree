@@ -29,6 +29,7 @@ const Program = require('./src/nodes/Program')
 const Function = require('./src/nodes/Function')
 const Node = require('./src/nodes/Node')
 const SourceLocation = require('./src/nodes/SourceLocation')
+const IfStatement = require('./src/nodes/IfStatement')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {
@@ -207,5 +208,6 @@ AbstractSyntaxTree.Program = Program
 AbstractSyntaxTree.Function = Function
 AbstractSyntaxTree.Node = Node
 AbstractSyntaxTree.SourceLocation = SourceLocation
+AbstractSyntaxTree.IfStatement = IfStatement
 
 module.exports = AbstractSyntaxTree

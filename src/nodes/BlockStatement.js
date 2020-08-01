@@ -1,10 +1,11 @@
 const Statement = require('./Statement')
 
 class BlockStatement extends Statement {
-  constructor () {
+  constructor (options) {
     super()
     this.type = 'BlockStatement'
     this.body = []
+    Object.assign(this, options)
   }
 }
 
