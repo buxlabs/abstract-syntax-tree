@@ -48,7 +48,8 @@
   "standard": {
     "ignore": [
       "src/optimize/**/*",
-      "test/optimize/**/*"
+      "test/optimize/**/*",
+      "test/nodes/**/*"
     ]
   }
 }

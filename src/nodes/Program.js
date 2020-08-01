@@ -1,7 +1,7 @@
 class Program {
   constructor () {
-    this.type = "Program"
-    this.sourceType = "script"
+    this.type = 'Program'
+    this.sourceType = 'script'
     this.body = []
   }
 }

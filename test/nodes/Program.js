@@ -8,6 +8,6 @@ test('it sets a correct type', assert => {
 
 test('it sets defaults', assert => {
   const node = new Program()
-  assert.deepEqual(node.sourceType, "script")
+  assert.deepEqual(node.sourceType, 'script')
   assert.deepEqual(node.body, [])
 })
