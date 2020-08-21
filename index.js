@@ -18,7 +18,7 @@ const template = require('./src/template')
 const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
-const types = require('./types.json')
+const types = require('./types')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {

@@ -1,4 +1,4 @@
-[
+module.exports = [
   "Node",
   "SourceLocation",
   "Position",
