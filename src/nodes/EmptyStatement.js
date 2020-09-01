@@ -1,9 +1,10 @@
 const Statement = require('./Statement')
 
 class EmptyStatement extends Statement {
-  constructor () {
+  constructor (options) {
     super()
     this.type = 'EmptyStatement'
+    Object.assign(this, options)
   }
 }
 

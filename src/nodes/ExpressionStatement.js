@@ -1,10 +1,11 @@
 const Statement = require('./Statement')
 
 class ExpressionStatement extends Statement {
-  constructor () {
+  constructor (options) {
     super()
     this.type = 'ExpressionStatement'
     this.expression = null
+    Object.assign(this, options)
   }
 }
 

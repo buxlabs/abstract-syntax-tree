@@ -1,7 +1,8 @@
 class Node {
-  constructor () {
+  constructor (options) {
     this.type = 'Node'
     this.loc = null
+    Object.assign(this, options)
   }
 }
 

@@ -1,7 +1,8 @@
 class Function {
-  constructor () {
+  constructor (options) {
     this.type = 'Function'
     this.generator = false
+    Object.assign(this, options)
   }
 }
 
