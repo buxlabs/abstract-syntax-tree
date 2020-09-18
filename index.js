@@ -15,6 +15,7 @@ const generate = require('./src/generate')
 const parse = require('./src/parse')
 const reduce = require('./src/reduce')
 const template = require('./src/template')
+const match = require('./src/match')
 const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
@@ -59,6 +60,10 @@ class AbstractSyntaxTree {
 
   static equal (node1, node2) {
     return equal(node1, node2)
+  }
+
+  static match (node, selector) {
+    return match(node, selector)
   }
 
   static generate (tree, options) {

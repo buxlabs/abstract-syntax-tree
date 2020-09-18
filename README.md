@@ -1,6 +1,6 @@
 # abstract-syntax-tree
 
-[![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)](https://www.npmjs.com/package/abstract-syntax-tree) [![build](https://github.com/buxlabs/abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/buxlabs/abstract-syntax-tree/actions) 
+[![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)](https://www.npmjs.com/package/abstract-syntax-tree) [![build](https://github.com/buxlabs/abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/buxlabs/abstract-syntax-tree/actions)
 
 > A library for working with abstract syntax trees.
 
@@ -208,7 +208,7 @@ remove(tree, 'Literal[value="use strict"]')
 // or
 // remove(tree, (node) => {
 //   if (node.type === 'Literal' && node.value === 'use strict') return null
-//   return node 
+//   return node
 // })
 
 console.log(generate(tree)) // 'const b = 4;'
@@ -346,6 +346,15 @@ console.log(equal({ type: 'Literal', value: 42 }, { type: 'Literal', value: 42 }
 console.log(equal({ type: 'Literal', value: 41 }, { type: 'Literal', value: 42 })) // false
 ````
 
+#### match
+
+```js
+const { match } = require('abstract-syntax-tree')
+console.log(match({ type: 'Literal', value: 42 }, 'Literal[value=42]')) // true
+console.log(match({ type: 'Literal', value: 41 }, 'Literal[value=42]')) // false
+````
+
+
 #### template
 
 ```js
@@ -356,7 +365,7 @@ const nodes = template('const foo = <%= bar %>;', { bar: { type: 'Literal', valu
 
 ### Instance Methods
 
-Almost all of the static methods (excluding parse, generate, template and equal) have their instance equivalents. There are few extra instance methods:
+Almost all of the static methods (excluding parse, generate, template and match) have their instance equivalents. There are few extra instance methods:
 
 #### mark
 

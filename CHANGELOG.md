@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.9.5
+
+* add: new match method
+
 ## 2.8.1
 
 * edit: fix README

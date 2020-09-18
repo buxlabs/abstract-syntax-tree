@@ -12,7 +12,8 @@ const {
   replace,
   remove,
   serialize,
-  template
+  template,
+  match
 } = require('..')
 
 test('parse', assert => {
@@ -178,4 +179,44 @@ test('serialize: objects', assert => {
       }
     ]
   }), { foo: 42 })
+})
+
+test('match: works for a type', assert => {
+  assert.truthy(match({ type: 'Literal', value: 1 }, 'Literal'))
+  assert.falsy(match({ type: 'Literal', value: 1 }, 'Identifier'))
+})
+
+test('match: works for an attribute', assert => {
+  assert.truthy(match({ type: 'Literal', value: 1 }, '[value=1]'))
+  assert.falsy(match({ type: 'Literal', value: 1 }, '[value=2]'))
+})
+
+test('match: works for a type and attribute combination', assert => {
+  assert.truthy(match({ type: 'Literal', value: 1 }, 'Literal[value=1]'))
+  assert.falsy(match({ type: 'Literal', value: 1 }, 'Literal[value=2]'))
+})
+
+test('match: works for multiple levels', assert => {
+  const expression = {
+    type: 'MemberExpression',
+    object: { type: 'Identifier', name: 'foo' },
+    property: { type: 'Identifier', name: 'bar' }
+  }
+  assert.truthy(match(expression, 'MemberExpression[object.name="foo"]'))
+  assert.falsy(match(expression, 'MemberExpression[object.name="bar"]'))
+})
+
+test('match: works for multiple attributes', assert => {
+  const expression = {
+    type: 'MemberExpression',
+    object: { type: 'Identifier', name: 'foo' },
+    property: { type: 'Identifier', name: 'bar' }
+  }
+  assert.truthy(match(expression, 'MemberExpression[object.name="foo"][property.name="bar"]'))
+  assert.falsy(match(expression, 'MemberExpression[object.name="bar"][property.name="foo"]'))
+})
+
+test('match: works for objects', assert => {
+  assert.truthy(match({ type: 'Literal', value: 1 }, { type: 'Literal', value: 1 }))
+  assert.falsy(match({ type: 'Literal', value: 1 }, { type: 'Identifier', name: 'foo' }))
 })
