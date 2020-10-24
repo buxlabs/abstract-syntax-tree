@@ -5,7 +5,7 @@ module.exports = function toBinaryExpression (expression) {
   if (expression.type === 'ArrayExpression') {
     const { elements } = expression
     if (elements.length === 0) {
-      return new Literal({ value: "" })
+      return new Literal({ value: '' })
     }
     if (elements.length === 1) {
       return elements[0]

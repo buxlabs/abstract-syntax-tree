@@ -13,7 +13,7 @@ test('it works for 0 elements', assert => {
 test('it works for 1 element', assert => {
   const arrayExpression = new ArrayExpression({
     elements: [
-      new Literal({ value: "foo" })
+      new Literal({ value: 'foo' })
     ]
   })
   const binaryExpression = toBinaryExpression(arrayExpression)
@@ -24,8 +24,8 @@ test('it works for 1 element', assert => {
 test('it works for 2 elements', assert => {
   const arrayExpression = new ArrayExpression({
     elements: [
-      new Literal({ value: "foo" }),
-      new Literal({ value: "bar" })
+      new Literal({ value: 'foo' }),
+      new Literal({ value: 'bar' })
     ]
   })
   const binaryExpression = toBinaryExpression(arrayExpression)
@@ -36,9 +36,9 @@ test('it works for 2 elements', assert => {
 test('it works for 3 elements', assert => {
   const arrayExpression = new ArrayExpression({
     elements: [
-      new Literal({ value: "foo" }),
-      new Literal({ value: "bar" }),
-      new Literal({ value: "baz" })
+      new Literal({ value: 'foo' }),
+      new Literal({ value: 'bar' }),
+      new Literal({ value: 'baz' })
     ]
   })
   const binaryExpression = toBinaryExpression(arrayExpression)
@@ -49,10 +49,10 @@ test('it works for 3 elements', assert => {
 test('it works for 4 elements', assert => {
   const arrayExpression = new ArrayExpression({
     elements: [
-      new Literal({ value: "foo" }),
-      new Literal({ value: "bar" }),
-      new Literal({ value: "baz" }),
-      new Literal({ value: "qux" })
+      new Literal({ value: 'foo' }),
+      new Literal({ value: 'bar' }),
+      new Literal({ value: 'baz' }),
+      new Literal({ value: 'qux' })
     ]
   })
   const binaryExpression = toBinaryExpression(arrayExpression)
@@ -63,11 +63,11 @@ test('it works for 4 elements', assert => {
 test('it works for 5 elements', assert => {
   const arrayExpression = new ArrayExpression({
     elements: [
-      new Literal({ value: "foo" }),
-      new Literal({ value: "bar" }),
-      new Literal({ value: "baz" }),
-      new Literal({ value: "qux" }),
-      new Literal({ value: "quux" })
+      new Literal({ value: 'foo' }),
+      new Literal({ value: 'bar' }),
+      new Literal({ value: 'baz' }),
+      new Literal({ value: 'qux' }),
+      new Literal({ value: 'quux' })
     ]
   })
   const binaryExpression = toBinaryExpression(arrayExpression)
