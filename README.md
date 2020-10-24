@@ -441,6 +441,23 @@ Gives the source map of the source code.
 
 Sets the body of the root node.
 
+## Transformations
+
+#### toBinaryExpression
+
+```js
+const { toBinaryExpression } = require('abstract-syntax-tree')
+const expression = {
+  type: 'ArrayExpression',
+  elements: [
+    { type: 'Literal', value: 'foo' },
+    { type: 'Literal', value: 'bar' },
+    { type: 'Literal', value: 'baz' }
+  ]
+}
+console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
+```
+
 ## Optimizations
 
 ### How can you optimize an abstract syntax tree?

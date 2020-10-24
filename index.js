@@ -196,4 +196,6 @@ types.forEach(type => {
   AbstractSyntaxTree[type] = Klass
 })
 
+AbstractSyntaxTree.toBinaryExpression = require('./src/transform/toBinaryExpression')
+
 module.exports = AbstractSyntaxTree
