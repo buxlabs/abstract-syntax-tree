@@ -198,4 +198,12 @@ types.forEach(type => {
 
 AbstractSyntaxTree.toBinaryExpression = require('./src/transform/toBinaryExpression')
 
+AbstractSyntaxTree.binaryExpressionReduction = require('./src/optimize/binaryExpressionReduction')
+AbstractSyntaxTree.ifStatementRemoval = require('./src/optimize/ifStatementRemoval')
+AbstractSyntaxTree.logicalExpressionReduction = require('./src/optimize/logicalExpressionReduction')
+AbstractSyntaxTree.memberExpressionReduction = require('./src/optimize/memberExpressionReduction')
+AbstractSyntaxTree.negationOperatorRemoval = require('./src/optimize/negationOperatorRemoval')
+AbstractSyntaxTree.ternaryOperatorReduction = require('./src/optimize/ternaryOperatorReduction')
+AbstractSyntaxTree.typeofOperatorReduction = require('./src/optimize/typeofOperatorReduction')
+
 module.exports = AbstractSyntaxTree

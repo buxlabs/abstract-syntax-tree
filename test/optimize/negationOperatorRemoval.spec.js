@@ -1,6 +1,6 @@
 const test = require('ava')
 const AbstractSyntaxTree = require('../..')
-const negationOperatorRemoval = require('../../src/optimize/negationOperatorRemoval')
+const { negationOperatorRemoval } = require('../..')
 
 test('negationOperatorRemoval', assert => {
   var tree = new AbstractSyntaxTree('if (!(foo === bar)) { console.log("foo") }\n')

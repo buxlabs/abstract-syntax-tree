@@ -1,6 +1,6 @@
 const test = require('ava')
 const AbstractSyntaxTree = require('../..')
-const ternaryOperatorReduction = require('../../src/optimize/ternaryOperatorReduction')
+const { ternaryOperatorReduction } = require('../..')
 
 test('ternaryOperatorReduction', assert => {
   var tree = new AbstractSyntaxTree('const foo = true ? "bar" : "baz"\n')

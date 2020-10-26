@@ -1,6 +1,6 @@
 const test = require('ava')
 const AbstractSyntaxTree = require('../..')
-const binaryExpressionReduction = require('../../src/optimize/binaryExpressionReduction')
+const { binaryExpressionReduction } = require('../..')
 
 function transform (input) {
   const tree = new AbstractSyntaxTree(input)

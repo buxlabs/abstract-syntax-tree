@@ -1,6 +1,6 @@
 const test = require('ava')
 const AbstractSyntaxTree = require('../..')
-const typeofOperatorReduction = require('../../src/optimize/typeofOperatorReduction')
+const { typeofOperatorReduction } = require('../..')
 
 test('typeofOperatorReduction', assert => {
   var tree = new AbstractSyntaxTree('const foo = typeof "baz"\n')

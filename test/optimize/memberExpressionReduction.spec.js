@@ -1,6 +1,6 @@
 const test = require('ava')
 const AbstractSyntaxTree = require('../..')
-const memberExpressionReduction = require('../../src/optimize/memberExpressionReduction')
+const { memberExpressionReduction } = require('../..')
 
 test('memberExpressionReduction', assert => {
   var tree = new AbstractSyntaxTree('const foo = ({ bar: "baz" }).bar\n')

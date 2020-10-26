@@ -1,6 +1,6 @@
 const test = require('ava')
 const AbstractSyntaxTree = require('../..')
-const ifStatementRemoval = require('../../src/optimize/ifStatementRemoval')
+const { ifStatementRemoval } = require('../..')
 
 test('ifStatementRemoval', assert => {
   var tree = new AbstractSyntaxTree('if (true) { console.log("foo") }')
