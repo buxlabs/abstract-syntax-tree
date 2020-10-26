@@ -466,10 +466,8 @@ Abstract syntax tree is a tree-like structure that represents your program. The 
 
 ### Usage
 
-You can import methods individually:
-
 ```js
-const binaryExpressionReduction = require('abstract-syntax-tree/src/optimize/binaryExpressionReduction')
+const { binaryExpressionReduction } = require('abstract-syntax-tree')
 ```
 
 ### What optimization techniques are available?
@@ -491,6 +489,7 @@ The tree would be translated from:
 ```json
 {
   "type": "BinaryExpression",
+  "operator": "+",
   "left": { "type": "Literal", "value": 2 },
   "right": { "type": "Literal", "value": 2 }
 }
