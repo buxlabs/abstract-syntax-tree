@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.10.0
+
+* add: new toBinaryExpression method
+
 ## 2.9.5
 
 * add: new match method
