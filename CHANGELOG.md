@@ -1,5 +1,13 @@
 # abstract-syntax-tree changelog
 
+## 2.11.0
+
+* edit: improve binaryExpressionReduction
+
+## 2.10.1
+
+* edit: expose optimizations method directly
+
 ## 2.10.0
 
 * add: new toBinaryExpression method
