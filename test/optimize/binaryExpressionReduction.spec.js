@@ -4,7 +4,7 @@ const { binaryExpressionReduction } = require('../..')
 
 function transform (input) {
   const tree = new AbstractSyntaxTree(input)
-  tree.replace({ enter: binaryExpressionReduction })
+  tree.replace(binaryExpressionReduction)
   return tree.source
 }
 
