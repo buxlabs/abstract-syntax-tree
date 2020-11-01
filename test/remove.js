@@ -2,14 +2,14 @@ const test = require('ava')
 const AbstractSyntaxTree = require('..')
 
 test('it removes nodes', assert => {
-  var ast = new AbstractSyntaxTree('"use strict"; var b = 4;')
+  const ast = new AbstractSyntaxTree('"use strict"; var b = 4;')
   ast.remove({ type: 'Literal', value: 'use strict' })
   assert.truthy(ast.source === 'var b = 4;\n')
 })
 
 test('it removes function declarations', assert => {
-  var source = 'var a = 1; function hello () { return "world"; }'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1; function hello () { return "world"; }'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove({
     type: 'FunctionDeclaration',
     id: {
@@ -21,8 +21,8 @@ test('it removes function declarations', assert => {
 })
 
 test('it keeps variable declarations', assert => {
-  var source = 'var a = 1, b = 2; function hello () { return "world"; }'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1, b = 2; function hello () { return "world"; }'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove({
     type: 'VariableDeclarator',
     id: {
@@ -34,8 +34,8 @@ test('it keeps variable declarations', assert => {
 })
 
 test('it removes empty declarations', assert => {
-  var source = 'var a = 1; function hello () { return "world"; }'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1; function hello () { return "world"; }'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove({
     type: 'VariableDeclarator',
     id: {
@@ -47,22 +47,22 @@ test('it removes empty declarations', assert => {
 })
 
 test('it removes nodes if string is provided', assert => {
-  var source = 'var a = 1; function hello () { return "world"; }'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1; function hello () { return "world"; }'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove('VariableDeclaration')
   assert.deepEqual(ast.source, 'function hello() {\n  return "world";\n}\n')
 })
 
 test('it removes nodes via complex selectors', assert => {
-  var source = 'var a = 1; function hello () { var b = 2; return "world"; }'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1; function hello () { var b = 2; return "world"; }'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove('BlockStatement > VariableDeclaration')
   assert.deepEqual(ast.source, 'var a = 1;\nfunction hello() {\n  return "world";\n}\n')
 })
 
 test('it should be possible to remove the first element only', assert => {
-  var source = 'var a = 1; var b = 2;'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1; var b = 2;'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove({ type: 'VariableDeclaration' }, { first: true })
   assert.truthy(ast.source === 'var b = 2;\n')
 })
@@ -84,8 +84,8 @@ test('it lets you define a callback', assert => {
 })
 
 test('it removes empty declarations in the callback form', assert => {
-  var source = 'var a = 1; function hello () { return "world"; }'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1; function hello () { return "world"; }'
+  const ast = new AbstractSyntaxTree(source)
   ast.remove((node) => {
     if (node.type === 'VariableDeclarator' && node.id.name === 'a') return null
     return node

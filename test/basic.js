@@ -20,13 +20,13 @@ test('it accepts abstract syntax tree', assert => {
 })
 
 test('it queries the syntax tree', assert => {
-  var ast = new AbstractSyntaxTree('var y = 1;')
-  var declarations = ast.find('VariableDeclaration')
+  const ast = new AbstractSyntaxTree('var y = 1;')
+  const declarations = ast.find('VariableDeclaration')
   assert.truthy(declarations.length === 1)
 })
 
 test('it iterates over found nodes', assert => {
-  var ast = new AbstractSyntaxTree('var y = 1;')
+  const ast = new AbstractSyntaxTree('var y = 1;')
   ast.each('Literal', node => {
     node.value = 2
   })
@@ -34,47 +34,47 @@ test('it iterates over found nodes', assert => {
 })
 
 test('it checks if node is in the syntax tree', assert => {
-  var ast = new AbstractSyntaxTree('var z = 2;')
+  const ast = new AbstractSyntaxTree('var z = 2;')
   assert.truthy(ast.has('VariableDeclaration'))
 })
 
 test('it counts nodes', assert => {
-  var ast = new AbstractSyntaxTree('var z = 2; var x = 3;')
+  const ast = new AbstractSyntaxTree('var z = 2; var x = 3;')
   assert.truthy(ast.count('VariableDeclaration') === 2)
 })
 
 test('it returns the source', assert => {
-  var ast = new AbstractSyntaxTree('var a = 3;')
+  const ast = new AbstractSyntaxTree('var a = 3;')
   assert.truthy(ast.source === 'var a = 3;\n')
 })
 
 test('it returns the first node', assert => {
-  var ast = new AbstractSyntaxTree('var a = 1; var b = 2;')
-  var declaration = ast.first('VariableDeclaration')
+  const ast = new AbstractSyntaxTree('var a = 1; var b = 2;')
+  const declaration = ast.first('VariableDeclaration')
   assert.truthy(declaration.declarations[0].id.name === 'a')
 })
 
 test('it returns the last node', assert => {
-  var ast = new AbstractSyntaxTree('var c = 3; var d = 4;')
-  var declaration = ast.last('VariableDeclaration')
+  const ast = new AbstractSyntaxTree('var c = 3; var d = 4;')
+  const declaration = ast.last('VariableDeclaration')
   assert.truthy(declaration.declarations[0].id.name === 'd')
 })
 
 test('it works with imports', assert => {
-  var source = 'import foo from "bar";'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'import foo from "bar";'
+  const ast = new AbstractSyntaxTree(source)
   assert.deepEqual(ast.source, source + '\n')
 })
 
 test('it supports double quotes by default', assert => {
-  var source = 'var a = \'hello\';'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = \'hello\';'
+  const ast = new AbstractSyntaxTree(source)
   assert.truthy(ast.source === 'var a = "hello";\n')
 })
 
 test('it walks through nodes', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1;'
+  const ast = new AbstractSyntaxTree(source)
   ast.walk(node => {
     if (node.type === 'VariableDeclaration') {
       node.kind = 'let'
@@ -85,13 +85,13 @@ test('it walks through nodes', assert => {
 })
 
 test('it has a toString alias for toSource', assert => {
-  var ast = new AbstractSyntaxTree('var y = 1;')
+  const ast = new AbstractSyntaxTree('var y = 1;')
   assert.truthy(ast.source === 'var y = 1;\n')
 })
 
 test('it wraps the code', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1;'
+  const ast = new AbstractSyntaxTree(source)
   ast.wrap(body => {
     return [
       {
@@ -120,33 +120,33 @@ test('it wraps the code', assert => {
 })
 
 test('it unwraps the code in case of iife', assert => {
-  var source = '(function () { console.log(1); }());'
-  var ast = new AbstractSyntaxTree(source)
+  const source = '(function () { console.log(1); }());'
+  const ast = new AbstractSyntaxTree(source)
   ast.unwrap()
   assert.truthy(ast.source === 'console.log(1);\n')
 })
 
 test('it unwraps code in case of amd', assert => {
-  var source = 'define(function () { console.log(1); });'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'define(function () { console.log(1); });'
+  const ast = new AbstractSyntaxTree(source)
   ast.unwrap()
   assert.truthy(ast.source === 'console.log(1);\n')
 })
 
 test('it returns the type', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1;'
+  const ast = new AbstractSyntaxTree(source)
   assert.deepEqual(ast.type, 'Program')
 })
 
 test('it returns the body', assert => {
-  var source = 'var a = 1;'
-  var ast = new AbstractSyntaxTree(source)
+  const source = 'var a = 1;'
+  const ast = new AbstractSyntaxTree(source)
   assert.truthy(ast.body)
 })
 
 test('it generates sourcemaps', assert => {
-  var ast = new AbstractSyntaxTree('var y = 1;')
+  const ast = new AbstractSyntaxTree('var y = 1;')
   ast.each('Literal', node => {
     node.value = 2
   })
@@ -155,7 +155,7 @@ test('it generates sourcemaps', assert => {
 })
 
 test('it lets you mark nodes', assert => {
-  var ast = new AbstractSyntaxTree('var a = 1;')
+  const ast = new AbstractSyntaxTree('var a = 1;')
   ast.mark()
   assert.truthy(ast.first('Program').cid === 1)
   assert.truthy(ast.first('VariableDeclaration').cid === 2)

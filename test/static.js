@@ -17,29 +17,29 @@ const {
 } = require('..')
 
 test('parse', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
+  const source = 'var a = 1;'
+  const tree = parse(source)
   assert.deepEqual(tree.type, 'Program')
 })
 
 test('find: string selector', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
-  var node = find(tree, 'VariableDeclaration')
+  const source = 'var a = 1;'
+  const tree = parse(source)
+  const node = find(tree, 'VariableDeclaration')
   assert.truthy(node)
 })
 
 test('find: object selector', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
-  var node = find(tree, { type: 'VariableDeclaration' })
+  const source = 'var a = 1;'
+  const tree = parse(source)
+  const node = find(tree, { type: 'VariableDeclaration' })
   assert.truthy(node)
 })
 
 test('each', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
-  var count = 0
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
+  let count = 0
   each(tree, 'VariableDeclarator', node => {
     count += 1
   })
@@ -47,63 +47,63 @@ test('each', assert => {
 })
 
 test('first', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
-  var node = first(tree, 'VariableDeclarator')
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
+  const node = first(tree, 'VariableDeclarator')
   assert.deepEqual(node.id.name, 'a')
 })
 
 test('last', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
-  var node = last(tree, 'VariableDeclarator')
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
+  const node = last(tree, 'VariableDeclarator')
   assert.deepEqual(node.id.name, 'b')
 })
 
 test('has: string selector', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
+  const source = 'var a = 1;'
+  const tree = parse(source)
   assert.truthy(has(tree, 'VariableDeclaration'))
 })
 
 test('has: object selector', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
+  const source = 'var a = 1;'
+  const tree = parse(source)
   assert.truthy(has(tree, { type: 'VariableDeclaration' }))
 })
 
 test('count: string selector', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
-  var number = count(tree, 'VariableDeclarator')
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
+  const number = count(tree, 'VariableDeclarator')
   assert.deepEqual(number, 2)
 })
 
 test('count: object selector', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
-  var number = count(tree, { type: 'VariableDeclarator' })
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
+  const number = count(tree, { type: 'VariableDeclarator' })
   assert.deepEqual(number, 2)
 })
 
 test('remove: string selector', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
   remove(tree, 'VariableDeclarator[id.name="a"]')
   assert.deepEqual(generate(tree), 'var b = 2;\n')
 })
 
 test('remove: object selector', assert => {
-  var source = 'var a = 1, b = 2;'
-  var tree = parse(source)
+  const source = 'var a = 1, b = 2;'
+  const tree = parse(source)
   remove(tree, { type: 'VariableDeclarator', id: { name: 'b' } })
   assert.deepEqual(generate(tree), 'var a = 1;\n')
 })
 
 test('walk', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
-  var count = 0
+  const source = 'var a = 1;'
+  const tree = parse(source)
+  let count = 0
   walk(tree, node => {
     count += 1
   })
@@ -111,20 +111,20 @@ test('walk', assert => {
 })
 
 test('generate', assert => {
-  var tree = {
+  const tree = {
     type: 'ExpressionStatement',
     expression: {
       type: 'Literal',
       value: 42
     }
   }
-  var source = generate(tree)
+  const source = generate(tree)
   assert.deepEqual(source, '42;')
 })
 
 test('replace', assert => {
-  var source = 'var a = 1;'
-  var tree = parse(source)
+  const source = 'var a = 1;'
+  const tree = parse(source)
   replace(tree, {
     enter: node => {
       if (node.type === 'Identifier' && node.name === 'a') {
