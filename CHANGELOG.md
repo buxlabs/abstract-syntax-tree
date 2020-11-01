@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.12.0
+
+* edit: update dependencies
+
 ## 2.11.0
 
 * edit: improve binaryExpressionReduction
