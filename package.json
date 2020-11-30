@@ -1,6 +1,6 @@
 {
   "name": "abstract-syntax-tree",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "description": "abstract syntax tree",
   "main": "index.js",
   "browser": "dist/index.min.js",
