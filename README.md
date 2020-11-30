@@ -838,6 +838,10 @@ To:
 }
 ```
 
+## Browser
+
+The library can be used in the browser (umd -> AbstraxtSyntaxTree). The `sourcemap` method doesn't work there yet though.
+
 ## Maintainers
 
 [@emilos](https://github.com/emilos).
