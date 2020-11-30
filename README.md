@@ -357,6 +357,8 @@ console.log(match({ type: 'Literal', value: 41 }, 'Literal[value=42]')) // false
 
 #### template
 
+The function converts the input to an equivalent abstract syntax tree representation.
+
 ```js
 const { template } = require('abstract-syntax-tree')
 const literal = template(42)
