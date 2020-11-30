@@ -59,7 +59,8 @@
     "ignore": [
       "src/optimize/**/*",
       "test/optimize/**/*",
-      "test/nodes/**/*"
+      "test/nodes/**/*",
+      "test/template.js"
     ]
   }
 }
