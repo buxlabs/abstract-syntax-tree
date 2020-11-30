@@ -3,6 +3,7 @@ import nodePolyfills from 'rollup-plugin-node-polyfills'
 import json from '@rollup/plugin-json'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import virtual from '@rollup/plugin-virtual'
 
 export default {
   input: 'index.js',
@@ -20,6 +21,9 @@ export default {
     }
   ],
   plugins: [
+    virtual({
+      'source-map': 'export default {}'
+    }),
     nodePolyfills(),
     nodeResolve(),
     commonjs(),
