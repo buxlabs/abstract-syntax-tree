@@ -1,5 +1,11 @@
 # abstract-syntax-tree changelog
 
+## 2.13.0
+
+* remove: to-ast dependency
+* add: backfill code of the to-ast dependency inside of the template method
+* add: possibility to use the library in the browser
+
 ## 2.12.0
 
 * edit: update dependencies
