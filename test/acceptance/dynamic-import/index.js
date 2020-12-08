@@ -17,7 +17,7 @@ test('dynamic-import: can be parsed', assert => {
   assert.truthy(node)
 })
 
-test.skip('dynamic-import: can be generated', assert => {
+test('dynamic-import: can be generated', assert => {
   const source = `
     import('foo.js')
       .then(function (bar) {
@@ -25,6 +25,6 @@ test.skip('dynamic-import: can be generated', assert => {
       })
   `
   const tree = parse(source)
-  const code = generate(tree)
-  assert.truthy(code)
+  const output = generate(tree)
+  assert.truthy(output.includes('import("foo.js").then('))
 })
