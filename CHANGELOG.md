@@ -1,6 +1,6 @@
 # abstract-syntax-tree changelog
 
-## 2.14.1
+## 2.15.0
 
 * add: program method (static)
 * remove: asttv dependency, inline code in the serialize method
