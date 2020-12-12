@@ -365,6 +365,15 @@ const literal = template(42)
 const nodes = template('const foo = <%= bar %>;', { bar: { type: 'Literal', value: 1 } })
 ```
 
+#### program
+
+Creates an abstract syntax tree with a blank program.
+
+```js
+const { program } = require('abstract-syntax-tree')
+const tree = program() // { type: 'Program', sourceType: 'module', body: [] }
+```
+
 ### Instance Methods
 
 Almost all of the static methods (excluding parse, generate, template and match) have their instance equivalents. There are few extra instance methods:

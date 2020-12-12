@@ -1,5 +1,13 @@
 # abstract-syntax-tree changelog
 
+## 2.14.1
+
+* add: program method (static)
+
+## 2.14.0
+
+* add: support dynamic imports in the generate method
+
 ## 2.13.0
 
 * remove: to-ast dependency

@@ -19,6 +19,7 @@ const match = require('./src/match')
 const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
+const program = require('./src/program')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {
@@ -95,6 +96,10 @@ class AbstractSyntaxTree {
 
   static reduce (tree, callback, accumulator) {
     return reduce(tree, callback, accumulator)
+  }
+
+  static program (body, options) {
+    return program(body, options)
   }
 
   constructor (source = '', options = {}) {
