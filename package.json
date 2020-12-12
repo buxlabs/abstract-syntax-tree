@@ -9,10 +9,10 @@
     "lint": "standard",
     "coverage": "nyc npm test",
     "build": "rollup -c",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "engines": {
-    "node": ">=10.15.0"
+    "node": ">=14.15.1"
   },
   "repository": {
     "type": "git",
