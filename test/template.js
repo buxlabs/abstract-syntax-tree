@@ -1,8 +1,12 @@
 const test = require('ava')
-const { template, generate } = require('..')
+const { template, parse, generate } = require('..')
 
-function convert (obj) {
-  return generate(template(obj))
+function convert (input, options) {
+  const tree = template(input, options)
+  if (Array.isArray(tree)) {
+    return tree.map(node => generate(node)).join('\n')
+  }
+  return generate(tree)
 }
 
 test('template: from string', assert => {
@@ -13,7 +17,7 @@ test('template: from string with params', assert => {
   assert.truthy(template('var x = <%= value %>;', { value: { type: 'Literal', value: 1 } })[0].declarations[0].init.value === 1)
 })
 
-test.skip('template: from string with import and export', assert => {
+test('template: from string with import and export', assert => {
   assert.truthy(template(`
     import foo from "bar";
 
@@ -21,6 +25,94 @@ test.skip('template: from string with import and export', assert => {
       return <%= baz %>;
     }
   `, { baz: { type: 'Literal', value: 1 } }))
+})
+
+test('template: simple substitution', assert => {
+  assert.deepEqual(convert(`
+    const <%= foo %> = <%= bar %>
+  `, {
+    foo: {type: 'Identifier', name: 'foo'},
+    bar: {type: 'Literal', value: 123}
+  }), 'const foo = 123;')
+})
+
+test('template: spread array elements', assert => {
+  assert.deepEqual(convert('var a = [%= items %];', {
+    items: [{type: 'Literal', value: 123}, {type: 'Literal', value: 456}]
+  }), 'var a = [123, 456];')
+})
+
+test('template: spread call arguments', assert => {
+  assert.deepEqual(convert('var x = f(%= items %);', {
+    items: [{type: 'Literal', value: 123}, {type: 'Literal', value: 456}]
+  }), 'var x = f(123, 456);')
+})
+
+test('template: spread function params', assert => {
+  assert.deepEqual(convert('function f(%= params %) {}', {
+    params: [{type: 'Identifier', name: 'a'}, {type: 'Identifier', name: 'b'}]
+  }), 'function f(a, b) {}')
+})
+
+test('template: spread block elements', assert => {
+  assert.deepEqual(convert('define(function () {%= body %});', {
+    body: parse('module.exports = require("./module").property;').body
+  }), `define(function () {
+  module.exports = require("./module").property;
+});`)
+})
+
+test('template: spread program root', assert => {
+  assert.deepEqual(convert('var x = 42; %= body %', {
+    body: parse('var y = 42;').body
+  }), `var x = 42;
+var y = 42;`)
+})
+
+test('template: spread literals', assert => {
+  assert.deepEqual(convert('var a = "%= x %"; var b = "%= y %";', {
+    x: 'alpha',
+    y: 'beta'
+  }), `var a = "alpha";
+var b = "beta";`)
+})
+
+test('template: spread concatenation with inline elements', assert => {
+  assert.deepEqual(convert('var a = [123, %= items %];', {
+    items: [{type: 'Literal', value: 456}, {type: 'Literal', value: 789}]
+  }), 'var a = [123, 456, 789];')
+})
+
+test('template: spread concatenation with function params', assert => {
+  assert.deepEqual(convert('function f(%= params %, callback) {}', {
+    params: [{type: 'Identifier', name: 'a'}, {type: 'Identifier', name: 'b'}]
+  }), 'function f(a, b, callback) {}')
+})
+
+test('template: spread concatenation around elements', assert => {
+  assert.deepEqual(convert('function f() { console.time("module"); %= body %; console.timeEnd("module"); }', {
+    body: parse('init(); doSmth(); finalize();').body
+  }), `function f() {
+  console.time("module");
+  init();
+  doSmth();
+  finalize();
+  console.timeEnd("module");
+}`)
+})
+
+
+test('template: spread concatenation between elements', assert => {
+  assert.deepEqual(convert('function f() { %= init %; doSmth(); %= finalize %; }', {
+    init: parse('console.time("module"); init();').body,
+    finalize: parse('finalize(); console.timeEnd("module");').body
+  }), `function f() {
+  console.time("module");
+  init();
+  doSmth();
+  finalize();
+  console.timeEnd("module");
+}`)
 })
 
 test('template: from undefined and null', assert => {

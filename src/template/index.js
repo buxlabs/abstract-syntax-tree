@@ -1,6 +1,6 @@
-const estemplate = require('estemplate')
+const estemplate = require('./estemplate')
 const { builders } = require('ast-types')
-const parse = require('./parse')
+const parse = require('../parse')
 
 const typedArrays = {
   Uint8Array: true,

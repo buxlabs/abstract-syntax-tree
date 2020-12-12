@@ -4,6 +4,7 @@
 
 * add: program method (static)
 * remove: asttv dependency, inline code in the serialize method
+* remove: estemplate dependency, inline code to support/import export and remove esprima dependency
 
 ## 2.14.0
 
