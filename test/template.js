@@ -13,6 +13,16 @@ test('template: from string with params', assert => {
   assert.truthy(template('var x = <%= value %>;', { value: { type: 'Literal', value: 1 } })[0].declarations[0].init.value === 1)
 })
 
+test.skip('template: from string with import and export', assert => {
+  assert.truthy(template(`
+    import foo from "bar";
+
+    export default function () {
+      return <%= baz %>;
+    }
+  `, { baz: { type: 'Literal', value: 1 } }))
+})
+
 test('template: from undefined and null', assert => {
   assert.deepEqual(convert(undefined), 'void 0')
   assert.deepEqual(convert(null), 'null')
