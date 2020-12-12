@@ -3,6 +3,7 @@
 ## 2.14.1
 
 * add: program method (static)
+* remove: asttv dependency, inline code in the serialize method
 
 ## 2.14.0
 

@@ -143,7 +143,7 @@ console.log(find(tree, { type: 'VariableDeclaration' })) // [ { type: 'VariableD
 
 #### serialize
 
-Serialize can transform nodes into values. More documentation can be found here [asttv](https://github.com/buxlabs/asttv).
+Serialize can transform nodes into values. Works for: Array, Boolean, Error, Infinity, Map, NaN, Number, Object, RegExp, Set, String, Symbol, WeakMap, WeakSet, null and undefined.
 
 ```js
 const { serialize } = require('abstract-syntax-tree')
@@ -157,9 +157,7 @@ const node = {
     { type: 'Literal', value: 5 }
   ]
 }
-const result = serialize(node)
-
-console.log(result) // [1, 2, 3, 4, 5]
+const array = serialize(node) // [1, 2, 3, 4, 5]
 ```
 
 #### traverse

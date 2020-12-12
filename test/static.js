@@ -11,7 +11,6 @@ const {
   walk,
   replace,
   remove,
-  serialize,
   match
 } = require('..')
 
@@ -136,36 +135,6 @@ test('replace', assert => {
     }
   })
   assert.deepEqual(generate(tree), 'var b = 1;\n')
-})
-
-test('serialize: literals', assert => {
-  assert.truthy(serialize({ type: 'Literal', value: 'foo' }) === 'foo')
-})
-
-test('serialize: arrays', assert => {
-  assert.deepEqual(serialize({
-    type: 'ArrayExpression',
-    elements: [
-      { type: 'Literal', value: 1 },
-      { type: 'Literal', value: 2 },
-      { type: 'Literal', value: 3 },
-      { type: 'Literal', value: 4 },
-      { type: 'Literal', value: 5 }
-    ]
-  }), [1, 2, 3, 4, 5])
-})
-
-test('serialize: objects', assert => {
-  assert.deepEqual(serialize({
-    type: 'ObjectExpression',
-    properties: [
-      {
-        type: 'Property',
-        key: { type: 'Identifier', name: 'foo' },
-        value: { type: 'Literal', value: 42 }
-      }
-    ]
-  }), { foo: 42 })
 })
 
 test('match: works for a type', assert => {
