@@ -470,9 +470,10 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 
 ## Nodes
 
-|    Node Type    |    Example    |
-|-----------------|:-------------:|
-| ArrayExpression |      `[]`     |
+| Type            | Example                  |
+|-----------------|:------------------------:|
+| ArrayExpression | `const foo = []`         |
+| ArrayPattern    | `const [foo, bar] = bar` |
 
 ## Optimizations
 
