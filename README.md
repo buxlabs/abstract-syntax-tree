@@ -11,6 +11,7 @@
 - [Usage](#usage)
 - [API](#api)
 - [REPL](https://buxlabs.pl/en/tools/js/ast)
+- [Nodes](#nodes)
 - [Optimizations](#optimizations)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
@@ -466,6 +467,12 @@ const expression = {
 }
 console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 ```
+
+## Nodes
+
+|    Node Type    |    Example    |
+|-----------------|:-------------:|
+| ArrayExpression |      `[]`     |
 
 ## Optimizations
 
