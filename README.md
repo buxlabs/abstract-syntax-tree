@@ -470,10 +470,22 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 
 ## Nodes
 
-| Type            | Example                  |
-|-----------------|:------------------------:|
-| ArrayExpression | `const foo = []`         |
-| ArrayPattern    | `const [foo, bar] = bar` |
+| Type                     | Example                           |
+|--------------------------|:---------------------------------:|
+| ArrayExpression          | `const foo = []`                  |
+| ArrayPattern             | `const [foo, bar] = bar`          |
+| AssignmentExpression     | `foo = bar`                       |
+| AssignmentOperator       |                                   |
+| AssignmentPattern        | `function foo(bar = baz) {} `     |
+| AwaitExpression          | `(async () => { await foo() })()` |
+| BigIntLiteral            |                                   |
+| BinaryExpression         | `foo + bar`                       |
+| BinaryOperator           |                                   |
+| BlockStatement           | `{ console.log(foo) }`            |
+| BreakStatement           | `for (foo in bar) break`          |
+| ExportDefaultDeclaration |                                   |
+| ImportNamespaceSpecifier |                                   |
+| TaggedTemplateExpression |                                   |
 
 ## Optimizations
 
