@@ -373,6 +373,16 @@ const { program } = require('abstract-syntax-tree')
 const tree = program() // { type: 'Program', sourceType: 'module', body: [] }
 ```
 
+#### iife
+
+Creates an abstract syntax tree for an immediately invoked function expression.
+
+```js
+const { iife } = require('abstract-syntax-tree')
+const node = iife() // { type: 'ExpressionStatement', expression: { ... } }
+```
+
+
 ### Instance Methods
 
 Almost all of the static methods (excluding parse, generate, template and match) have their instance equivalents. There are few extra instance methods:

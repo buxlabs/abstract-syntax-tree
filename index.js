@@ -20,6 +20,7 @@ const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
 const program = require('./src/program')
+const iife = require('./src/iife')
 
 class AbstractSyntaxTree {
   static find (tree, selector) {
@@ -100,6 +101,10 @@ class AbstractSyntaxTree {
 
   static program (body, options) {
     return program(body, options)
+  }
+
+  static iife (body) {
+    return iife(body)
   }
 
   constructor (source = '', options = {}) {

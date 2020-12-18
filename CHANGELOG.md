@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.15.1
+
+* add: iife method (static)
+
 ## 2.15.0
 
 * add: program method (static)
