@@ -480,96 +480,96 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 
 ## Nodes
 
-| Type                     | Example                           |
-|--------------------------|:---------------------------------:|
-| ArrayExpression          | `const foo = []`                  |
-| ArrayPattern             | `const [foo, bar] = bar`          |
-| AssignmentExpression     | `foo = bar`                       |
-| AssignmentOperator       |                                   |
-| AssignmentPattern        | `function foo(bar = baz) {} `     |
-| AwaitExpression          | `(async () => { await foo() })()` |
-| BigIntLiteral            |                                   |
-| BinaryExpression         | `foo + bar`                       |
-| BinaryOperator           |                                   |
-| BlockStatement           | `{ console.log(foo) }`            |
-| BreakStatement           | `for (foo in bar) break`          |
-| CallExpression           | `foo()`                           |
-| CatchClause              | `try {} catch (error) {}`         |
-| ChainElement             |                                   |
-| ChainExpression          | `foo?.()`                         |
-| Class                    |                                   |
-| ClassBody                | `class Foo {}`                    |
-| ClassDeclaration         | `class Foo {}`                    |
-| ClassExpression          | `(class {})`                      |
-| ConditionalExpression    | `foo ? bar : baz`                 |
-| ContinueStatement        | `while(true) { continue }`        |
-| DebuggerStatement        | `debugger`                        |
-| Declaration              |                                   |
-| Directive                |                                   |
-| DoWhileStatement         | `do {} while (true) {}`           |
-| EmptyStatement           | `;`                               |
-| ExportAllDeclaration     | `export * from "foo"`             |
-| ExportDefaultDeclaration | `export default foo`              |
-| ExportNamedDeclaration   | `export { foo as bar }`           |
-| ExportSpecifier          | `export { foo }`                  |
-| Expression               |                                   |
-| ExpressionStatement      | `foo`                             |
-| ForInStatement           | `for (foo in bar) {}`             |
-| ForOfStatement           | `for (foo of bar) {}`             |
-| ForStatement             | `for (let i = 0; i < 10; i ++) {}`|
-| Function                 |                                   |
-| FunctionBody             |                                   |
-| FunctionDeclaration      | `function foo () {}`              |
-| FunctionExpression       | `(function () {})`                |
-| Identifier               | `foo`                             |
-| IfStatement              | `if (foo) {}`                     |
-| ImportDeclaration        | `import "foo"`                    |
-| ImportDefaultSpecifier   | `import foo from "bar"`           |
-| ImportExpression         |                                   |
-| ImportNamespaceSpecifier |                                   |
-| ImportSpecifier          |                                   |
-| LabeledStatement         |                                   |
-| Literal                  |                                   |
-| LogicalExpression        |                                   |
-| LogicalOperator          |                                   |
-| MemberExpression         |                                   |
-| MetaProperty             |                                   |
-| MethodDefinition         |                                   |
-| ModuleDeclaration        |                                   |
-| ModuleSpecifier          |                                   |
-| NewExpression            |                                   |
-| Node                     |                                   |
-| ObjectExpression         |                                   |
-| ObjectPattern            |                                   |
-| Pattern                  |                                   |
-| Position                 |                                   |
-| Program                  |                                   |
-| Property                 |                                   |
-| RegExpLiteral            |                                   |
-| RestElement              |                                   |
-| ReturnStatement          |                                   |
-| SequenceExpression       |                                   |
-| SourceLocation           |                                   |
-| SpreadElement            |                                   |
-| Statement                |                                   |
-| Super                    |                                   |
-| SwitchCase               |                                   |
-| SwitchStatement          |                                   |
-| TaggedTemplateExpression |                                   |
-| TemplateElement          |                                   |
-| TemplateLiteral          |                                   |
-| ThisExpression           |                                   |
-| ThrowStatement           |                                   |
-| TryStatement             |                                   |
-| UnaryExpression          |                                   |
-| UnaryOperator            |                                   |
-| UpdateExpression         |                                   |
-| UpdateOperator           |                                   |
-| VariableDeclaration      |                                   |
-| VariableDeclarator       |                                   |
-| WhileStatement           |                                   |
-| WithStatement            |                                   |
-| YieldExpression          |                                   |
+| Type                     | Example                                               |
+|--------------------------|:-----------------------------------------------------:|
+| ArrayExpression          | `const foo = []`                                      |
+| ArrayPattern             | `const [foo, bar] = bar`                              |
+| AssignmentExpression     | `foo = bar`                                           |
+| AssignmentOperator       |                                                       |
+| AssignmentPattern        | `function foo(bar = baz) {} `                         |
+| AwaitExpression          | `(async () => { await foo() })()`                     |
+| BigIntLiteral            |                                                       |
+| BinaryExpression         | `foo + bar`                                           |
+| BinaryOperator           |                                                       |
+| BlockStatement           | `{ console.log(foo) }`                                |
+| BreakStatement           | `for (foo in bar) break`                              |
+| CallExpression           | `foo()`                                               |
+| CatchClause              | `try {} catch (error) {}`                             |
+| ChainElement             |                                                       |
+| ChainExpression          | `foo?.()`                                             |
+| Class                    |                                                       |
+| ClassBody                | `class Foo {}`                                        |
+| ClassDeclaration         | `class Foo {}`                                        |
+| ClassExpression          | `(class {})`                                          |
+| ConditionalExpression    | `foo ? bar : baz`                                     |
+| ContinueStatement        | `while(true) { continue }`                            |
+| DebuggerStatement        | `debugger`                                            |
+| Declaration              |                                                       |
+| Directive                |                                                       |
+| DoWhileStatement         | `do {} while (true) {}`                               |
+| EmptyStatement           | `;`                                                   |
+| ExportAllDeclaration     | `export * from "foo"`                                 |
+| ExportDefaultDeclaration | `export default foo`                                  |
+| ExportNamedDeclaration   | `export { foo as bar }`                               |
+| ExportSpecifier          | `export { foo }`                                      |
+| Expression               |                                                       |
+| ExpressionStatement      | `foo`                                                 |
+| ForInStatement           | `for (foo in bar) {}`                                 |
+| ForOfStatement           | `for (foo of bar) {}`                                 |
+| ForStatement             | `for (let i = 0; i < 10; i ++) {}`                    |
+| Function                 |                                                       |
+| FunctionBody             |                                                       |
+| FunctionDeclaration      | `function foo () {}`                                  |
+| FunctionExpression       | `(function () {})`                                    |
+| Identifier               | `foo`                                                 |
+| IfStatement              | `if (foo) {}`                                         |
+| ImportDeclaration        | `import "foo"`                                        |
+| ImportDefaultSpecifier   | `import foo from "bar"`                               |
+| ImportExpression         |                                                       |
+| ImportNamespaceSpecifier | `import * as foo from "bar"`                          |
+| ImportSpecifier          | `import { foo } from "bar"`                           |
+| LabeledStatement         | `label: foo`                                          |
+| Literal                  | `42`                                                  |
+| LogicalExpression        | `true && false`                                       |
+| LogicalOperator          |                                                       |
+| MemberExpression         | `foo.bar`                                             |
+| MetaProperty             | `function foo () { new.target }`                      |
+| MethodDefinition         | `class Foo { bar() {} }`                              |
+| ModuleDeclaration        |                                                       |
+| ModuleSpecifier          |                                                       |
+| NewExpression            | `new Foo()`                                           |
+| Node                     |                                                       |
+| ObjectExpression         | `({})`                                                |
+| ObjectPattern            | `function foo ({}) {}`                                |
+| Pattern                  |                                                       |
+| Position                 |                                                       |
+| Program                  |                                                       |
+| Property                 |                                                       |
+| RegExpLiteral            |                                                       |
+| RestElement              | `function foo (...bar) {}`                            |
+| ReturnStatement          | `function foo () { return bar }`                      |
+| SequenceExpression       | `foo, bar`                                            |
+| SourceLocation           |                                                       |
+| SpreadElement            |                                                       |
+| Statement                |                                                       |
+| Super                    | `class Foo extends Bar { constructor() { super() } }` |
+| SwitchCase               |                                                       |
+| SwitchStatement          |                                                       |
+| TaggedTemplateExpression |                                                       |
+| TemplateElement          |                                                       |
+| TemplateLiteral          |                                                       |
+| ThisExpression           |                                                       |
+| ThrowStatement           |                                                       |
+| TryStatement             |                                                       |
+| UnaryExpression          |                                                       |
+| UnaryOperator            |                                                       |
+| UpdateExpression         |                                                       |
+| UpdateOperator           |                                                       |
+| VariableDeclaration      |                                                       |
+| VariableDeclarator       |                                                       |
+| WhileStatement           |                                                       |
+| WithStatement            |                                                       |
+| YieldExpression          |                                                       |
 
 ## Optimizations
 
