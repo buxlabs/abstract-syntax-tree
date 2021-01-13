@@ -493,38 +493,38 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 | BinaryOperator           |                                   |
 | BlockStatement           | `{ console.log(foo) }`            |
 | BreakStatement           | `for (foo in bar) break`          |
-| CallExpression           |                                   |
-| CatchClause              |                                   |
+| CallExpression           | `foo()`                           |
+| CatchClause              | `try {} catch (error) {}`         |
 | ChainElement             |                                   |
-| ChainExpression          |                                   |
+| ChainExpression          | `foo?.()`                         |
 | Class                    |                                   |
-| ClassBody                |                                   |
-| ClassDeclaration         |                                   |
-| ClassExpression          |                                   |
-| ConditionalExpression    |                                   |
-| ContinueStatement        |                                   |
-| DebuggerStatement        |                                   |
+| ClassBody                | `class Foo {}`                    |
+| ClassDeclaration         | `class Foo {}`                    |
+| ClassExpression          | `(class {})`                      |
+| ConditionalExpression    | `foo ? bar : baz`                 |
+| ContinueStatement        | `while(true) { continue }`        |
+| DebuggerStatement        | `debugger`                        |
 | Declaration              |                                   |
 | Directive                |                                   |
-| DoWhileStatement         |                                   |
-| EmptyStatement           |                                   |
-| ExportAllDeclaration     |                                   |
-| ExportDefaultDeclaration |                                   |
-| ExportNamedDeclaration   |                                   |
-| ExportSpecifier          |                                   |
+| DoWhileStatement         | `do {} while (true) {}`           |
+| EmptyStatement           | `;`                               |
+| ExportAllDeclaration     | `export * from "foo"`             |
+| ExportDefaultDeclaration | `export default foo`              |
+| ExportNamedDeclaration   | `export { foo as bar }`           |
+| ExportSpecifier          | `export { foo }`                  |
 | Expression               |                                   |
-| ExpressionStatement      |                                   |
-| ForInStatement           |                                   |
-| ForOfStatement           |                                   |
-| ForStatement             |                                   |
+| ExpressionStatement      | `foo`                             |
+| ForInStatement           | `for (foo in bar) {}`             |
+| ForOfStatement           | `for (foo of bar) {}`             |
+| ForStatement             | `for (let i = 0; i < 10; i ++) {}`|
 | Function                 |                                   |
 | FunctionBody             |                                   |
-| FunctionDeclaration      |                                   |
-| FunctionExpression       |                                   |
-| Identifier               |                                   |
-| IfStatement              |                                   |
-| ImportDeclaration        |                                   |
-| ImportDefaultSpecifier   |                                   |
+| FunctionDeclaration      | `function foo () {}`              |
+| FunctionExpression       | `(function () {})`                |
+| Identifier               | `foo`                             |
+| IfStatement              | `if (foo) {}`                     |
+| ImportDeclaration        | `import "foo"`                    |
+| ImportDefaultSpecifier   | `import foo from "bar"`           |
 | ImportExpression         |                                   |
 | ImportNamespaceSpecifier |                                   |
 | ImportSpecifier          |                                   |
