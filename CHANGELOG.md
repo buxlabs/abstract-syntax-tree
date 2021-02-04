@@ -1,5 +1,13 @@
 # abstract-syntax-tree changelog
 
+## 2.16.0
+
+* edit: update dependencies
+
+## 2.15.3
+
+* edit: downgrade required node to 12.20.1
+
 ## 2.15.2
 
 * edit: update dependencies
