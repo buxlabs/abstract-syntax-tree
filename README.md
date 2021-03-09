@@ -488,7 +488,7 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 | AssignmentOperator       |                                                                  |
 | AssignmentPattern        | <code>function foo(bar = baz) {} </code>                         |
 | AwaitExpression          | <code>(async () => { await foo() })()</code>                     |
-| BigIntLiteral            |                                                                  |
+| BigIntLiteral            | <code>const foo = 9007199254740991n</code>                       |
 | BinaryExpression         | <code>foo + bar</code>                                           |
 | BinaryOperator           |                                                                  |
 | BlockStatement           | <code>{ console.log(foo) }</code>                                |
@@ -525,7 +525,7 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 | IfStatement              | <code>if (foo) {}</code>                                         |
 | ImportDeclaration        | <code>import "foo"</code>                                        |
 | ImportDefaultSpecifier   | <code>import foo from "bar"</code>                               |
-| ImportExpression         |                                                                  |
+| ImportExpression         | <code>import(foo).then(bar)</code>                               |
 | ImportNamespaceSpecifier | <code>import * as foo from "bar"</code>                          |
 | ImportSpecifier          | <code>import { foo } from "bar"</code>                           |
 | LabeledStatement         | <code>label: foo</code>                                          |
@@ -543,7 +543,7 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 | ObjectPattern            | <code>function foo ({}) {}</code>                                |
 | Pattern                  |                                                                  |
 | Position                 |                                                                  |
-| Program                  |                                                                  |
+| Program                  | <code>42</code>                                                  |
 | Property                 |                                                                  |
 | RegExpLiteral            |                                                                  |
 | RestElement              | <code>function foo (...bar) {}</code>                            |
@@ -553,22 +553,22 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 | SpreadElement            |                                                                  |
 | Statement                |                                                                  |
 | Super                    | <code>class Foo extends Bar { constructor() { super() } }</code> |
-| SwitchCase               |                                                                  |
-| SwitchStatement          |                                                                  |
+| SwitchCase               | <code>switch (foo) { case 'bar': }</code>                        |
+| SwitchStatement          | <code>switch(foo) {}</code>                                      |
 | TaggedTemplateExpression | <code>css`.foo { color: red; }`</code>                           |
 | TemplateLiteral          | <code>css`.foo { color: red; }`</code>                           |
-| ThisExpression           |                                                                  |
+| ThisExpression           | <code>this.foo = 'bar'</code>                                    |
 | ThrowStatement           | <code>throw new Error("foo")</code>                              |
 | TryStatement             | <code>try { foo() } catch (exception) { bar() }</code>           |
-| UnaryExpression          |                                                                  |
+| UnaryExpression          | <code>!foo</code>                                                |
 | UnaryOperator            |                                                                  |
-| UpdateExpression         |                                                                  |
+| UpdateExpression         | <code>foo++</code>                                               |
 | UpdateOperator           |                                                                  |
-| VariableDeclaration      |                                                                  |
-| VariableDeclarator       |                                                                  |
-| WhileStatement           |                                                                  |
-| WithStatement            |                                                                  |
-| YieldExpression          |                                                                  |
+| VariableDeclaration      | <code>const answer = 42</code>                                   |
+| VariableDeclarator       | <code>const foo = 'bar'</code>                                   |
+| WhileStatement           | <code>while (true) {}</code>                                     |
+| WithStatement            | <code>with (foo) {}</code>                                       |
+| YieldExpression          | <code>function* foo() { yield bar }</code>                       |
 
 ## Optimizations
 
