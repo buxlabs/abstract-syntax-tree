@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.17.2
+
+* edit: update rollup
+
 ## 2.17.1
 
 * edit: update dependencies
