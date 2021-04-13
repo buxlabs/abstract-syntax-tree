@@ -364,6 +364,17 @@ const literal = template(42)
 const nodes = template('const foo = <%= bar %>;', { bar: { type: 'Literal', value: 1 } })
 ```
 
+
+```js
+const { template } = require('abstract-syntax-tree')
+const nodes = template('function foo(%= bar %) {}', {
+  bar: [
+    { type: 'Identifier', name: 'baz' },
+    { type: 'Identifier', name: 'qux' }
+  ]
+})
+```
+
 #### program
 
 Creates an abstract syntax tree with a blank program.
