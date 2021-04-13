@@ -74,3 +74,14 @@ test('it works for 5 elements', assert => {
   const source = generate(binaryExpression)
   assert.deepEqual(source, '"foo" + "bar" + "baz" + "qux" + "quux"')
 })
+
+test('it works for an array of nodes', assert => {
+  const array = [
+    new Literal({ value: 'foo' }),
+    new Literal({ value: 'bar' }),
+    new Literal({ value: 'baz' })
+  ]
+  const binaryExpression = toBinaryExpression(array)
+  const source = generate(binaryExpression)
+  assert.deepEqual(source, '"foo" + "bar" + "baz"')
+})

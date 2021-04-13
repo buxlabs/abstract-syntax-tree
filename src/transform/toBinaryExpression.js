@@ -1,7 +1,9 @@
+const ArrayExpression = require('../nodes/ArrayExpression')
 const BinaryExpression = require('../nodes/BinaryExpression')
 const Literal = require('../nodes/Literal')
 
-module.exports = function toBinaryExpression (expression) {
+module.exports = function toBinaryExpression (input) {
+  const expression = Array.isArray(input) ? new ArrayExpression({ elements: input }) : input
   if (expression.type === 'ArrayExpression') {
     const { elements } = expression
     if (elements.length === 0) {
