@@ -1,5 +1,10 @@
 # abstract-syntax-tree changelog
 
+## 2.17.3
+
+* edit: support array of nodes in the toBinaryExpression method
+* edit: update dependencies
+
 ## 2.17.2
 
 * edit: update rollup
