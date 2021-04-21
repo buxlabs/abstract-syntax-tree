@@ -495,13 +495,11 @@ You can also use classes to create nodes.
 
 ```js
 const { ArrayExpression, Literal } = require('abstract-syntax-tree')
-const expression = new ArrayExpression({
-  elements: [
-    new Literal('foo'),
-    new Literal('bar'),
-    new Literal('baz')
-  ]
-})
+const expression = new ArrayExpression([
+  new Literal('foo'),
+  new Literal('bar'),
+  new Literal('baz')
+])
 ```
 
 Here's a list of all available nodes, with examples.
