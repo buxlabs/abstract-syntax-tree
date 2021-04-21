@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.17.4
+
+* add: support shorthand syntax for Identifiers, Literals and ArrayExpressions
+
 ## 2.17.3
 
 * edit: support array of nodes in the toBinaryExpression method
