@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.17.5
+
+* add: support shorthand syntax for CallExpressions
+
 ## 2.17.4
 
 * add: support shorthand syntax for Identifiers, Literals and ArrayExpressions
