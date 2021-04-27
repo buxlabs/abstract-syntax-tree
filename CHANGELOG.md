@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.17.6
+
+* edit: improve shorthand syntax for Literals
+
 ## 2.17.5
 
 * add: support shorthand syntax for CallExpressions

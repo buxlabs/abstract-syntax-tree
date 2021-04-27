@@ -1,7 +1,11 @@
+function isPrimitive (param) {
+  return typeof param === 'string' || typeof param === 'number' || typeof param === 'boolean' || param === null
+}
+
 class Literal {
   constructor (param) {
     this.type = 'Literal'
-    const options = typeof param === 'string' ? { value: param } : param
+    const options = isPrimitive(param) ? { value: param } : param
     Object.assign(this, options)
   }
 }
