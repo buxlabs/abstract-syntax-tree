@@ -8,7 +8,7 @@ test.skip('build: creates a valid bundle', async assert => {
   const bundle = await rollup.rollup(config)
   const file = join(tmpdir(), 'bundle.js')
   await bundle.write({
-    ...config.output.find(object => object.file === 'dist/index.min.js'),
+    ...config.output.find(object => object.file === 'dist/index.js'),
     file
   })
   const AbstractSyntaxTree = require(file)

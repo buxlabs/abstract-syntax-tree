@@ -25,7 +25,7 @@ module.exports = {
       'source-map': 'export default {}'
     }),
     nodePolyfills(),
-    nodeResolve(),
+    nodeResolve({ browser: true }),
     commonjs(),
     json()
   ]
