@@ -2,6 +2,9 @@ const isGlobalProperty = require('./utilities/isGlobalProperty')
 
 const LOGICAL_OPERATORS = ['&&', '||']
 
+if (Number(process.version.split('.')[0].slice(1)) >= 14)
+  LOGICAL_OPERATORS.push('??')
+
 function isLogicalOperator (operator) {
   return LOGICAL_OPERATORS.includes(operator)
 }
@@ -41,6 +44,7 @@ function evaluate (operator, left, right) {
   switch (operator) {
     case '&&': return serialize(left && right)
     case '||': return serialize(left || right)
+    case '??': return eval('serialize(left ?? right)')
   }
 }
 
