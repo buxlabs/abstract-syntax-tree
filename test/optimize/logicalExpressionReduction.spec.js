@@ -27,7 +27,7 @@ test('logicalExpressionReduction', assert => {
   tree.replace(logicalExpressionReduction)
   assert.deepEqual(tree.source, 'const foo = Infinity;\n')
   
-  if (Number(process.version.split('.')[0].slice(1)) >= 14) eval(`
+  if (Number(process.version.split('.')[0].slice(1)) >= 14) {
     var tree = new AbstractSyntaxTree('const foo = 1 ?? "foo"')
     tree.replace(logicalExpressionReduction)
     assert.deepEqual(tree.source, 'const foo = 1;\n')
@@ -43,5 +43,5 @@ test('logicalExpressionReduction', assert => {
     var tree = new AbstractSyntaxTree('const foo = null ?? "bar"')
     tree.replace(logicalExpressionReduction)
     assert.deepEqual(tree.source, 'const foo = "bar";\n')
-  `)
+  }
 })
