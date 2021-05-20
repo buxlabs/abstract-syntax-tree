@@ -12,7 +12,7 @@
     "prepare": "npm run build"
   },
   "engines": {
-    "node": ">=12.20.1"
+    "node": ">=14.0.0"
   },
   "repository": {
     "type": "git",
