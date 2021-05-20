@@ -1,5 +1,10 @@
 # abstract-syntax-tree changelog
 
+## 2.18.0
+
+* edit: update required node to 14.0.0
+* edit: improve logicalExpressionReduction
+
 ## 2.17.6
 
 * edit: improve shorthand syntax for Literals
