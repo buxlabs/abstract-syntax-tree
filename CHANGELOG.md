@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.18.1
+
+* edit: update dependencies
+
 ## 2.18.0
 
 * edit: update required node to 14.0.0
