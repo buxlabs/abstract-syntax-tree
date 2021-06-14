@@ -6,3 +6,10 @@ test('find: by attribute (name)', async assert => {
   const [node] = find(tree, '[name="foo"]')
   assert.deepEqual(node.name, 'foo')
 })
+
+test('find: by two attributes (name, type)', async assert => {
+  const tree = parse('const foo = \'bar\'')
+  const [node] = find(tree, '[name="foo"][type="Identifier"]')
+  assert.deepEqual(node.name, 'foo')
+  assert.deepEqual(node.type, 'Identifier')
+})

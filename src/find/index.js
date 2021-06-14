@@ -1,22 +1,24 @@
 const esquery = require('esquery')
-const traverse = require('./traverse')
-const equal = require('./equal')
-const TYPES = require('../types.json')
-const serialize = require('./serialize')
-const parse = require('./parse')
+const traverse = require('../traverse')
+const equal = require('../equal')
+const TYPES = require('../../types.json')
+const serialize = require('../serialize')
+const parse = require('../parse')
+const tokenize = require('./tokenize')
 
 function findByType (tree, selector) {
   return findByComparison(tree, { type: selector })
 }
 
-function unwrap (selector) {
-  return selector.substr(1, selector.length - 2)
-}
-
 function parseSelector (selector) {
-  const [key, value] = unwrap(selector).split('=')
-  const { expression } = parse(value).body[0]
-  return { [key]: serialize(expression) }
+  const tokens = tokenize(selector)
+  return tokens.reduce((result, current) => {
+    if (current.type === 'attribute') {
+      const { expression } = parse(current.value).body[0]
+      result[current.key] = serialize(expression)
+    }
+    return result
+  }, {})
 }
 
 function findByAttribute (tree, selector) {
