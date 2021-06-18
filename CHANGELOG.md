@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.19.1
+
+* add: ArrowFunctionExpression to types.json
+
 ## 2.19.0
 
 * remove: esquery dependency (to simplify client-side bundling)
