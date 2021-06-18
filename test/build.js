@@ -4,7 +4,7 @@ const { join } = require('path')
 const rollup = require('rollup')
 const config = require('../rollup.config')
 
-test.skip('build: creates a valid bundle', async assert => {
+test('build: creates a valid bundle', async assert => {
   const bundle = await rollup.rollup(config)
   const file = join(tmpdir(), 'bundle.js')
   await bundle.write({
