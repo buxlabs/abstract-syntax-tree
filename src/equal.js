@@ -1,4 +1,6 @@
-function getKey (object, key) {
+const { WILDCARD } = require('./find/enum')
+
+function getValue (object, key) {
   if (typeof object[key] !== 'undefined') return object[key]
 
   key = ('' + key).split('.')
@@ -16,8 +18,8 @@ function isPlainObject (object) {
 function compare (node, criterias) {
   for (const key in criterias) {
     if (Object.prototype.hasOwnProperty.call(criterias, key)) {
-      const value1 = getKey(node, key)
-      const value2 = getKey(criterias, key)
+      const value1 = getValue(node, key)
+      const value2 = getValue(criterias, key)
       if ({}.toString.call(value2) === '[object RegExp]') {
         if (!value2.test(value1)) return false
       } else if (isPlainObject(value2)) {
@@ -31,6 +33,7 @@ function compare (node, criterias) {
       } else if (Array.isArray(value1)) {
         if (value1.indexOf(value2) < 0) return false
       } else {
+        if (node[key] && value2 === WILDCARD) return true
         if (value1 !== value2) return false
       }
     }

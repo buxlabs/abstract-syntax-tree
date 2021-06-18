@@ -5,6 +5,7 @@ const TYPES = require('../../types.json')
 const serialize = require('../serialize')
 const parse = require('../parse')
 const tokenize = require('./tokenize')
+const { WILDCARD } = require('./enum')
 
 function findByType (tree, selector) {
   return findByComparison(tree, { type: selector })
@@ -14,8 +15,12 @@ function parseSelector (selector) {
   const tokens = tokenize(selector)
   return tokens.reduce((result, current) => {
     if (current.type === 'attribute') {
-      const { expression } = parse(current.value).body[0]
-      result[current.key] = serialize(expression)
+      if (current.value) {
+        const { expression } = parse(current.value).body[0]
+        result[current.key] = serialize(expression)
+      } else {
+        result[current.key] = WILDCARD
+      }
     }
     return result
   }, {})

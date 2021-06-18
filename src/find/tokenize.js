@@ -16,7 +16,7 @@ module.exports = function tokenize (input) {
     return character === tag
   }
   function push (type, { key, value }) {
-    if (value) tokens.push({ type, key, value })
+    tokens.push({ type, key, value })
   }
   let type = 'string'
   let key = ''
@@ -32,6 +32,10 @@ module.exports = function tokenize (input) {
       value = ''
       advance()
     } else if (current(END_ATTRIBUTE)) {
+      if (!key) {
+        key = value
+        value = ''
+      }
       push(type, { key, value })
       advance()
       key = ''
