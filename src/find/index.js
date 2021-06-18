@@ -41,12 +41,26 @@ function findByQuery (tree, selector) {
   return esquery(tree, selector)
 }
 
+function findByWildcard (tree) {
+  const nodes = []
+  traverse(tree, {
+    enter (node) {
+      nodes.push(node)
+    }
+  })
+  return nodes
+}
+
 function isTypeSelector (selector) {
   return TYPES.includes(selector)
 }
 
 function isAttributeSelector (selector) {
   return isQuerySelector(selector) && selector.startsWith('[') && selector.endsWith(']')
+}
+
+function isWildcardSelector (selector) {
+  return selector === '*'
 }
 
 function isQuerySelector (selector) {
@@ -59,6 +73,9 @@ module.exports = function find (tree, selector) {
   }
   if (isAttributeSelector(selector)) {
     return findByAttribute(tree, selector)
+  }
+  if (isWildcardSelector(selector)) {
+    return findByWildcard(tree)
   }
   if (isQuerySelector(selector)) {
     return findByQuery(tree, selector)
