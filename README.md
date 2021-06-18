@@ -132,7 +132,14 @@ walk(tree, (node, parent) => {
 
 #### find
 
-Find supports two traversal methods. You can pass an [esquery](https://github.com/estools/esquery) compatible selector or pass an object that will be compared to every node in the tree. The method returns an array of nodes.
+Find supports two traversal methods. You can pass a string selector or pass an object that will be compared to every node in the tree. The method returns an array of nodes.
+
+The following selectors are supported:
+
+- node type (`Identifier`)
+- node attribute (`[name="foo"]`)
+- node attribute existence (`[name]`)
+- wildcard (`*`)
 
 ```js
 const { parse, find } = require('abstract-syntax-tree')

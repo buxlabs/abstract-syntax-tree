@@ -15,7 +15,7 @@ test('async-await: can be parsed and generated', assert => {
   `
   const tree = parse(source)
   assert.truthy(first(tree, 'AwaitExpression'))
-  assert.truthy(first(tree, 'FunctionDeclaration[async=true]'))
+  assert.truthy(first(tree, '[async=true]'))
   const output = generate(tree)
   assert.truthy(output)
 })

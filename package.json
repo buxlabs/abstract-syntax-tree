@@ -49,7 +49,6 @@
   "dependencies": {
     "ast-types": "0.14.2",
     "astring": "^1.7.5",
-    "esquery": "^1.4.0",
     "estraverse": "5.2.0",
     "meriyah": "^4.1.5",
     "source-map": "0.7.3"

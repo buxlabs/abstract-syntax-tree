@@ -1,5 +1,4 @@
-const esquery = require('esquery')
-const traverse = require('../traverse')
+const walk = require('../walk')
 const equal = require('../equal')
 const TYPES = require('../../types.json')
 const serialize = require('../serialize')
@@ -30,28 +29,24 @@ function findByAttribute (tree, selector) {
   return findByComparison(tree, parseSelector(selector))
 }
 
+function findByQuery (tree, selector) {
+  return findByComparison(tree, parseSelector(selector))
+}
+
 function findByComparison (tree, selector) {
   const nodes = []
-  traverse(tree, {
-    enter (node) {
-      if (equal(node, selector)) {
-        nodes.push(node)
-      }
+  walk(tree, (node) => {
+    if (equal(node, selector)) {
+      nodes.push(node)
     }
   })
   return nodes
 }
 
-function findByQuery (tree, selector) {
-  return esquery(tree, selector)
-}
-
 function findByWildcard (tree) {
   const nodes = []
-  traverse(tree, {
-    enter (node) {
-      nodes.push(node)
-    }
+  walk(tree, (node) => {
+    nodes.push(node)
   })
   return nodes
 }
