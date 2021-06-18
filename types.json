@@ -39,6 +39,7 @@
   "ObjectExpression",
   "Property",
   "FunctionExpression",
+  "ArrowFunctionExpression",
   "UnaryExpression",
   "UnaryOperator",
   "UpdateExpression",

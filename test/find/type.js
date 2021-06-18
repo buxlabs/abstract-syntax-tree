@@ -18,3 +18,9 @@ test('find: by type (Literal)', async assert => {
   const [node] = find(tree, 'Literal')
   assert.deepEqual(node.value, 'bar')
 })
+
+test('find: by type (ArrowFunctionExpression)', async assert => {
+  const tree = parse('(() => {})')
+  const [node] = find(tree, 'ArrowFunctionExpression')
+  assert.deepEqual(node.type, 'ArrowFunctionExpression')
+})

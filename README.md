@@ -515,6 +515,7 @@ Here's a list of all available nodes, with examples.
 |--------------------------|:----------------------------------------------------------------:|
 | ArrayExpression          | <code>const foo = []</code>                                      |
 | ArrayPattern             | <code>const [foo, bar] = bar</code>                              |
+| ArrowFunctionExpression  | <code>(() => {})</code>                                    |
 | AssignmentExpression     | <code>foo = bar</code>                                           |
 | AssignmentOperator       |                                                                  |
 | AssignmentPattern        | <code>function foo(bar = baz) {} </code>                         |
