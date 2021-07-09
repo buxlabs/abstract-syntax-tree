@@ -1,5 +1,10 @@
 # abstract-syntax-tree changelog
 
+## 2.20.0
+
+* add: bring back esquery for better selector matching
+* remove: rollup and client-side bundle
+
 ## 2.19.1
 
 * add: ArrowFunctionExpression to types.json
