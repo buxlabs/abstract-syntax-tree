@@ -1,5 +1,3 @@
-const { WILDCARD } = require('./find/enum')
-
 function getValue (object, key) {
   if (typeof object[key] !== 'undefined') return object[key]
 
@@ -33,7 +31,6 @@ function compare (node, criterias) {
       } else if (Array.isArray(value1)) {
         if (value1.indexOf(value2) < 0) return false
       } else {
-        if (node[key] && value2 === WILDCARD) return true
         if (value1 !== value2) return false
       }
     }

@@ -982,7 +982,7 @@ To:
 
 ## Browser
 
-The library can be used in the browser (umd -> AbstraxtSyntaxTree). The `sourcemap` method doesn't work there yet though.
+The library is not intended to work inside of a browser. This might change in the future, but it's a bigger lift, pretty time consuming. For now, consider exposing and using an API endpoint instead.
 
 ## Maintainers
 
