@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.20.1
+
+* add: pass parent node to the remove callback
+
 ## 2.20.0
 
 * add: bring back esquery for better selector matching

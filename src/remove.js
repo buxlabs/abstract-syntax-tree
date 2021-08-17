@@ -16,13 +16,13 @@ function removeBySelector (tree, selector, options) {
 
 function removeByCallback (tree, callback, options) {
   estraverse.replace(tree, {
-    enter (current) {
-      if (callback(current) === null) {
+    enter (current, parent) {
+      if (callback(current, parent) === null) {
         return this.remove()
       }
     },
-    leave (current) {
-      if (isNodeEmpty(current)) {
+    leave (current, parent) {
+      if (isNodeEmpty(current, parent)) {
         return this.remove()
       }
     }
