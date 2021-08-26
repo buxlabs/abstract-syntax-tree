@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.20.2
+
+* edit: update meriyah and path-parse
+
 ## 2.20.1
 
 * add: pass parent node to the remove callback
