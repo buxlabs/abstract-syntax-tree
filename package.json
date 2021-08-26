@@ -41,7 +41,7 @@
     "astring": "^1.7.5",
     "esquery": "^1.4.0",
     "estraverse": "5.2.0",
-    "meriyah": "^4.1.5",
+    "meriyah": "^4.2.0",
     "source-map": "0.7.3"
   },
   "standard": {
