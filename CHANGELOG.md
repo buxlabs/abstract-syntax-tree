@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.20.3
+
+* edit: replace nyc with c8 (coverage)
+
 ## 2.20.2
 
 * edit: update meriyah and path-parse

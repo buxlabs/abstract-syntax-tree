@@ -6,7 +6,7 @@
   "scripts": {
     "test": "ava 'test/**/*.js'",
     "lint": "standard",
-    "coverage": "nyc npm test"
+    "coverage": "c8 npm test"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/buxlabs/abstract-syntax-tree#readme",
   "devDependencies": {
     "ava": "^3.15.0",
-    "nyc": "15.1.0",
+    "c8": "^7.9.0",
     "standard": "16.0.3"
   },
   "dependencies": {
