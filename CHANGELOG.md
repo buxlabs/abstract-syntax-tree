@@ -1,5 +1,9 @@
 # abstract-syntax-tree changelog
 
+## 2.20.4
+
+* edit: update dependencies
+
 ## 2.20.3
 
 * edit: replace nyc with c8 (coverage)
