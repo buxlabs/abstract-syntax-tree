@@ -10,7 +10,7 @@
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
-- [REPL](https://buxlabs.pl/en/tools/js/ast)
+- [REPL](https://buxlabs.pl/en/tools/js/abstract-syntax-tree/documentation#repl)
 - [Nodes](#nodes)
 - [Optimizations](#optimizations)
 - [Maintainers](#maintainers)
