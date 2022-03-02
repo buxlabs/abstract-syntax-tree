@@ -54,7 +54,7 @@ Has the following representation:
 }
 ```
 
-The goal of this library is to consolidate common abstract syntax tree operations in one place. It uses a variety of libriaries under the hood based on their performance and flexibility, e.g. [meriyah](https://github.com/meriyah/meriyah) for parsing and [astring](https://github.com/davidbonnet/astring) for source code generation.
+The goal of this library is to consolidate common abstract syntax tree operations in one place. It uses a variety of libraries under the hood based on their performance and flexibility, e.g. [meriyah](https://github.com/meriyah/meriyah) for parsing and [astring](https://github.com/davidbonnet/astring) for source code generation.
 
 The library exposes a set of utility methods that can be useful for analysis or transformation of abstract syntax trees. It supports functional and object-oriented programming style.
 
