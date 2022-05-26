@@ -29,7 +29,7 @@ test('program: accepts an array of nodes as a param', assert => {
   assert.deepEqual(tree, {
     type: 'Program',
     sourceType: 'module',
-    body: body
+    body
   })
 })
 

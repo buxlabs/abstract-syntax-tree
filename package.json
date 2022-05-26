@@ -33,12 +33,12 @@
   "homepage": "https://github.com/buxlabs/abstract-syntax-tree#readme",
   "devDependencies": {
     "ava": "^4.2.0",
-    "c8": "^7.11.0",
-    "standard": "^16.0.4"
+    "c8": "^7.11.3",
+    "standard": "^17.0.0"
   },
   "dependencies": {
     "ast-types": "0.14.2",
-    "astring": "^1.8.1",
+    "astring": "^1.8.3",
     "esquery": "^1.4.0",
     "estraverse": "^5.3.0",
     "meriyah": "^4.2.1",
