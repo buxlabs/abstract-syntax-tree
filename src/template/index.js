@@ -1,6 +1,8 @@
 const estemplate = require('./estemplate')
 const { builders } = require('ast-types')
 const parse = require('../parse')
+const Literal = require('../nodes/Literal')
+const UnaryExpression = require('../nodes/UnaryExpression')
 
 const typedArrays = {
   Uint8Array: true,
@@ -15,7 +17,13 @@ const typedArrays = {
 }
 
 function toAST (obj) {
-  if (typeof obj === 'undefined') { return builders.unaryExpression('void', builders.literal(0)) }
+  if (typeof obj === 'undefined') {
+    return new UnaryExpression({
+      operator: 'void',
+      argument: new Literal(0),
+      prefix: true
+    })
+  }
 
   if (typeof obj === 'number') {
     if (isNaN(obj)) { return builders.identifier('NaN') }
