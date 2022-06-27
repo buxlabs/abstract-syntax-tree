@@ -177,7 +177,7 @@ test('template: from errors', assert => {
 
 test('template: from regular expressions', assert => {
   assert.deepEqual(convert(/[abc]+/i), '/[abc]+/i')
-  assert.deepEqual(convert(new RegExp('[abc]+', 'gi')), '/[abc]+/ig')
+  assert.deepEqual(convert(new RegExp('[abc]+', 'gi')), '/[abc]+/gi')
 })
 
 test('template: from normal objects', assert => {

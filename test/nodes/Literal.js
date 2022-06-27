@@ -26,6 +26,13 @@ test('it supports the shorthand syntax for null', assert => {
   assert.deepEqual(node.value, null)
 })
 
+test('it supports regexp', assert => {
+  const node = new Literal(/[abc]+/gi)
+  assert.deepEqual(node.value, {})
+  assert.deepEqual(node.regex.pattern, '[abc]+')
+  assert.deepEqual(node.regex.flags, 'gi')
+})
+
 test('it supports the shorthand syntax for true', assert => {
   const node = new Literal(true)
   assert.deepEqual(node.value, true)
