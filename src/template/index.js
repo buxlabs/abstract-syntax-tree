@@ -1,10 +1,11 @@
 const estemplate = require('./estemplate')
-const { builders } = require('ast-types')
 const parse = require('../parse')
 const ArrayExpression = require('../nodes/ArrayExpression')
 const Identifier = require('../nodes/Identifier')
 const Literal = require('../nodes/Literal')
 const UnaryExpression = require('../nodes/UnaryExpression')
+// deprecated
+const { builders } = require('ast-types')
 
 const typedArrays = {
   Uint8Array: true,
@@ -32,12 +33,13 @@ function toAST (obj) {
 
     if (obj === Infinity) { return new Identifier('Infinity') }
 
-    if (obj < 0) { return new UnaryExpression({
-      operator: '-',
-      argument: new Literal(-obj),
-      prefix: true
-    })
-  }
+    if (obj < 0) {
+      return new UnaryExpression({
+        operator: '-',
+        argument: new Literal(-obj),
+        prefix: true
+      })
+    }
 
     return new Literal(obj)
   }
