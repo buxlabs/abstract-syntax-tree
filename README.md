@@ -67,17 +67,17 @@ npm install abstract-syntax-tree
 ## Usage
 
 ```js
-const { parse, find } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, find } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-console.log(find(tree, 'Literal')) // [ { type: 'Literal', value: 42 } ]
+console.log(find(tree, "Literal")) // [ { type: 'Literal', value: 42 } ]
 ```
 
 ```js
-const AbstractSyntaxTree = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const AbstractSyntaxTree = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = new AbstractSyntaxTree(source)
-console.log(tree.find('Literal')) // [ { type: 'Literal', value: 42 } ]
+console.log(tree.find("Literal")) // [ { type: 'Literal', value: 42 } ]
 ```
 
 ## API
@@ -89,18 +89,18 @@ console.log(tree.find('Literal')) // [ { type: 'Literal', value: 42 } ]
 The library uses [meriyah](https://github.com/meriyah/meriyah) to create an [estree](https://github.com/estree/estree) compatible abstract syntax tree. All [meriyah parsing options](https://github.com/meriyah/meriyah#api) can be passed to the parse method.
 
 ```js
-const { parse } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
 console.log(tree) // { type: 'Program', body: [ ... ] }
 ```
 
 ```js
-const { parse } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source, {
   loc: true,
-  ranges: true
+  ranges: true,
 })
 console.log(tree) // { type: 'Program', body: [ ... ], loc: {...} }
 ```
@@ -110,8 +110,8 @@ console.log(tree) // { type: 'Program', body: [ ... ], loc: {...} }
 The library uses [astring](https://github.com/davidbonnet/astring) to generate the source code. All [astring generate options](https://github.com/davidbonnet/astring#api) can be passed to the generate method.
 
 ```js
-const { parse, generate } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, generate } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
 console.log(generate(tree)) // 'const answer = 42;'
 ```
@@ -121,8 +121,8 @@ console.log(generate(tree)) // 'const answer = 42;'
 Walk method is a thin layer over [estraverse](https://github.com/estools/estraverse).
 
 ```js
-const { parse, walk } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, walk } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
 walk(tree, (node, parent) => {
   console.log(node)
@@ -142,11 +142,11 @@ The following selectors are supported:
 - wildcard (`*`)
 
 ```js
-const { parse, find } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, find } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-console.log(find(tree, 'VariableDeclaration')) // [ { type: 'VariableDeclaration', ... } ]
-console.log(find(tree, { type: 'VariableDeclaration' })) // [ { type: 'VariableDeclaration', ... } ]
+console.log(find(tree, "VariableDeclaration")) // [ { type: 'VariableDeclaration', ... } ]
+console.log(find(tree, { type: "VariableDeclaration" })) // [ { type: 'VariableDeclaration', ... } ]
 ```
 
 #### serialize
@@ -154,16 +154,16 @@ console.log(find(tree, { type: 'VariableDeclaration' })) // [ { type: 'VariableD
 Serialize can transform nodes into values. Works for: Array, Boolean, Error, Infinity, Map, NaN, Number, Object, RegExp, Set, String, Symbol, WeakMap, WeakSet, null and undefined.
 
 ```js
-const { serialize } = require('abstract-syntax-tree')
+const { serialize } = require("abstract-syntax-tree")
 const node = {
-  type: 'ArrayExpression',
+  type: "ArrayExpression",
   elements: [
-    { type: 'Literal', value: 1 },
-    { type: 'Literal', value: 2 },
-    { type: 'Literal', value: 3 },
-    { type: 'Literal', value: 4 },
-    { type: 'Literal', value: 5 }
-  ]
+    { type: "Literal", value: 1 },
+    { type: "Literal", value: 2 },
+    { type: "Literal", value: 3 },
+    { type: "Literal", value: 4 },
+    { type: "Literal", value: 5 },
+  ],
 }
 const array = serialize(node) // [1, 2, 3, 4, 5]
 ```
@@ -173,12 +173,12 @@ const array = serialize(node) // [1, 2, 3, 4, 5]
 Traverse method accepts a configuration object with enter and leave callbacks. It allows multiple transformations in one traversal.
 
 ```js
-const { parse, traverse } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, traverse } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
 traverse(tree, {
-  enter (node) {},
-  leave (node) {}
+  enter(node) {},
+  leave(node) {},
 })
 ```
 
@@ -187,12 +187,12 @@ traverse(tree, {
 Replace extends [estraverse](https://github.com/estools/estraverse) by handling replacement of give node with multiple nodes. It will also remove given node if `null` is returned.
 
 ```js
-const { parse, replace } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, replace } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-replace(tree, node => {
-  if (node.type === 'VariableDeclaration') {
-    node.kind = 'let'
+replace(tree, (node) => {
+  if (node.type === "VariableDeclaration") {
+    node.kind = "let"
   }
   return node
 })
@@ -203,7 +203,7 @@ replace(tree, node => {
 Remove uses [estraverse](https://github.com/estools/estraverse) and ensures that no useless nodes are left in the tree. It accepts a string, object or callback as the matching strategy.
 
 ```js
-const { parse, remove, generate } = require('abstract-syntax-tree')
+const { parse, remove, generate } = require("abstract-syntax-tree")
 const source = '"use strict"; const b = 4;'
 const tree = parse(source)
 remove(tree, 'Literal[value="use strict"]')
@@ -223,10 +223,10 @@ console.log(generate(tree)) // 'const b = 4;'
 #### each
 
 ```js
-const { parse, each } = require('abstract-syntax-tree')
-const source = 'const foo = 1; const bar = 2;'
+const { parse, each } = require("abstract-syntax-tree")
+const source = "const foo = 1; const bar = 2;"
 const tree = parse(source)
-each(tree, 'VariableDeclaration', node => {
+each(tree, "VariableDeclaration", (node) => {
   console.log(node)
 })
 ```
@@ -234,54 +234,58 @@ each(tree, 'VariableDeclaration', node => {
 #### first
 
 ```js
-const { parse, first } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, first } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-console.log(first(tree, 'VariableDeclaration')) // { type: 'VariableDeclaration', ... }
+console.log(first(tree, "VariableDeclaration")) // { type: 'VariableDeclaration', ... }
 ```
 
 #### last
 
 ```js
-const { parse, last } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, last } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-console.log(last(tree, 'VariableDeclaration')) // { type: 'VariableDeclaration', ... }
+console.log(last(tree, "VariableDeclaration")) // { type: 'VariableDeclaration', ... }
 ```
 
 #### reduce
 
 ```js
-const { parse, reduce } = require('abstract-syntax-tree')
-const source = 'const a = 1, b = 2'
+const { parse, reduce } = require("abstract-syntax-tree")
+const source = "const a = 1, b = 2"
 const tree = parse(source)
-const value = reduce(tree, (sum, node) => {
-  if (node.type === 'Literal') {
-    sum += node.value
-  }
-  return sum
-}, 0)
+const value = reduce(
+  tree,
+  (sum, node) => {
+    if (node.type === "Literal") {
+      sum += node.value
+    }
+    return sum
+  },
+  0
+)
 console.log(value) // 3
 ```
 
 #### has
 
 ```js
-const { parse, has } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, has } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-console.log(has(tree, 'VariableDeclaration')) // true
-console.log(has(tree, { type: 'VariableDeclaration' })) // true
+console.log(has(tree, "VariableDeclaration")) // true
+console.log(has(tree, { type: "VariableDeclaration" })) // true
 ```
 
 #### count
 
 ```js
-const { parse, count } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, count } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-console.log(count(tree, 'VariableDeclaration')) // 1
-console.log(count(tree, { type: 'VariableDeclaration' })) // 1
+console.log(count(tree, "VariableDeclaration")) // 1
+console.log(count(tree, { type: "VariableDeclaration" })) // 1
 ```
 
 #### append
@@ -289,42 +293,42 @@ console.log(count(tree, { type: 'VariableDeclaration' })) // 1
 Append pushes nodes to the body of the abstract syntax tree. It accepts estree nodes as input.
 
 ```js
-const { parse, append } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, append } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
 append(tree, {
-  type: 'ExpressionStatement',
-  expression:  {
+  type: "ExpressionStatement",
+  expression: {
     type: "CallExpression",
     callee: {
-      type: 'MemberExpression',
+      type: "MemberExpression",
       object: {
-        type: 'Identifier',
-        name: 'console'
+        type: "Identifier",
+        name: "console",
       },
       property: {
-        type: 'Identifier',
-        name: 'log'
+        type: "Identifier",
+        name: "log",
       },
-      computed: false
+      computed: false,
     },
     arguments: [
       {
-        type: 'Identifier',
-        name: 'answer'
-      }
-    ]
-  }
+        type: "Identifier",
+        name: "answer",
+      },
+    ],
+  },
 })
 ```
 
 Strings will be converted into abstract syntax tree under the hood. Please note that this approach might make the code run a bit slower due to an extra interpretation step.
 
 ```js
-const { parse, append } = require('abstract-syntax-tree')
-const source = 'const answer = 42'
+const { parse, append } = require("abstract-syntax-tree")
+const source = "const answer = 42"
 const tree = parse(source)
-append(tree, 'console.log(answer)')
+append(tree, "console.log(answer)")
 ```
 
 #### prepend
@@ -332,53 +336,57 @@ append(tree, 'console.log(answer)')
 Prepend unshifts nodes to the body of the abstract syntax tree. Accepts estree nodes or strings as input, same as append.
 
 ```js
-const { parse, prepend } = require('abstract-syntax-tree')
-const source = 'const a = 1;'
+const { parse, prepend } = require("abstract-syntax-tree")
+const source = "const a = 1;"
 const tree = parse(source)
 prepend(tree, {
-  type: 'ExpressionStatement',
+  type: "ExpressionStatement",
   expression: {
-    type: 'Literal',
-    value: 'use strict'
-  }
+    type: "Literal",
+    value: "use strict",
+  },
 })
 ```
 
 #### equal
 
 ```js
-const { equal } = require('abstract-syntax-tree')
-console.log(equal({ type: 'Literal', value: 42 }, { type: 'Literal', value: 42 })) // true
-console.log(equal({ type: 'Literal', value: 41 }, { type: 'Literal', value: 42 })) // false
-````
+const { equal } = require("abstract-syntax-tree")
+console.log(
+  equal({ type: "Literal", value: 42 }, { type: "Literal", value: 42 })
+) // true
+console.log(
+  equal({ type: "Literal", value: 41 }, { type: "Literal", value: 42 })
+) // false
+```
 
 #### match
 
 ```js
-const { match } = require('abstract-syntax-tree')
-console.log(match({ type: 'Literal', value: 42 }, 'Literal[value=42]')) // true
-console.log(match({ type: 'Literal', value: 41 }, 'Literal[value=42]')) // false
-````
-
+const { match } = require("abstract-syntax-tree")
+console.log(match({ type: "Literal", value: 42 }, "Literal[value=42]")) // true
+console.log(match({ type: "Literal", value: 41 }, "Literal[value=42]")) // false
+```
 
 #### template
 
 The function converts the input to an equivalent abstract syntax tree representation.
 
 ```js
-const { template } = require('abstract-syntax-tree')
+const { template } = require("abstract-syntax-tree")
 const literal = template(42)
-const nodes = template('const foo = <%= bar %>;', { bar: { type: 'Literal', value: 1 } })
+const nodes = template("const foo = <%= bar %>;", {
+  bar: { type: "Literal", value: 1 },
+})
 ```
 
-
 ```js
-const { template } = require('abstract-syntax-tree')
-const nodes = template('function foo(%= bar %) {}', {
+const { template } = require("abstract-syntax-tree")
+const nodes = template("function foo(%= bar %) {}", {
   bar: [
-    { type: 'Identifier', name: 'baz' },
-    { type: 'Identifier', name: 'qux' }
-  ]
+    { type: "Identifier", name: "baz" },
+    { type: "Identifier", name: "qux" },
+  ],
 })
 ```
 
@@ -387,7 +395,7 @@ const nodes = template('function foo(%= bar %) {}', {
 Creates an abstract syntax tree with a blank program.
 
 ```js
-const { program } = require('abstract-syntax-tree')
+const { program } = require("abstract-syntax-tree")
 const tree = program() // { type: 'Program', sourceType: 'module', body: [] }
 ```
 
@@ -396,10 +404,9 @@ const tree = program() // { type: 'Program', sourceType: 'module', body: [] }
 Creates an abstract syntax tree for an immediately invoked function expression.
 
 ```js
-const { iife } = require('abstract-syntax-tree')
+const { iife } = require("abstract-syntax-tree")
 const node = iife() // { type: 'ExpressionStatement', expression: { ... } }
 ```
-
 
 ### Instance Methods
 
@@ -408,45 +415,45 @@ Almost all of the static methods (excluding parse, generate, template and match)
 #### mark
 
 ```js
-const AbstractSyntaxTree = require('abstract-syntax-tree')
-const tree = new AbstractSyntaxTree('const a = 1')
+const AbstractSyntaxTree = require("abstract-syntax-tree")
+const tree = new AbstractSyntaxTree("const a = 1")
 tree.mark()
-console.log(tree.first('Program').cid) // 1
-console.log(tree.first('VariableDeclaration').cid) // 2
+console.log(tree.first("Program").cid) // 1
+console.log(tree.first("VariableDeclaration").cid) // 2
 ```
 
 #### wrap
 
 ```js
-const AbstractSyntaxTree = require('abstract-syntax-tree')
-const source = 'const a = 1'
+const AbstractSyntaxTree = require("abstract-syntax-tree")
+const source = "const a = 1"
 const tree = new AbstractSyntaxTree(source)
-tree.wrap(body => {
-    return [
-      {
-        type: 'ExpressionStatement',
-        expression: {
-          type: 'CallExpression',
-          callee: {
-            type: 'FunctionExpression',
-            params: [],
-            body: {
-              type: 'BlockStatement',
-              body
-            }
+tree.wrap((body) => {
+  return [
+    {
+      type: "ExpressionStatement",
+      expression: {
+        type: "CallExpression",
+        callee: {
+          type: "FunctionExpression",
+          params: [],
+          body: {
+            type: "BlockStatement",
+            body,
           },
-          arguments: []
-        }
-      }
-    ]
+        },
+        arguments: [],
+      },
+    },
+  ]
 })
 ```
 
 #### unwrap
 
 ```js
-const AbstractSyntaxTree = require('abstract-syntax-tree')
-const source = '(function () { console.log(1); }())'
+const AbstractSyntaxTree = require("abstract-syntax-tree")
+const source = "(function () { console.log(1); }())"
 const tree = new AbstractSyntaxTree(source)
 tree.unwrap()
 console.log(tree.source) // console.log(1);
@@ -463,7 +470,7 @@ Gives the body of the root node.
 Gives access to the source code representation of the abstract syntax tree.
 
 ```js
-const AbstractSyntaxTree = require('abstract-syntax-tree')
+const AbstractSyntaxTree = require("abstract-syntax-tree")
 const source = 'const foo = "bar";'
 const tree = new AbstractSyntaxTree(source)
 console.log(tree.source) // const foo = "bar";
@@ -484,14 +491,14 @@ Sets the body of the root node.
 #### toBinaryExpression
 
 ```js
-const { toBinaryExpression } = require('abstract-syntax-tree')
+const { toBinaryExpression } = require("abstract-syntax-tree")
 const expression = {
-  type: 'ArrayExpression',
+  type: "ArrayExpression",
   elements: [
-    { type: 'Literal', value: 'foo' },
-    { type: 'Literal', value: 'bar' },
-    { type: 'Literal', value: 'baz' }
-  ]
+    { type: "Literal", value: "foo" },
+    { type: "Literal", value: "bar" },
+    { type: "Literal", value: "baz" },
+  ],
 }
 console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 ```
@@ -501,106 +508,106 @@ console.log(toBinaryExpression(expression)) // { type: 'BinaryExpression', ... }
 You can also use classes to create nodes.
 
 ```js
-const { ArrayExpression, Literal } = require('abstract-syntax-tree')
+const { ArrayExpression, Literal } = require("abstract-syntax-tree")
 const expression = new ArrayExpression([
-  new Literal('foo'),
-  new Literal('bar'),
-  new Literal('baz')
+  new Literal("foo"),
+  new Literal("bar"),
+  new Literal("baz"),
 ])
 ```
 
 Here's a list of all available nodes, with examples.
 
-| Type                     | Example                                                          |
-|--------------------------|:----------------------------------------------------------------:|
-| ArrayExpression          | <code>const foo = []</code>                                      |
-| ArrayPattern             | <code>const [foo, bar] = bar</code>                              |
-| ArrowFunctionExpression  | <code>(() => {})</code>                                    |
-| AssignmentExpression     | <code>foo = bar</code>                                           |
+| Type                     |                             Example                              |
+| ------------------------ | :--------------------------------------------------------------: |
+| ArrayExpression          |                   <code>const foo = []</code>                    |
+| ArrayPattern             |               <code>const [foo, bar] = bar</code>                |
+| ArrowFunctionExpression  |                     <code>(() => {})</code>                      |
+| AssignmentExpression     |                      <code>foo = bar</code>                      |
 | AssignmentOperator       |                                                                  |
-| AssignmentPattern        | <code>function foo(bar = baz) {} </code>                         |
-| AwaitExpression          | <code>(async () => { await foo() })()</code>                     |
-| BigIntLiteral            | <code>const foo = 9007199254740991n</code>                       |
-| BinaryExpression         | <code>foo + bar</code>                                           |
+| AssignmentPattern        |             <code>function foo(bar = baz) {} </code>             |
+| AwaitExpression          |           <code>(async () => { await foo() })()</code>           |
+| BigIntLiteral            |                                                                  |
+| BinaryExpression         |                      <code>foo + bar</code>                      |
 | BinaryOperator           |                                                                  |
-| BlockStatement           | <code>{ console.log(foo) }</code>                                |
-| BreakStatement           | <code>for (foo in bar) break</code>                              |
-| CallExpression           | <code>foo()</code>                                               |
-| CatchClause              | <code>try {} catch (error) {}</code>                             |
+| BlockStatement           |                <code>{ console.log(foo) }</code>                 |
+| BreakStatement           |               <code>for (foo in bar) break</code>                |
+| CallExpression           |                        <code>foo()</code>                        |
+| CatchClause              |               <code>try {} catch (error) {}</code>               |
 | ChainElement             |                                                                  |
-| ChainExpression          | <code>foo?.()</code>                                             |
+| ChainExpression          |                       <code>foo?.()</code>                       |
 | Class                    |                                                                  |
-| ClassBody                | <code>class Foo {}</code>                                        |
-| ClassDeclaration         | <code>class Foo {}</code>                                        |
-| ClassExpression          | <code>(class {})</code>                                          |
-| ConditionalExpression    | <code>foo ? bar : baz</code>                                     |
-| ContinueStatement        | <code>while(true) { continue }</code>                            |
-| DebuggerStatement        | <code>debugger</code>                                            |
+| ClassBody                |                    <code>class Foo {}</code>                     |
+| ClassDeclaration         |                    <code>class Foo {}</code>                     |
+| ClassExpression          |                     <code>(class {})</code>                      |
+| ConditionalExpression    |                   <code>foo ? bar : baz</code>                   |
+| ContinueStatement        |              <code>while(true) { continue }</code>               |
+| DebuggerStatement        |                      <code>debugger</code>                       |
 | Declaration              |                                                                  |
 | Directive                |                                                                  |
-| DoWhileStatement         | <code>do {} while (true) {}</code>                               |
-| EmptyStatement           | <code>;</code>                                                   |
-| ExportAllDeclaration     | <code>export * from "foo"</code>                                 |
-| ExportDefaultDeclaration | <code>export default foo</code>                                  |
-| ExportNamedDeclaration   | <code>export { foo as bar }</code>                               |
-| ExportSpecifier          | <code>export { foo }</code>                                      |
+| DoWhileStatement         |                <code>do {} while (true) {}</code>                |
+| EmptyStatement           |                          <code>;</code>                          |
+| ExportAllDeclaration     |                <code>export \* from "foo"</code>                 |
+| ExportDefaultDeclaration |                 <code>export default foo</code>                  |
+| ExportNamedDeclaration   |                <code>export { foo as bar }</code>                |
+| ExportSpecifier          |                   <code>export { foo }</code>                    |
 | Expression               |                                                                  |
-| ExpressionStatement      | <code>foo</code>                                                 |
-| ForInStatement           | <code>for (foo in bar) {}</code>                                 |
-| ForOfStatement           | <code>for (foo of bar) {}</code>                                 |
-| ForStatement             | <code>for (let i = 0; i < 10; i ++) {}</code>                    |
+| ExpressionStatement      |                         <code>foo</code>                         |
+| ForInStatement           |                 <code>for (foo in bar) {}</code>                 |
+| ForOfStatement           |                 <code>for (foo of bar) {}</code>                 |
+| ForStatement             |          <code>for (let i = 0; i < 10; i ++) {}</code>           |
 | Function                 |                                                                  |
 | FunctionBody             |                                                                  |
-| FunctionDeclaration      | <code>function foo () {}</code>                                  |
-| FunctionExpression       | <code>(function () {})</code>                                    |
-| Identifier               | <code>foo</code>                                                 |
-| IfStatement              | <code>if (foo) {}</code>                                         |
-| ImportDeclaration        | <code>import "foo"</code>                                        |
-| ImportDefaultSpecifier   | <code>import foo from "bar"</code>                               |
-| ImportExpression         | <code>import(foo).then(bar)</code>                               |
-| ImportNamespaceSpecifier | <code>import * as foo from "bar"</code>                          |
-| ImportSpecifier          | <code>import { foo } from "bar"</code>                           |
-| LabeledStatement         | <code>label: foo</code>                                          |
-| Literal                  | <code>42</code>                                                  |
-| LogicalExpression        | <code>true && false</code>                                       |
+| FunctionDeclaration      |                 <code>function foo () {}</code>                  |
+| FunctionExpression       |                  <code>(function () {})</code>                   |
+| Identifier               |                         <code>foo</code>                         |
+| IfStatement              |                     <code>if (foo) {}</code>                     |
+| ImportDeclaration        |                    <code>import "foo"</code>                     |
+| ImportDefaultSpecifier   |                <code>import foo from "bar"</code>                |
+| ImportExpression         |                <code>import(foo).then(bar)</code>                |
+| ImportNamespaceSpecifier |             <code>import \* as foo from "bar"</code>             |
+| ImportSpecifier          |              <code>import { foo } from "bar"</code>              |
+| LabeledStatement         |                     <code>label: foo</code>                      |
+| Literal                  |                         <code>42</code>                          |
+| LogicalExpression        |                    <code>true && false</code>                    |
 | LogicalOperator          |                                                                  |
-| MemberExpression         | <code>foo.bar</code>                                             |
-| MetaProperty             | <code>function foo () { new.target }</code>                      |
-| MethodDefinition         | <code>class Foo { bar() {} }</code>                              |
+| MemberExpression         |                       <code>foo.bar</code>                       |
+| MetaProperty             |           <code>function foo () { new.target }</code>            |
+| MethodDefinition         |               <code>class Foo { bar() {} }</code>                |
 | ModuleDeclaration        |                                                                  |
 | ModuleSpecifier          |                                                                  |
-| NewExpression            | <code>new Foo()</code>                                           |
+| NewExpression            |                      <code>new Foo()</code>                      |
 | Node                     |                                                                  |
-| ObjectExpression         | <code>({})</code>                                                |
-| ObjectPattern            | <code>function foo ({}) {}</code>                                |
+| ObjectExpression         |                        <code>({})</code>                         |
+| ObjectPattern            |                <code>function foo ({}) {}</code>                 |
 | Pattern                  |                                                                  |
 | Position                 |                                                                  |
-| Program                  | <code>42</code>                                                  |
+| Program                  |                         <code>42</code>                          |
 | Property                 |                                                                  |
 | RegExpLiteral            |                                                                  |
-| RestElement              | <code>function foo (...bar) {}</code>                            |
-| ReturnStatement          | <code>function foo () { return bar }</code>                      |
-| SequenceExpression       | <code>foo, bar</code>                                            |
+| RestElement              |              <code>function foo (...bar) {}</code>               |
+| ReturnStatement          |           <code>function foo () { return bar }</code>            |
+| SequenceExpression       |                      <code>foo, bar</code>                       |
 | SourceLocation           |                                                                  |
 | SpreadElement            |                                                                  |
 | Statement                |                                                                  |
 | Super                    | <code>class Foo extends Bar { constructor() { super() } }</code> |
-| SwitchCase               | <code>switch (foo) { case 'bar': }</code>                        |
-| SwitchStatement          | <code>switch(foo) {}</code>                                      |
-| TaggedTemplateExpression | <code>css`.foo { color: red; }`</code>                           |
-| TemplateLiteral          | <code>css`.foo { color: red; }`</code>                           |
-| ThisExpression           | <code>this.foo = 'bar'</code>                                    |
-| ThrowStatement           | <code>throw new Error("foo")</code>                              |
-| TryStatement             | <code>try { foo() } catch (exception) { bar() }</code>           |
-| UnaryExpression          | <code>!foo</code>                                                |
+| SwitchCase               |            <code>switch (foo) { case 'bar': }</code>             |
+| SwitchStatement          |                   <code>switch(foo) {}</code>                    |
+| TaggedTemplateExpression |              <code>css`.foo { color: red; }`</code>              |
+| TemplateLiteral          |              <code>css`.foo { color: red; }`</code>              |
+| ThisExpression           |                  <code>this.foo = 'bar'</code>                   |
+| ThrowStatement           |               <code>throw new Error("foo")</code>                |
+| TryStatement             |      <code>try { foo() } catch (exception) { bar() }</code>      |
+| UnaryExpression          |                        <code>!foo</code>                         |
 | UnaryOperator            |                                                                  |
-| UpdateExpression         | <code>foo++</code>                                               |
+| UpdateExpression         |                        <code>foo++</code>                        |
 | UpdateOperator           |                                                                  |
-| VariableDeclaration      | <code>const answer = 42</code>                                   |
-| VariableDeclarator       | <code>const foo = 'bar'</code>                                   |
-| WhileStatement           | <code>while (true) {}</code>                                     |
-| WithStatement            | <code>with (foo) {}</code>                                       |
-| YieldExpression          | <code>function* foo() { yield bar }</code>                       |
+| VariableDeclaration      |                  <code>const answer = 42</code>                  |
+| VariableDeclarator       |                  <code>const foo = 'bar'</code>                  |
+| WhileStatement           |                   <code>while (true) {}</code>                   |
+| WithStatement            |                    <code>with (foo) {}</code>                    |
+| YieldExpression          |           <code>function\* foo() { yield bar }</code>            |
 
 ## Optimizations
 
@@ -611,7 +618,7 @@ Abstract syntax tree is a tree-like structure that represents your program. The 
 ### Usage
 
 ```js
-const { binaryExpressionReduction } = require('abstract-syntax-tree')
+const { binaryExpressionReduction } = require("abstract-syntax-tree")
 ```
 
 ### What optimization techniques are available?
@@ -649,86 +656,86 @@ to
 
 ```js
 if (true) {
-  console.log('foo')
+  console.log("foo")
 } else {
-  console.log('bar')
+  console.log("bar")
 }
 ```
 
 It seems that we'll only enter the true path. We can simplify the code to:
 
 ```js
-console.log('foo')
+console.log("foo")
 ```
 
 The tree would be translated from:
 
 ```json
 {
-      "type": "IfStatement",
-      "test": {
-        "type": "Literal",
-        "value": true
-      },
-      "consequent": {
-        "type": "BlockStatement",
-        "body": [
-          {
-            "type": "ExpressionStatement",
-            "expression": {
-              "type": "CallExpression",
-              "callee": {
-                "type": "MemberExpression",
-                "object": {
-                  "type": "Identifier",
-                  "name": "console"
-                },
-                "property": {
-                  "type": "Identifier",
-                  "name": "log"
-                },
-                "computed": false
-              },
-              "arguments": [
-                {
-                  "type": "Literal",
-                  "value": "foo"
-                }
-              ]
+  "type": "IfStatement",
+  "test": {
+    "type": "Literal",
+    "value": true
+  },
+  "consequent": {
+    "type": "BlockStatement",
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "MemberExpression",
+            "object": {
+              "type": "Identifier",
+              "name": "console"
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "log"
+            },
+            "computed": false
+          },
+          "arguments": [
+            {
+              "type": "Literal",
+              "value": "foo"
             }
-          }
-        ]
-      },
-      "alternate": {
-        "type": "BlockStatement",
-        "body": [
-          {
-            "type": "ExpressionStatement",
-            "expression": {
-              "type": "CallExpression",
-              "callee": {
-                "type": "MemberExpression",
-                "object": {
-                  "type": "Identifier",
-                  "name": "console"
-                },
-                "property": {
-                  "type": "Identifier",
-                  "name": "log"
-                },
-                "computed": false
-              },
-              "arguments": [
-                {
-                  "type": "Literal",
-                  "value": "bar"
-                }
-              ]
-            }
-          }
-        ]
+          ]
+        }
       }
-    }
+    ]
+  },
+  "alternate": {
+    "type": "BlockStatement",
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "MemberExpression",
+            "object": {
+              "type": "Identifier",
+              "name": "console"
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "log"
+            },
+            "computed": false
+          },
+          "arguments": [
+            {
+              "type": "Literal",
+              "value": "bar"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
 ```
 
 to:
@@ -761,15 +768,15 @@ to:
 
 ```js
 if (!(foo === bar)) {
-  console.log('foo')
+  console.log("foo")
 }
 ```
 
 It seems that our negation operator could be a part of the condition inside the brackets.
 
 ```js
-if (foo !== bar)  {
-  console.log('foo')
+if (foo !== bar) {
+  console.log("foo")
 }
 ```
 
@@ -853,7 +860,7 @@ To:
 #### ternaryOperatorReduction
 
 ```js
-const foo = true ? "bar": "baz"
+const foo = true ? "bar" : "baz"
 ```
 
 Given a known value of the conditional expression it's possible to get the right value immediately.
@@ -929,7 +936,7 @@ To:
 #### memberExpressionReduction
 
 ```js
-const foo = ({ bar: "baz" }).bar
+const foo = { bar: "baz" }.bar
 ```
 
 Given an inlined object expression it's possible to retrieve the value immediately.
