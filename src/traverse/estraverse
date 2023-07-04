@@ -449,6 +449,8 @@ Controller.prototype.traverse = function traverse(root, visitor) {
                 if (this.__fallback) {
                     candidates = this.__fallback(node);
                 } else {
+                    // TODO we'd like to iterate through custom nodes too
+                    // we could try to deduce candidates
                     throw new Error('Unknown node type ' + nodeType + '.');
                 }
             }
@@ -612,6 +614,8 @@ Controller.prototype.replace = function replace(root, visitor) {
             if (this.__fallback) {
                 candidates = this.__fallback(node);
             } else {
+                // TODO we'd like to iterate through custom nodes too
+                // we could try to deduce candidates
                 throw new Error('Unknown node type ' + nodeType + '.');
             }
         }
