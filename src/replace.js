@@ -1,6 +1,6 @@
-const estraverse = require('estraverse')
+const estraverse = require("./traverse/estraverse")
 
-function complexReplace (method, node, parent) {
+function complexReplace(method, node, parent) {
   const replacement = method(node, parent)
   if (Array.isArray(replacement)) {
     parent.body = parent.body.reduce((result, leaf) => {
@@ -9,27 +9,33 @@ function complexReplace (method, node, parent) {
   } else if (replacement) {
     return replacement
   } else if (replacement === null) {
-    parent.body = parent.body.reduce((result, leaf) => {
-      return result.concat(node === leaf ? null : leaf)
-    }, []).filter(Boolean)
+    parent.body = parent.body
+      .reduce((result, leaf) => {
+        return result.concat(node === leaf ? null : leaf)
+      }, [])
+      .filter(Boolean)
   }
 }
 
-module.exports = function replace (tree, options) {
-  const enter = typeof options === 'function' ? options : options.enter
+module.exports = function replace(tree, options) {
+  const enter = typeof options === "function" ? options : options.enter
   const leave = options && options.leave
   return estraverse.replace(tree, {
-    enter (node, parent) {
+    enter(node, parent) {
       if (enter) {
         const replacement = complexReplace(enter, node, parent)
-        if (replacement) { return replacement }
+        if (replacement) {
+          return replacement
+        }
       }
     },
-    leave (node, parent) {
+    leave(node, parent) {
       if (leave) {
         const replacement = complexReplace(leave, node, parent)
-        if (replacement) { return replacement }
+        if (replacement) {
+          return replacement
+        }
       }
-    }
+    },
   })
 }
