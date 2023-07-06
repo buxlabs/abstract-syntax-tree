@@ -20,8 +20,8 @@ const generator = {
   JSXOpeningElement(node, state) {
     this[node.name.type](node.name, state)
     for (let i = 0; i < node.attributes.length; i += 1) {
-      const attr = node.attributes[i]
-      this[attr.type](attr, state)
+      const attribute = node.attributes[i]
+      this[attribute.type](attribute, state)
     }
   },
   JSXClosingElement(node, state) {
@@ -29,6 +29,9 @@ const generator = {
   },
   JSXIdentifier(node, state) {
     state.write(node.name)
+  },
+  JSXText(node, state) {
+    state.write(node.value)
   },
   JSXMemberExpression(node, state) {
     this[node.object.type](node.object, state)

@@ -1,6 +1,15 @@
-const test = require('ava')
-const AbstractSyntaxTree = require('..')
+const test = require("ava")
+const AbstractSyntaxTree = require("..")
 
-test('it works for jsx', assert => {
-  assert.truthy(new AbstractSyntaxTree('var x = (<div>foo</div>);', { jsx: true }))
+test("it works for jsx", (assert) => {
+  const tree = new AbstractSyntaxTree("<div>foo</div>;", { jsx: true })
+  tree.replace((node) => {
+    if (node.type === "JSXIdentifier") {
+      return {
+        ...node,
+        name: "span",
+      }
+    }
+  })
+  assert.deepEqual(tree.source.trim(), "<span>foo</span>;")
 })
