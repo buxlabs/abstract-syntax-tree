@@ -23,29 +23,7 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var Syntax, VisitorOption, VisitorKeys, BREAK, SKIP, REMOVE
-
-// based on LLVM libc++ upper_bound / lower_bound
-// MIT License
-
-function upperBound(array, func) {
-  var diff, len, i, current
-
-  len = array.length
-  i = 0
-
-  while (len) {
-    diff = len >>> 1
-    current = i + diff
-    if (func(array[current])) {
-      len = diff
-    } else {
-      i = current + 1
-      len -= diff + 1
-    }
-  }
-  return i
-}
+let Syntax, VisitorKeys, BREAK, SKIP, REMOVE
 
 Syntax = {
   AssignmentExpression: "AssignmentExpression",
