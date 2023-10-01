@@ -23,7 +23,7 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-let Syntax, VisitorKeys, BREAK, SKIP, REMOVE
+let Syntax, VisitorKeys, BREAK, SKIP, REMOVE, VisitorOption
 
 Syntax = {
   AssignmentExpression: "AssignmentExpression",
