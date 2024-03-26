@@ -1,7 +1,8 @@
-const test = require('ava')
-const { CatchClause } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { CatchClause } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new CatchClause()
-  assert.deepEqual(node.type, 'CatchClause')
+  assert.deepEqual(node.type, "CatchClause")
 })

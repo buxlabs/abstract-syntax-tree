@@ -1,7 +1,8 @@
-const test = require("ava")
+const test = require("node:test")
+const assert = require("node:assert")
 const AbstractSyntaxTree = require("..")
 
-test("it can be used with a callback syntax", (assert) => {
+test("it can be used with a callback syntax", () => {
   const source = "const a = 1"
   const tree = new AbstractSyntaxTree(source)
   tree.replace((node) => {
@@ -13,7 +14,7 @@ test("it can be used with a callback syntax", (assert) => {
   assert.deepEqual(tree.source, "var a = 1;\n")
 })
 
-test("it replaces nodes on enter", (assert) => {
+test("it replaces nodes on enter", () => {
   const source = "const a = 1"
   const tree = new AbstractSyntaxTree(source)
   tree.replace({
@@ -27,7 +28,7 @@ test("it replaces nodes on enter", (assert) => {
   assert.deepEqual(tree.source, "let a = 1;\n")
 })
 
-test("it replaces nodes on leave", (assert) => {
+test("it replaces nodes on leave", () => {
   const source = "const a = 1"
   const tree = new AbstractSyntaxTree(source)
   tree.replace({
@@ -41,7 +42,7 @@ test("it replaces nodes on leave", (assert) => {
   assert.deepEqual(tree.source, "let a = 1;\n")
 })
 
-test("it can replace given node with multiple nodes", (assert) => {
+test("it can replace given node with multiple nodes", () => {
   const source = '"foo";"bar";'
   const tree = new AbstractSyntaxTree(source)
   tree.replace({
@@ -68,7 +69,7 @@ test("it can replace given node with multiple nodes", (assert) => {
   assert.deepEqual(tree.source, '"foo";\n"baz";\n"qux";\n')
 })
 
-test("it can remove given node", (assert) => {
+test("it can remove given node", () => {
   const source = '"foo";"bar";'
   const tree = new AbstractSyntaxTree(source)
   tree.replace({
@@ -86,7 +87,7 @@ test("it can remove given node", (assert) => {
   assert.deepEqual(tree.source, '"foo";\n')
 })
 
-test("it lets you convert nodes to jsx", (assert) => {
+test("it lets you convert nodes to jsx", () => {
   const source = '"foo";'
   const tree = new AbstractSyntaxTree(source)
   tree.replace((node) => {

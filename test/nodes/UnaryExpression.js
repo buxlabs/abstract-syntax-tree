@@ -1,17 +1,18 @@
-const test = require('ava')
-const { UnaryExpression, Literal } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { UnaryExpression, Literal } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new UnaryExpression()
-  assert.deepEqual(node.type, 'UnaryExpression')
+  assert.deepEqual(node.type, "UnaryExpression")
 })
 
-test('it sets correct data', assert => {
+test("it sets correct data", () => {
   const node = new UnaryExpression({
-    operator: 'void',
+    operator: "void",
     argument: new Literal(0),
-    prefix: true
+    prefix: true,
   })
-  assert.deepEqual(node.operator, 'void')
+  assert.deepEqual(node.operator, "void")
   assert.deepEqual(node.argument, new Literal(0))
 })

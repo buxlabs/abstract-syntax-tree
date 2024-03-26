@@ -1,7 +1,8 @@
-const test = require("ava")
+const test = require("node:test")
+const assert = require("node:assert")
 const AbstractSyntaxTree = require("..")
 
-test("it lets you traverse over the tree", (assert) => {
+test("it lets you traverse over the tree", () => {
   const source = "var a = 1;"
   const tree = new AbstractSyntaxTree(source)
   tree.traverse({
@@ -15,7 +16,7 @@ test("it lets you traverse over the tree", (assert) => {
   assert.deepEqual(tree.source, "const a = 1;\n")
 })
 
-test("it is exposed as a static method", (assert) => {
+test("it is exposed as a static method", () => {
   const { parse, traverse, generate } = AbstractSyntaxTree
   const tree = parse("var a = 1")
   traverse(tree, {

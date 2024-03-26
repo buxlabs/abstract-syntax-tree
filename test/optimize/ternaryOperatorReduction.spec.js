@@ -1,8 +1,9 @@
-const test = require('ava')
-const AbstractSyntaxTree = require('../..')
-const { ternaryOperatorReduction } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const AbstractSyntaxTree = require("../..")
+const { ternaryOperatorReduction } = require("../..")
 
-test('ternaryOperatorReduction', assert => {
+test("ternaryOperatorReduction", () => {
   var tree = new AbstractSyntaxTree('const foo = true ? "bar" : "baz"\n')
   tree.replace(ternaryOperatorReduction)
   assert.deepEqual(tree.source, 'const foo = "bar";\n')
@@ -19,7 +20,12 @@ test('ternaryOperatorReduction', assert => {
   tree.replace(ternaryOperatorReduction)
   assert.deepEqual(tree.source, 'const foo = "bar";\n')
 
-  var tree = new AbstractSyntaxTree('const foo = process.env.NODE_ENV === "production" ? "bar" : "baz"\n')
+  var tree = new AbstractSyntaxTree(
+    'const foo = process.env.NODE_ENV === "production" ? "bar" : "baz"\n'
+  )
   tree.replace(ternaryOperatorReduction)
-  assert.deepEqual(tree.source, 'const foo = process.env.NODE_ENV === "production" ? "bar" : "baz";\n')
+  assert.deepEqual(
+    tree.source,
+    'const foo = process.env.NODE_ENV === "production" ? "bar" : "baz";\n'
+  )
 })

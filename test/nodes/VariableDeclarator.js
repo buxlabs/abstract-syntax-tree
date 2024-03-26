@@ -1,7 +1,8 @@
-const test = require('ava')
-const { VariableDeclarator } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { VariableDeclarator } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new VariableDeclarator()
-  assert.deepEqual(node.type, 'VariableDeclarator')
+  assert.deepEqual(node.type, "VariableDeclarator")
 })

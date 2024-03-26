@@ -1,7 +1,8 @@
-const test = require('ava')
-const { LogicalOperator } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { LogicalOperator } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new LogicalOperator()
-  assert.deepEqual(node.type, 'LogicalOperator')
+  assert.deepEqual(node.type, "LogicalOperator")
 })

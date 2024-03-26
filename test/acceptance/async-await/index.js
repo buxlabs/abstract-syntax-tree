@@ -1,11 +1,8 @@
-const test = require('ava')
-const {
-  generate,
-  first,
-  parse
-} = require('../../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { generate, first, parse } = require("../../..")
 
-test('async-await: can be parsed and generated', assert => {
+test("async-await: can be parsed and generated", () => {
   const source = `
     async function foo () {}
 
@@ -14,8 +11,8 @@ test('async-await: can be parsed and generated', assert => {
     })
   `
   const tree = parse(source)
-  assert.truthy(first(tree, 'AwaitExpression'))
-  assert.truthy(first(tree, '[async=true]'))
+  assert(first(tree, "AwaitExpression"))
+  assert(first(tree, "[async=true]"))
   const output = generate(tree)
-  assert.truthy(output)
+  assert(output)
 })

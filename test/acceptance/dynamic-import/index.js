@@ -1,11 +1,8 @@
-const test = require('ava')
-const {
-  generate,
-  first,
-  parse
-} = require('../../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { generate, first, parse } = require("../../..")
 
-test('dynamic-import: can be parsed', assert => {
+test("dynamic-import: can be parsed", () => {
   const source = `
     import('foo.js')
       .then(function (bar) {
@@ -13,11 +10,11 @@ test('dynamic-import: can be parsed', assert => {
       })
   `
   const tree = parse(source)
-  const node = first(tree, 'ImportExpression')
-  assert.truthy(node)
+  const node = first(tree, "ImportExpression")
+  assert(node)
 })
 
-test('dynamic-import: can be generated', assert => {
+test("dynamic-import: can be generated", () => {
   const source = `
     import('foo.js')
       .then(function (bar) {
@@ -26,5 +23,5 @@ test('dynamic-import: can be generated', assert => {
   `
   const tree = parse(source)
   const output = generate(tree)
-  assert.truthy(output.includes('import("foo.js").then('))
+  assert(output.includes('import("foo.js").then('))
 })

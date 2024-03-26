@@ -1,7 +1,8 @@
-const test = require("ava")
+const test = require("node:test")
+const assert = require("node:assert")
 const AbstractSyntaxTree = require("..")
 
-test("it works for jsx", (assert) => {
+test("it works for jsx", () => {
   const tree = new AbstractSyntaxTree("<div>foo</div>;", { jsx: true })
   tree.replace((node) => {
     if (node.type === "JSXIdentifier") {

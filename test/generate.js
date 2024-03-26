@@ -1,7 +1,8 @@
-const test = require("ava")
+const test = require("node:test")
+const assert = require("node:assert")
 const AbstractSyntaxTree = require("..")
 
-test("it stringifies source", (assert) => {
+test("it stringifies source", () => {
   const source = AbstractSyntaxTree.generate({
     type: "Program",
     body: [
@@ -14,7 +15,7 @@ test("it stringifies source", (assert) => {
   assert.deepEqual(source.trim(), '"foo";')
 })
 
-test("it has an experimental jsx support", (assert) => {
+test("it has an experimental jsx support", () => {
   const source = AbstractSyntaxTree.generate({
     type: "Program",
     body: [

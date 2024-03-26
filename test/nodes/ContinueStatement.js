@@ -1,7 +1,8 @@
-const test = require('ava')
-const { ContinueStatement } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { ContinueStatement } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new ContinueStatement()
-  assert.deepEqual(node.type, 'ContinueStatement')
+  assert.deepEqual(node.type, "ContinueStatement")
 })

@@ -1,7 +1,8 @@
-const test = require('ava')
-const { TemplateElement } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { TemplateElement } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new TemplateElement()
-  assert.deepEqual(node.type, 'TemplateElement')
+  assert.deepEqual(node.type, "TemplateElement")
 })

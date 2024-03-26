@@ -1,7 +1,8 @@
-const test = require("ava")
+const test = require("node:test")
+const assert = require("node:assert")
 const AbstractSyntaxTree = require("..")
 
-test("it lets you walk over the tree", (assert) => {
+test("it lets you walk over the tree", () => {
   const source = "var a = 1;"
   const tree = new AbstractSyntaxTree(source)
   tree.walk((node) => {

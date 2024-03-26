@@ -1,7 +1,8 @@
-const test = require('ava')
-const { EmptyStatement } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { EmptyStatement } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new EmptyStatement()
-  assert.deepEqual(node.type, 'EmptyStatement')
+  assert.deepEqual(node.type, "EmptyStatement")
 })

@@ -1,7 +1,8 @@
-const test = require('ava')
-const { WhileStatement } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { WhileStatement } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new WhileStatement()
-  assert.deepEqual(node.type, 'WhileStatement')
+  assert.deepEqual(node.type, "WhileStatement")
 })

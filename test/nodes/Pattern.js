@@ -1,7 +1,8 @@
-const test = require('ava')
-const { Pattern } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { Pattern } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new Pattern()
-  assert.deepEqual(node.type, 'Pattern')
+  assert.deepEqual(node.type, "Pattern")
 })

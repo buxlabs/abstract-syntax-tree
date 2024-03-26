@@ -1,7 +1,8 @@
-const test = require('ava')
-const { ImportNamespaceSpecifier } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { ImportNamespaceSpecifier } = require("../..")
 
-test('it sets a correct type', assert => {
+test("it sets a correct type", () => {
   const node = new ImportNamespaceSpecifier()
-  assert.deepEqual(node.type, 'ImportNamespaceSpecifier')
+  assert.deepEqual(node.type, "ImportNamespaceSpecifier")
 })

@@ -1,6 +1,7 @@
-const test = require('ava')
-const { serialize } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { serialize } = require("../..")
 
-test('serialize: String', assert => {
-  assert.deepEqual(serialize({ type: 'Literal', value: '42' }), '42')
+test("serialize: String", () => {
+  assert.deepEqual(serialize({ type: "Literal", value: "42" }), "42")
 })

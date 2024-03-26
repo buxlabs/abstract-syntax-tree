@@ -1,6 +1,7 @@
-const test = require('ava')
-const { serialize } = require('../..')
+const test = require("node:test")
+const assert = require("node:assert")
+const { serialize } = require("../..")
 
-test('serialize: NaN', assert => {
-  assert.truthy(isNaN(serialize({ type: 'Identifier', name: 'NaN' })))
+test("serialize: NaN", () => {
+  assert(isNaN(serialize({ type: "Identifier", name: "NaN" })))
 })
