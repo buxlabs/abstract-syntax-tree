@@ -8,7 +8,7 @@
     "coverage": "c8 npm test"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.11.1"
   },
   "repository": {
     "type": "git",
