@@ -19,11 +19,24 @@ test("template: from string", () => {
   ])
 })
 
-test.skip("template: from string with params", () => {
-  assert(
-    template("var x = <%= value %>;", {
-      value: { type: "Literal", value: 1 },
-    })[0].declarations[0].init.value === 1
+test("template: from string with params", () => {
+  assert.deepEqual(
+    template("const foo = <%= value %>;", {
+      value: { type: "Literal", value: "bar" },
+    }),
+    [
+      {
+        type: "VariableDeclaration",
+        declarations: [
+          {
+            type: "VariableDeclarator",
+            id: { type: "Identifier", name: "foo" },
+            init: { type: "Literal", value: "bar" },
+          },
+        ],
+        kind: "const",
+      },
+    ]
   )
 })
 
