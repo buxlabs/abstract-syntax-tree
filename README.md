@@ -370,7 +370,9 @@ console.log(match({ type: "Literal", value: 41 }, "Literal[value=42]")) // false
 
 #### template
 
-The function converts the input to an equivalent abstract syntax tree representation.
+The function converts the input to an equivalent abstract syntax tree representation. The function uses a `<%= %>` syntax to insert nodes.
+
+You can also use standard javascript types and they're going to be transformed automatically.
 
 ```js
 const { template } = require("abstract-syntax-tree")
@@ -382,11 +384,19 @@ const nodes = template("const foo = <%= bar %>;", {
 
 ```js
 const { template } = require("abstract-syntax-tree")
-const nodes = template("function foo(%= bar %) {}", {
+const nodes = template("function foo(<%= bar %>) {}", {
   bar: [
     { type: "Identifier", name: "baz" },
     { type: "Identifier", name: "qux" },
   ],
+})
+```
+
+```js
+const { template } = require("abstract-syntax-tree")
+const literal = template(42)
+const nodes = template("const foo = <%= bar %>;", {
+  bar: 1,
 })
 ```
 

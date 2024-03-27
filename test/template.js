@@ -19,10 +19,10 @@ test("template: from string", () => {
   ])
 })
 
-test("template: from string with params", () => {
+test("template: from string literal with params", () => {
   assert.deepEqual(
     template("const foo = <%= value %>;", {
-      value: { type: "Literal", value: "bar" },
+      value: { type: "Literal", value: 42 },
     }),
     [
       {
@@ -31,7 +31,28 @@ test("template: from string with params", () => {
           {
             type: "VariableDeclarator",
             id: { type: "Identifier", name: "foo" },
-            init: { type: "Literal", value: "bar" },
+            init: { type: "Literal", value: 42 },
+          },
+        ],
+        kind: "const",
+      },
+    ]
+  )
+})
+
+test("template: from string with params", () => {
+  assert.deepEqual(
+    template("const foo = <%= value %>;", {
+      value: 42,
+    }),
+    [
+      {
+        type: "VariableDeclaration",
+        declarations: [
+          {
+            type: "VariableDeclarator",
+            id: { type: "Identifier", name: "foo" },
+            init: { type: "Literal", value: 42 },
           },
         ],
         kind: "const",
@@ -70,9 +91,9 @@ test("template: simple substitution", () => {
   )
 })
 
-test.skip("template: spread array elements", () => {
+test("template: spread array elements", () => {
   assert.deepEqual(
-    convert("var a = [%= items %];", {
+    convert("var a = [<%= items %>];", {
       items: [
         { type: "Literal", value: 123 },
         { type: "Literal", value: 456 },
@@ -82,9 +103,9 @@ test.skip("template: spread array elements", () => {
   )
 })
 
-test.skip("template: spread call arguments", () => {
+test("template: spread call arguments", () => {
   assert.deepEqual(
-    convert("var x = f(%= items %);", {
+    convert("var x = f(<%= items %>);", {
       items: [
         { type: "Literal", value: 123 },
         { type: "Literal", value: 456 },
@@ -94,9 +115,9 @@ test.skip("template: spread call arguments", () => {
   )
 })
 
-test.skip("template: spread function params", () => {
+test("template: spread function params", () => {
   assert.deepEqual(
-    convert("function f(%= params %) {}", {
+    convert("function f(<%= params %>) {}", {
       params: [
         { type: "Identifier", name: "a" },
         { type: "Identifier", name: "b" },
@@ -106,9 +127,9 @@ test.skip("template: spread function params", () => {
   )
 })
 
-test.skip("template: spread block elements", () => {
+test("template: spread block elements", () => {
   assert.deepEqual(
-    convert("define(function () {%= body %});", {
+    convert("define(function () {<%= body %>});", {
       body: parse('module.exports = require("./module").property;').body,
     }),
     `define(function () {
@@ -117,9 +138,9 @@ test.skip("template: spread block elements", () => {
   )
 })
 
-test.skip("template: spread program root", () => {
+test("template: spread program root", () => {
   assert.deepEqual(
-    convert("var x = 42; %= body %", {
+    convert("var x = 42; <%= body %>", {
       body: parse("var y = 42;").body,
     }),
     `var x = 42;
@@ -127,9 +148,9 @@ var y = 42;`
   )
 })
 
-test.skip("template: spread literals", () => {
+test("template: spread literals", () => {
   assert.deepEqual(
-    convert('var a = "%= x %"; var b = "%= y %";', {
+    convert('var a = "<%= x %>"; var b = "<%= y %>";', {
       x: "alpha",
       y: "beta",
     }),
@@ -138,9 +159,9 @@ var b = "beta";`
   )
 })
 
-test.skip("template: spread concatenation with inline elements", () => {
+test("template: spread concatenation with inline elements", () => {
   assert.deepEqual(
-    convert("var a = [123, %= items %];", {
+    convert("var a = [123, <%= items %>];", {
       items: [
         { type: "Literal", value: 456 },
         { type: "Literal", value: 789 },
@@ -150,9 +171,9 @@ test.skip("template: spread concatenation with inline elements", () => {
   )
 })
 
-test.skip("template: spread concatenation with function params", () => {
+test("template: spread concatenation with function params", () => {
   assert.deepEqual(
-    convert("function f(%= params %, callback) {}", {
+    convert("function f(<%= params %>, callback) {}", {
       params: [
         { type: "Identifier", name: "a" },
         { type: "Identifier", name: "b" },
@@ -162,12 +183,12 @@ test.skip("template: spread concatenation with function params", () => {
   )
 })
 
-test.skip("template: spread concatenation around elements", () => {
+test("template: spread concatenation around elements", () => {
   assert.deepEqual(
     convert(
-      'function f() { console.time("module"); %= body %; console.timeEnd("module"); }',
+      'function f() { console.time("module"); <%= body %> console.timeEnd("module"); }',
       {
-        body: parse("init(); doSmth(); finalize();").body,
+        body: parse("init(); doSmth(); finalize();"),
       }
     ),
     `function f() {
@@ -180,11 +201,11 @@ test.skip("template: spread concatenation around elements", () => {
   )
 })
 
-test.skip("template: spread concatenation between elements", () => {
+test("template: spread concatenation between elements", () => {
   assert.deepEqual(
-    convert("function f() { %= init %; doSmth(); %= finalize %; }", {
-      init: parse('console.time("module"); init();').body,
-      finalize: parse('finalize(); console.timeEnd("module");').body,
+    convert("function f() { <%= init %> doSmth(); <%= finalize %> }", {
+      init: parse('console.time("module"); init();'),
+      finalize: parse('finalize(); console.timeEnd("module");'),
     }),
     `function f() {
   console.time("module");
@@ -220,7 +241,6 @@ test("template: from functions", () => {
 })
 
 test("template: from arrays", () => {
-  // assert.deepEqual(convert([], '[]'))
   assert.deepEqual(convert([1, 2, 3]), "[1, 2, 3]")
   assert.deepEqual(convert(["foo", "bar"]), '["foo", "bar"]')
   assert.deepEqual(

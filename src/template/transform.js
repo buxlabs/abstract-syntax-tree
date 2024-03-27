@@ -1,8 +1,4 @@
-"use strict"
-
 const parse = require("../parse")
-// const traverse = require("../traverse")
-// const replace = require("../replace")
 const tokenize = require("./tokenize")
 const generate = require("../generate")
 
@@ -11,9 +7,16 @@ function transform(string, data) {
 
   tokens.forEach((token) => {
     if (token.type === "expression") {
-      if (data[token.value]) {
+      const value = data[token.value]
+      if (value) {
         token.type = "code"
-        token.value = generate(data[token.value])
+        if (Array.isArray(value)) {
+          token.value = value.map((node) => generate(node)).join(", ")
+        } else if (typeof value === "object") {
+          token.value = generate(value)
+        } else {
+          token.value = value
+        }
       }
     }
   })
