@@ -40,7 +40,7 @@ test("template: from string with params", () => {
   )
 })
 
-test.skip("template: from string with import and export", () => {
+test("template: from string with import and export", () => {
   assert(
     template(
       `
@@ -55,7 +55,7 @@ test.skip("template: from string with import and export", () => {
   )
 })
 
-test.skip("template: simple substitution", () => {
+test("template: simple substitution", () => {
   assert.deepEqual(
     convert(
       `
@@ -196,12 +196,12 @@ test.skip("template: spread concatenation between elements", () => {
   )
 })
 
-test.skip("template: from undefined and null", () => {
+test("template: from undefined and null", () => {
   assert.deepEqual(convert(undefined), "void 0")
   assert.deepEqual(convert(null), "null")
 })
 
-test.skip("template: from numbers", () => {
+test("template: from numbers", () => {
   assert.deepEqual(convert(NaN), "NaN")
   assert.deepEqual(convert(Infinity), "Infinity")
   assert.deepEqual(convert(1), "1")
@@ -209,7 +209,7 @@ test.skip("template: from numbers", () => {
   assert.deepEqual(convert(0xffff), "65535")
 })
 
-test.skip("template: from functions", () => {
+test("template: from functions", () => {
   assert.deepEqual(
     convert(function () {
       return 2
@@ -219,7 +219,7 @@ test.skip("template: from functions", () => {
   assert.deepEqual(convert(String.prototype.trim), "null")
 })
 
-test.skip("template: from arrays", () => {
+test("template: from arrays", () => {
   // assert.deepEqual(convert([], '[]'))
   assert.deepEqual(convert([1, 2, 3]), "[1, 2, 3]")
   assert.deepEqual(convert(["foo", "bar"]), '["foo", "bar"]')
@@ -229,14 +229,14 @@ test.skip("template: from arrays", () => {
   )
 })
 
-test.skip("template: from wrapper objects for literals", () => {
+test("template: from wrapper objects for literals", () => {
   assert.deepEqual(convert(new String("hi")), 'new String("hi")')
   assert.deepEqual(convert(new Boolean(true)), "new Boolean(true)")
   assert.deepEqual(convert(new Number(2)), "new Number(2)")
   assert.deepEqual(convert(new Number(-2)), "new Number(-2)")
 })
 
-test.skip("template: from typed arrays", () => {
+test("template: from typed arrays", () => {
   assert.deepEqual(
     convert(new Uint8Array([1, 2, 3])),
     "new Uint8Array([1, 2, 3])"
@@ -275,7 +275,7 @@ test.skip("template: from typed arrays", () => {
   )
 })
 
-test.skip("template: from array buffers", () => {
+test("template: from array buffers", () => {
   assert.deepEqual(convert(new ArrayBuffer(10)), "new ArrayBuffer(10)")
   assert.deepEqual(
     convert(new Uint8Array([0, 0, 0]).buffer),
@@ -287,7 +287,7 @@ test.skip("template: from array buffers", () => {
   )
 })
 
-test.skip("template: from dates", () => {
+test("template: from dates", () => {
   assert.deepEqual(
     convert(new Date(1427942885076)),
     'new Date("2015-04-02T02:48:05.076Z")'
@@ -295,17 +295,17 @@ test.skip("template: from dates", () => {
   assert.deepEqual(convert(new Date(NaN)), "new Date(NaN)")
 })
 
-test.skip("template: from errors", () => {
+test("template: from errors", () => {
   assert.deepEqual(convert(new Error("hi")), 'new Error("hi")')
   assert.deepEqual(convert(new TypeError("yo")), 'new TypeError("yo")')
 })
 
-test.skip("template: from regular expressions", () => {
+test("template: from regular expressions", () => {
   assert.deepEqual(convert(/[abc]+/i), "/[abc]+/i")
   assert.deepEqual(convert(new RegExp("[abc]+", "gi")), "/[abc]+/gi")
 })
 
-test.skip("template: from normal objects", () => {
+test("template: from normal objects", () => {
   assert.deepEqual(convert({}), "{}")
   assert.deepEqual(
     convert({ foo: 2, bar: "hi", baz: [1, 2, 3], yo: { b: 2 } }),
@@ -322,7 +322,7 @@ test.skip("template: from normal objects", () => {
   assert.deepEqual(convert(new fn()), '{\n  "x": 2,\n  "y": 5\n}')
 })
 
-test.skip("uses custom toAST method when available", () => {
+test("uses custom toAST method when available", () => {
   assert.deepEqual(
     convert({
       toAST: function () {
