@@ -2,15 +2,26 @@
 
 [![npm](https://img.shields.io/npm/v/abstract-syntax-tree.svg)](https://www.npmjs.com/package/abstract-syntax-tree) [![build](https://github.com/buxlabs/abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/buxlabs/abstract-syntax-tree/actions)
 
-> A library for working with abstract syntax trees.
+🧰 A library for working with abstract syntax trees.
+
+🔗 Checkout the [REPL](https://buxlabs.pl/en/tools/js/abstract-syntax-tree/repl).
+
+### Key features
+
+- [parse](#parse), [transform](#replace) and [generate](#generate) code with a single dependency
+- offers both [functional](#functional-programming-style) and [class](#object-oriented-programming-style) interfaces
+- built-in ast <-> js types helpers - [serialize](#serialize) and [template](#template)
+- built-in [find](#find), [has](#has),
+- built-in transformations like [append](#append), [prepend](#prepend)
+- 20+ methods total
 
 ## Table of Contents
 
 - [Background](#background)
-- [Install](#install)
+- [Installation](#installation)
 - [Usage](#usage)
 - [API](#api)
-- [REPL](https://buxlabs.pl/en/tools/js/abstract-syntax-tree/documentation#repl)
+- [REPL](https://buxlabs.pl/en/tools/js/abstract-syntax-tree/repl)
 - [Nodes](#nodes)
 - [Optimizations](#optimizations)
 - [Maintainers](#maintainers)
@@ -58,7 +69,7 @@ The goal of this library is to consolidate common abstract syntax tree operation
 
 The library exposes a set of utility methods that can be useful for analysis or transformation of abstract syntax trees. It supports functional and object-oriented programming style.
 
-## Install
+## Installation
 
 ```bash
 npm install abstract-syntax-tree
@@ -66,12 +77,16 @@ npm install abstract-syntax-tree
 
 ## Usage
 
+### Functional programming style
+
 ```js
 const { parse, find } = require("abstract-syntax-tree")
 const source = "const answer = 42"
 const tree = parse(source)
 console.log(find(tree, "Literal")) // [ { type: 'Literal', value: 42 } ]
 ```
+
+### Object oriented programming style
 
 ```js
 const AbstractSyntaxTree = require("abstract-syntax-tree")
