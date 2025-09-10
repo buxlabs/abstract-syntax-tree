@@ -4,8 +4,6 @@
 
 🧰 A library for working with abstract syntax trees.
 
-🔗 Checkout the [REPL](https://buxlabs.pl/en/tools/js/abstract-syntax-tree/repl).
-
 ### Key features
 
 - [parse](#parse), [transform](#replace) and [generate](#generate) code with a single dependency
@@ -21,7 +19,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [API](#api)
-- [REPL](https://buxlabs.pl/en/tools/js/abstract-syntax-tree/repl)
 - [Nodes](#nodes)
 - [Optimizations](#optimizations)
 - [Maintainers](#maintainers)
