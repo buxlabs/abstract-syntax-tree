@@ -249,7 +249,7 @@ declare class AbstractSyntaxTree {
   /**
    * Replaces nodes in the tree
    */
-  static replace(tree: Node, callback: ReplaceCallback): void
+  static replace(tree: Node, options: ReplaceCallback | TraverseOptions): void
 
   /**
    * Reduces the tree to a single value
@@ -463,7 +463,7 @@ declare class AbstractSyntaxTree {
   /**
    * Replaces nodes in the tree
    */
-  replace(callback: ReplaceCallback): void
+  replace(options: ReplaceCallback | TraverseOptions): void
 
   /**
    * Reduces the tree to a single value
