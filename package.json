@@ -39,7 +39,7 @@
     "ast-types": "0.14.2",
     "astring": "^1.8.6",
     "esquery": "^1.5.0",
-    "meriyah": "^4.4.0",
+    "meriyah": "^7.0.0",
     "pure-conditions": "^1.2.1",
     "source-map": "^0.7.4"
   }

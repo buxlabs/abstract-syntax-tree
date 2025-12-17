@@ -15,6 +15,7 @@ test("template: from string", () => {
     {
       type: "ExpressionStatement",
       expression: { type: "Literal", value: "use strict" },
+      directive: "use strict",
     },
   ])
 })
