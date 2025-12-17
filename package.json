@@ -3,6 +3,7 @@
   "version": "2.22.0",
   "description": "abstract syntax tree",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node --test",
     "coverage": "c8 npm test"
@@ -26,6 +27,7 @@
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "types.json",
     "src"
   ],
