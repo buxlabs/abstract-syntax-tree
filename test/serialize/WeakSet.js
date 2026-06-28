@@ -1,6 +1,6 @@
-const test = require("node:test")
-const assert = require("node:assert")
-const { serialize } = require("../..")
+const test = require("node:test");
+const assert = require("node:assert");
+const { serialize } = require("../..");
 
 test("serialize: WeakSet", () => {
   assert.ok(
@@ -11,8 +11,8 @@ test("serialize: WeakSet", () => {
         name: "WeakSet",
       },
       arguments: [],
-    }) instanceof WeakSet
-  )
+    }) instanceof WeakSet,
+  );
 
   assert.ok(
     serialize({
@@ -22,6 +22,6 @@ test("serialize: WeakSet", () => {
         name: "WeakSet",
       },
       arguments: [{ type: "ObjectExpression", properties: [] }],
-    }) instanceof WeakSet
-  )
-})
+    }) instanceof WeakSet,
+  );
+});

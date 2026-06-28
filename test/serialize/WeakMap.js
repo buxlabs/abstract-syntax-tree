@@ -1,6 +1,6 @@
-const test = require("node:test")
-const assert = require("node:assert")
-const { serialize } = require("../..")
+const test = require("node:test");
+const assert = require("node:assert");
+const { serialize } = require("../..");
 
 test("serialize: WeakMap", () => {
   assert.ok(
@@ -11,8 +11,8 @@ test("serialize: WeakMap", () => {
         name: "WeakMap",
       },
       arguments: [],
-    }) instanceof WeakMap
-  )
+    }) instanceof WeakMap,
+  );
 
   assert.ok(
     serialize({
@@ -30,6 +30,6 @@ test("serialize: WeakMap", () => {
           ],
         },
       ],
-    }) instanceof WeakMap
-  )
-})
+    }) instanceof WeakMap,
+  );
+});
