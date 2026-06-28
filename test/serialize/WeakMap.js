@@ -3,7 +3,7 @@ const assert = require("node:assert")
 const { serialize } = require("../..")
 
 test("serialize: WeakMap", () => {
-  assert.deepEqual(
+  assert.ok(
     serialize({
       type: "NewExpression",
       callee: {
@@ -11,11 +11,10 @@ test("serialize: WeakMap", () => {
         name: "WeakMap",
       },
       arguments: [],
-    }),
-    new WeakMap()
+    }) instanceof WeakMap
   )
 
-  assert.deepEqual(
+  assert.ok(
     serialize({
       type: "NewExpression",
       callee: {
@@ -31,7 +30,6 @@ test("serialize: WeakMap", () => {
           ],
         },
       ],
-    }),
-    new WeakMap([[{}, "foo"]])
+    }) instanceof WeakMap
   )
 })
