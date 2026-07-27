@@ -19,6 +19,7 @@ const match = require('./src/match')
 const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
+const scope = require('./src/scope')
 const program = require('./src/program')
 const iife = require('./src/iife')
 
@@ -99,6 +100,10 @@ class AbstractSyntaxTree {
     return reduce(tree, callback, accumulator)
   }
 
+  static scope (tree) {
+    return scope(tree)
+  }
+
   static program (body, options) {
     return program(body, options)
   }
@@ -177,6 +182,10 @@ class AbstractSyntaxTree {
 
   reduce (callback, accumulator) {
     return reduce(this._tree, callback, accumulator)
+  }
+
+  scope () {
+    return scope(this._tree)
   }
 
   prepend (node) {

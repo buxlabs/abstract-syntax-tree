@@ -9,7 +9,7 @@
 - [parse](#parse), [transform](#replace) and [generate](#generate) code with a single dependency
 - offers both [functional](#functional-programming-style) and [class](#object-oriented-programming-style) interfaces
 - built-in ast <-> js types helpers - [serialize](#serialize) and [template](#template)
-- built-in [find](#find), [has](#has),
+- built-in [find](#find), [has](#has), [scope](#scope) analysis
 - built-in transformations like [append](#append), [prepend](#prepend)
 - 20+ methods total
 
@@ -278,6 +278,77 @@ const value = reduce(
   0
 )
 console.log(value) // 3
+```
+
+#### scope
+
+Builds a lexical scope tree from the abstract syntax tree. The tree provides generic information about scopes, bindings (declarations) and references (usages), which is useful for analysis, renaming, dead code elimination, reactivity tracking and more.
+
+```js
+const { parse, scope } = require("abstract-syntax-tree")
+const source = "const answer = 42; console.log(answer)"
+const tree = parse(source)
+const root = scope(tree)
+
+console.log(root.type) // 'module'
+console.log(root.bindings.map((binding) => binding.name)) // [ 'answer' ]
+console.log(root.getBinding("answer").references.length) // 1
+console.log(root.globals.map((global) => global.name)) // [ 'console' ]
+```
+
+Each scope exposes the following shape:
+
+- `type` - the kind of scope (`module`, `global`, `function`, `block`, `for`, `switch`, `catch` or `class`)
+- `node` - the node that creates the scope
+- `parent` - the enclosing scope, or `null` for the root
+- `children` - the nested scopes
+- `bindings` - the declarations made in this scope
+- `references` - the references that occur directly in this scope
+- `globals` - unresolved references (populated on the root scope)
+- `root` - the root scope of the tree
+- `variableScope` - the nearest function or module scope (where `var` is hoisted)
+- `getBinding(name)` - returns a binding declared in this scope
+- `lookup(name)` - resolves a binding by name, walking up the scope chain
+
+Each binding exposes:
+
+- `name` - the declared name
+- `kind` - the kind of binding (`var`, `let`, `const`, `function`, `class`, `param`, `catch`, `import` or `implicit`)
+- `scope` - the scope the binding belongs to
+- `identifier` / `declarations` - the identifier node(s) that declare the binding
+- `node` - the declaration node
+- `references` - all references that resolve to the binding
+- `referenced` - whether the binding is used at least once
+- `constant` - whether the binding is never reassigned
+- `reads` / `writes` - the read and write references
+
+Each reference exposes:
+
+- `identifier` - the identifier node
+- `name` - the referenced name
+- `scope` - the scope the reference occurs in
+- `binding` - the resolved binding, or `null` for a global
+- `read` / `write` - how the value is used
+- `resolved` - whether the reference resolved to a binding
+
+Finding unused declarations (e.g. for dead code elimination):
+
+```js
+const { parse, scope } = require("abstract-syntax-tree")
+const tree = parse("const used = 1; const unused = 2; used")
+const root = scope(tree)
+const unused = root.bindings.filter((binding) => !binding.referenced)
+console.log(unused.map((binding) => binding.name)) // [ 'unused' ]
+```
+
+Finding reassigned variables (e.g. for reactivity):
+
+```js
+const { parse, scope } = require("abstract-syntax-tree")
+const tree = parse("let a = 1; a = 2; const b = 3")
+const root = scope(tree)
+const mutable = root.bindings.filter((binding) => !binding.constant)
+console.log(mutable.map((binding) => binding.name)) // [ 'a' ]
 ```
 
 #### has

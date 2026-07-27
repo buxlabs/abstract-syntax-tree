@@ -168,6 +168,175 @@ type RemoveCallback = (node: Node, parent?: Node) => Node | null
 type Selector = string | Partial<Node> | '*'
 
 /**
+ * The kind of a lexical binding
+ */
+type BindingKind =
+  | 'var'
+  | 'let'
+  | 'const'
+  | 'function'
+  | 'class'
+  | 'param'
+  | 'catch'
+  | 'import'
+  | 'implicit'
+
+/**
+ * The kind of a scope
+ */
+type ScopeKind =
+  | 'module'
+  | 'global'
+  | 'function'
+  | 'block'
+  | 'for'
+  | 'switch'
+  | 'catch'
+  | 'class'
+
+/**
+ * A reference to a binding (or an unresolved/global reference)
+ */
+interface Reference {
+  /**
+   * The identifier node the reference originates from
+   */
+  identifier: Node
+  /**
+   * The name of the referenced identifier
+   */
+  readonly name: string
+  /**
+   * The scope the reference occurs in
+   */
+  scope: Scope
+  /**
+   * The resolved binding, or null when the reference is unresolved (a global)
+   */
+  binding: Binding | null
+  /**
+   * Whether the reference reads the value
+   */
+  read: boolean
+  /**
+   * Whether the reference writes the value
+   */
+  write: boolean
+  /**
+   * Whether the reference was resolved to a binding
+   */
+  readonly resolved: boolean
+}
+
+/**
+ * A lexical binding (declaration) within a scope
+ */
+interface Binding {
+  /**
+   * The declared name
+   */
+  name: string
+  /**
+   * The kind of the binding
+   */
+  kind: BindingKind
+  /**
+   * The scope the binding belongs to
+   */
+  scope: Scope
+  /**
+   * The first identifier node that declares the binding
+   */
+  identifier: Node | null
+  /**
+   * All identifier nodes that declare the binding (multiple for var/function)
+   */
+  declarations: Node[]
+  /**
+   * The declaration node the binding originates from
+   */
+  node: Node
+  /**
+   * All references that resolve to this binding
+   */
+  references: Reference[]
+  /**
+   * Whether the binding is referenced at least once
+   */
+  readonly referenced: boolean
+  /**
+   * Whether the binding is never reassigned
+   */
+  readonly constant: boolean
+  /**
+   * The references that read the binding
+   */
+  readonly reads: Reference[]
+  /**
+   * The references that write the binding
+   */
+  readonly writes: Reference[]
+}
+
+/**
+ * An unresolved reference collected on the root scope
+ */
+interface Global {
+  name: string
+  references: Reference[]
+}
+
+/**
+ * A lexical scope in the scope tree
+ */
+interface Scope {
+  /**
+   * The kind of the scope
+   */
+  type: ScopeKind
+  /**
+   * The node that creates the scope
+   */
+  node: Node
+  /**
+   * The enclosing scope, or null for the root
+   */
+  parent: Scope | null
+  /**
+   * The nested scopes
+   */
+  children: Scope[]
+  /**
+   * The bindings declared in this scope
+   */
+  bindings: Binding[]
+  /**
+   * The references that occur directly in this scope
+   */
+  references: Reference[]
+  /**
+   * Unresolved references, only populated on the root scope
+   */
+  globals: Global[]
+  /**
+   * The root scope of the tree
+   */
+  readonly root: Scope
+  /**
+   * The nearest function or module scope
+   */
+  readonly variableScope: Scope
+  /**
+   * Returns a binding declared in this scope by name
+   */
+  getBinding(name: string): Binding | undefined
+  /**
+   * Resolves a binding by name, walking up the scope chain
+   */
+  lookup(name: string): Binding | null
+}
+
+/**
  * Abstract Syntax Tree class
  */
 declare class AbstractSyntaxTree {
@@ -255,6 +424,11 @@ declare class AbstractSyntaxTree {
    * Reduces the tree to a single value
    */
   static reduce<T>(tree: Node, callback: ReduceCallback<T>, accumulator: T): T
+
+  /**
+   * Builds a lexical scope tree from the AST
+   */
+  static scope(tree: Node): Scope
 
   /**
    * Serializes a node into a JavaScript value
@@ -469,6 +643,11 @@ declare class AbstractSyntaxTree {
    * Reduces the tree to a single value
    */
   reduce<T>(callback: ReduceCallback<T>, accumulator: T): T
+
+  /**
+   * Builds a lexical scope tree from the AST
+   */
+  scope(): Scope
 
   /**
    * Prepends a node to the tree body
