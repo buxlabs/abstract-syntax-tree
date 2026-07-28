@@ -9,7 +9,7 @@
 - [parse](#parse), [transform](#replace) and [generate](#generate) code with a single dependency
 - offers both [functional](#functional-programming-style) and [class](#object-oriented-programming-style) interfaces
 - built-in ast <-> js types helpers - [serialize](#serialize) and [template](#template)
-- built-in [find](#find), [has](#has), [scope](#scope) analysis
+- built-in [find](#find), [has](#has), [scope](#scope) analysis, [rename](#rename) and [prune](#prune)
 - built-in transformations like [append](#append), [prepend](#prepend)
 - 20+ methods total
 
@@ -309,6 +309,7 @@ Each scope exposes the following shape:
 - `variableScope` - the nearest function or module scope (where `var` is hoisted)
 - `getBinding(name)` - returns a binding declared in this scope
 - `lookup(name)` - resolves a binding by name, walking up the scope chain
+- `getReference(node)` - returns the reference for an identifier node (keyed by the node itself, so it handles shadowing), or `null` when the node is not a reference; the returned reference exposes the resolved `binding`
 
 Each binding exposes:
 
@@ -327,6 +328,7 @@ Each reference exposes:
 - `identifier` - the identifier node
 - `name` - the referenced name
 - `scope` - the scope the reference occurs in
+- `parent` - the node that directly contains the identifier (e.g. the `CallExpression` for `foo()`), useful for understanding how a reference is used
 - `binding` - the resolved binding, or `null` for a global
 - `read` / `write` - how the value is used
 - `resolved` - whether the reference resolved to a binding
@@ -349,6 +351,69 @@ const tree = parse("let a = 1; a = 2; const b = 3")
 const root = scope(tree)
 const mutable = root.bindings.filter((binding) => !binding.constant)
 console.log(mutable.map((binding) => binding.name)) // [ 'a' ]
+```
+
+#### rename
+
+Renames a variable and every reference to it, using [scope](#scope) analysis so that only the right identifiers are changed. Unlike a plain find and replace it leaves property keys, string literals, labels and unrelated variables in other scopes untouched, and it expands shorthand properties and adds `as` clauses to imports and exports where needed. The tree is mutated in place and returned.
+
+```js
+const { parse, generate, rename } = require("abstract-syntax-tree")
+const tree = parse("const foo = 1; const o = { foo }; foo")
+rename(tree, "foo", "bar")
+console.log(generate(tree)) // const bar = 1; const o = { foo: bar }; bar;
+```
+
+Every binding with the given name is renamed, each together with its own references, so shadowed variables stay correct:
+
+```js
+const { parse, generate, rename } = require("abstract-syntax-tree")
+const tree = parse("let foo = 1; function f () { let foo = 2; return foo } foo")
+rename(tree, "foo", "bar")
+console.log(generate(tree)) // let bar = 1; function f() { let bar = 2; return bar; } bar;
+```
+
+It throws when the new name is already declared in the same scope, which would change the meaning of the code:
+
+```js
+const { parse, rename } = require("abstract-syntax-tree")
+const tree = parse("let foo = 1; let bar = 2")
+rename(tree, "foo", "bar") // throws: Cannot rename "foo" to "bar": "bar" is already declared in the same scope
+```
+
+#### prune
+
+Removes unused declarations from the tree, a form of dead code elimination built on [scope](#scope) analysis. A declaration is removed only when it is not referenced anywhere and removing it cannot change behaviour. Removing one binding can make another unused, so pruning repeats until nothing else can be removed. The tree is mutated in place and returned.
+
+```js
+const { parse, generate, prune } = require("abstract-syntax-tree")
+const tree = parse("const used = 1; const unused = 2; used")
+prune(tree)
+console.log(generate(tree)) // const used = 1; used;
+```
+
+```js
+const { parse, generate, prune } = require("abstract-syntax-tree")
+// a becomes unused once b is removed, so both go
+const tree = parse("const a = 1; const b = a")
+prune(tree)
+console.log(generate(tree)) // (empty)
+```
+
+To stay safe, prune is deliberately conservative. It removes unreferenced `var`, `let`, `const` and `function` declarations, but keeps:
+
+- declarations whose initializer may have side effects (`const x = compute()`, `const x = obj.prop`, `const x = [...items]`)
+- exported declarations and anything referenced by an `export`
+- destructuring declarations, function parameters, catch parameters and loop variables
+- class declarations and imports
+- write only bindings (a variable that is assigned but never read)
+
+```js
+const { parse, generate, prune } = require("abstract-syntax-tree")
+// the call is kept because it may have side effects
+const tree = parse("const x = compute()")
+prune(tree)
+console.log(generate(tree)) // const x = compute();
 ```
 
 #### has

@@ -45,4 +45,9 @@ module.exports = class Scope {
   lookup (name) {
     return this.getBinding(name) || (this.parent && this.parent.lookup(name)) || null
   }
+
+  getReference (node) {
+    const references = this.root._references
+    return (references && references.get(node)) || null
+  }
 }

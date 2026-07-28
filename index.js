@@ -20,6 +20,8 @@ const serialize = require('./src/serialize')
 const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
 const scope = require('./src/scope')
+const rename = require('./src/rename')
+const prune = require('./src/prune')
 const program = require('./src/program')
 const iife = require('./src/iife')
 
@@ -104,6 +106,14 @@ class AbstractSyntaxTree {
     return scope(tree)
   }
 
+  static rename (tree, from, to) {
+    return rename(tree, from, to)
+  }
+
+  static prune (tree) {
+    return prune(tree)
+  }
+
   static program (body, options) {
     return program(body, options)
   }
@@ -186,6 +196,14 @@ class AbstractSyntaxTree {
 
   scope () {
     return scope(this._tree)
+  }
+
+  rename (from, to) {
+    return rename(this._tree, from, to)
+  }
+
+  prune () {
+    return prune(this._tree)
   }
 
   prepend (node) {

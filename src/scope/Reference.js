@@ -1,7 +1,8 @@
 module.exports = class Reference {
-  constructor (identifier, scope, { read = true, write = false } = {}) {
+  constructor (identifier, scope, parent, { read = true, write = false } = {}) {
     this.identifier = identifier
     this.scope = scope
+    this.parent = parent
     this.binding = null
     this.read = read
     this.write = write

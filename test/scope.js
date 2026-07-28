@@ -108,6 +108,120 @@ test("scope: records the scope each reference occurs in", () => {
   assert.equal(reference.name, "a")
 })
 
+test("scope: records the parent node of a reference", () => {
+  const root = scope(parse("const a = 1; a.b"))
+  const reference = root.getBinding("a").references[0]
+  assert.equal(reference.parent.type, "MemberExpression")
+  assert.equal(reference.parent.object, reference.identifier)
+})
+
+test("scope: records the parent for a call callee", () => {
+  const root = scope(parse("const f = () => {}; f(1)"))
+  const reference = root.getBinding("f").references[0]
+  assert.equal(reference.parent.type, "CallExpression")
+  assert.equal(reference.parent.callee, reference.identifier)
+})
+
+test("scope: records the parent for a call argument", () => {
+  const root = scope(parse("const a = 1; f(a)"))
+  const reference = root.getBinding("a").references[0]
+  assert.equal(reference.parent.type, "CallExpression")
+  assert.equal(reference.parent.arguments[0], reference.identifier)
+})
+
+test("scope: records the parent for an assignment target", () => {
+  const root = scope(parse("let a; a = 1"))
+  const reference = root.getBinding("a").references[0]
+  assert.equal(reference.parent.type, "AssignmentExpression")
+})
+
+test("scope: records the parent for a destructuring assignment target", () => {
+  const root = scope(parse("let a; [a] = list"))
+  const reference = root.getBinding("a").references[0]
+  assert.equal(reference.parent.type, "ArrayPattern")
+})
+
+test("scope: records the parent for a declarator initializer reference", () => {
+  const root = scope(parse("const a = 1; const b = a"))
+  const reference = root.getBinding("a").references[0]
+  assert.equal(reference.parent.type, "VariableDeclarator")
+})
+
+test("scope: records the parent for an export specifier reference", () => {
+  const root = scope(parse("const a = 1; export { a }"))
+  const reference = root.getBinding("a").references[0]
+  assert.equal(reference.parent.type, "ExportSpecifier")
+})
+
+test("scope: getReference resolves an identifier node to its reference", () => {
+  const tree = parse("const a = 1; a")
+  const root = scope(tree)
+  const identifier = tree.body[1].expression
+  const reference = root.getReference(identifier)
+  assert.equal(reference.name, "a")
+  assert.equal(reference.binding, root.getBinding("a"))
+})
+
+test("scope: getReference resolves shadowed uses to the innermost binding", () => {
+  const tree = parse("let x = 1; function f () { let x = 2; return x }")
+  const root = scope(tree)
+  const identifier = tree.body[1].body.body[1].argument
+  const reference = root.getReference(identifier)
+  assert.equal(reference.binding, root.children[0].getBinding("x"))
+})
+
+test("scope: getReference returns an unresolved reference for a global", () => {
+  const tree = parse("foo()")
+  const root = scope(tree)
+  const identifier = tree.body[0].expression.callee
+  const reference = root.getReference(identifier)
+  assert.equal(reference.name, "foo")
+  assert.equal(reference.binding, null)
+  assert.equal(reference.resolved, false)
+})
+
+test("scope: getReference returns null for a declaration identifier", () => {
+  const tree = parse("const a = 1")
+  const root = scope(tree)
+  const identifier = tree.body[0].declarations[0].id
+  assert.equal(root.getReference(identifier), null)
+})
+
+test("scope: getReference returns null for a non-reference identifier", () => {
+  const tree = parse("const o = { a: 1 }; o.a")
+  const root = scope(tree)
+  const key = tree.body[0].declarations[0].init.properties[0].key
+  const property = tree.body[1].expression.property
+  assert.equal(root.getReference(key), null)
+  assert.equal(root.getReference(property), null)
+})
+
+test("scope: getReference exposes read, write and parent for a use", () => {
+  const tree = parse("let a = 1; a = 2")
+  const root = scope(tree)
+  const identifier = tree.body[1].expression.left
+  const reference = root.getReference(identifier)
+  assert.equal(reference.write, true)
+  assert.equal(reference.read, false)
+  assert.equal(reference.parent.type, "AssignmentExpression")
+})
+
+test("scope: getReference works from any scope in the tree", () => {
+  const tree = parse("const a = 1; function f () { return a }")
+  const root = scope(tree)
+  const identifier = tree.body[1].body.body[0].argument
+  assert.equal(root.children[0].getReference(identifier), root.getReference(identifier))
+})
+
+test("scope: getReference round trips with a binding's references", () => {
+  const tree = parse("const a = 1; a; a.b")
+  const root = scope(tree)
+  const binding = root.getBinding("a")
+  for (const reference of binding.references) {
+    assert.equal(root.getReference(reference.identifier), reference)
+  }
+})
+
 test("scope: keeps references directly on the scope they occur in", () => {
   const root = scope(parse("a; function f () { b }"))
   assert.deepEqual(names(root.references), ["a"])

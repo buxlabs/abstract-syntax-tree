@@ -211,6 +211,10 @@ interface Reference {
    */
   scope: Scope
   /**
+   * The AST node that directly contains the reference's identifier
+   */
+  parent: Node
+  /**
    * The resolved binding, or null when the reference is unresolved (a global)
    */
   binding: Binding | null
@@ -334,6 +338,11 @@ interface Scope {
    * Resolves a binding by name, walking up the scope chain
    */
   lookup(name: string): Binding | null
+  /**
+   * Returns the reference for a given identifier node, or null when the node is
+   * not a reference (e.g. a declaration or a property key)
+   */
+  getReference(node: Node): Reference | null
 }
 
 /**
@@ -429,6 +438,16 @@ declare class AbstractSyntaxTree {
    * Builds a lexical scope tree from the AST
    */
   static scope(tree: Node): Scope
+
+  /**
+   * Renames every binding with the given name and all of its references
+   */
+  static rename(tree: Node, from: string, to: string): Node
+
+  /**
+   * Removes unused, side effect free declarations from the tree
+   */
+  static prune(tree: Node): Node
 
   /**
    * Serializes a node into a JavaScript value
@@ -648,6 +667,16 @@ declare class AbstractSyntaxTree {
    * Builds a lexical scope tree from the AST
    */
   scope(): Scope
+
+  /**
+   * Renames every binding with the given name and all of its references
+   */
+  rename(from: string, to: string): Node
+
+  /**
+   * Removes unused, side effect free declarations from the tree
+   */
+  prune(): Node
 
   /**
    * Prepends a node to the tree body
