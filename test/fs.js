@@ -4,14 +4,14 @@ const fs = require("node:fs")
 const os = require("node:os")
 const path = require("node:path")
 const AbstractSyntaxTree = require("..")
-const { modules, resolve } = require("../fs")
+const { modules, resolve, resolver } = require("../fs")
 
 const { generate, bundle, graph } = AbstractSyntaxTree
 
 // Each case gets its own directory so nothing depends on the working directory
 // or on another test's files.
 function project (files) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "ast-fs-"))
+  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "ast-fs-")))
   for (const name of Object.keys(files)) {
     const file = path.join(root, name)
     fs.mkdirSync(path.dirname(file), { recursive: true })
@@ -149,4 +149,76 @@ test("fs: resolves a package specifier when a resolver is layered on top", () =>
       specifier === "pkg" ? path.join(root, "vendor/pkg.js") : resolve(specifier, importer)
   })
   assert.equal(output(tree), "const a = 1; console.log(a);")
+})
+
+// ---------------------------------------------------------------------------
+// node_modules
+// ---------------------------------------------------------------------------
+
+test("fs: leaves a package external by default", () => {
+  const root = project({
+    "index.js": 'import { a } from "pkg"\na',
+    "node_modules/pkg/package.json": JSON.stringify({ name: "pkg", main: "index.js" }),
+    "node_modules/pkg/index.js": "exports.a = 1"
+  })
+  const entry = path.join(root, "index.js")
+  const result = graph(modules(entry), { entry, modules, resolve })
+  assert.deepEqual(result.externals, ["pkg"])
+  assert.deepEqual(relative(root, result.order), ["index.js"])
+})
+
+test("fs: resolves a package when packages is on", () => {
+  const root = project({
+    "index.js": 'import { a } from "pkg"\nconsole.log(a)',
+    "node_modules/pkg/package.json": JSON.stringify({ name: "pkg", main: "index.js" }),
+    "node_modules/pkg/index.js": "exports.a = 1"
+  })
+  const entry = path.join(root, "index.js")
+  const packages = resolver({ packages: true })
+  const tree = bundle(modules(entry), { entry, modules, resolve: packages })
+  assert.equal(output(tree), "const a = 1; console.log(a);")
+})
+
+test("fs: resolves a package subpath", () => {
+  const root = project({
+    "index.js": 'import v from "pkg/lib/util.js"\nconsole.log(v)',
+    "node_modules/pkg/package.json": JSON.stringify({ name: "pkg", main: "index.js" }),
+    "node_modules/pkg/index.js": "module.exports = 1",
+    "node_modules/pkg/lib/util.js": "module.exports = 2"
+  })
+  const entry = path.join(root, "index.js")
+  const tree = bundle(modules(entry), { entry, modules, resolve: resolver({ packages: true }) })
+  assert.equal(output(tree), "const util_default = 2; console.log(util_default);")
+})
+
+test("fs: follows a package's own dependencies", () => {
+  const root = project({
+    "index.js": 'import v from "pkg"\nconsole.log(v)',
+    "node_modules/pkg/package.json": JSON.stringify({ name: "pkg", main: "index.js" }),
+    "node_modules/pkg/index.js": 'const helper = require("./helper.js")\nmodule.exports = helper',
+    "node_modules/pkg/helper.js": "module.exports = 42"
+  })
+  const entry = path.join(root, "index.js")
+  const result = graph(modules(entry), { entry, modules, resolve: resolver({ packages: true }) })
+  assert.deepEqual(relative(root, result.order), [
+    "node_modules/pkg/helper.js",
+    "node_modules/pkg/index.js",
+    "index.js"
+  ])
+})
+
+test("fs: keeps a node builtin external even when packages is on", () => {
+  const root = project({ "index.js": 'import fs from "node:fs"\nconsole.log(fs)' })
+  const entry = path.join(root, "index.js")
+  const result = graph(modules(entry), { entry, modules, resolve: resolver({ packages: true }) })
+  assert.deepEqual(result.externals, ["node:fs"])
+})
+
+test("fs: reports a package that is not installed", () => {
+  const root = project({ "index.js": 'import "missing-package"' })
+  const entry = path.join(root, "index.js")
+  assert.throws(
+    () => graph(modules(entry), { entry, modules, resolve: resolver({ packages: true }) }),
+    /Cannot resolve "missing-package"/
+  )
 })

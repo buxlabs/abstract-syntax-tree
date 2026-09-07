@@ -10,7 +10,7 @@
 - offers both [functional](#functional-programming-style) and [class](#object-oriented-programming-style) interfaces
 - built-in ast <-> js types helpers - [serialize](#serialize) and [template](#template)
 - built-in [find](#find), [has](#has), [scope](#scope) analysis, [rename](#rename), [prune](#prune), [graph](#graph) and [bundle](#bundle)
-- no filesystem access unless you opt in with [abstract-syntax-tree/fs](#reading-from-disk)
+- reads [CommonJS](#commonjs) as well as modules, and no filesystem access unless you opt in with [abstract-syntax-tree/fs](#reading-from-disk)
 - built-in transformations like [append](#append), [prepend](#prepend)
 - 25+ methods total
 
@@ -598,6 +598,49 @@ Caveats:
 - hoisting reorders statements, so a circular dependency that worked as separate modules can become a temporal dead zone error; [graph](#graph) reports `cycles` if you want to check first
 - the entry's exports are stripped with everyone else's and re-emitted at the end, so they keep their public names even when the binding behind them is renamed
 
+#### CommonJS
+
+A module written as CommonJS is converted to modules syntax before anything else looks at it, so [graph](#graph) sees its requires as the dependencies they are and [bundle](#bundle) can hoist it like everything else. Nothing opts in; a module that already uses `import` or `export` is left exactly as it was.
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const modules = { "./math.js": "function add (a, b) { return a + b }\nmodule.exports = add" }
+const entry = 'import add from "./math.js"\nconsole.log(add(1, 2))'
+console.log(generate(bundle(entry, { modules })))
+// function add(a, b) { return a + b; }
+// console.log(add(1, 2));
+```
+
+`module.exports = { a, b }` becomes a default export *and* named exports for the keys that can be read statically, the same thing Node does, so both import styles work and unused names still shake out:
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const modules = { "./m.js": "const a = 1\nconst unused = 2\nmodule.exports = { a, unused }" }
+const entry = 'import { a } from "./m.js"\nconsole.log(a)'
+console.log(generate(bundle(entry, { modules }))) // const a = 1; console.log(a);
+```
+
+What is converted:
+
+- `const x = require("./y")` and `const { a, b } = require("./y")` at the top level
+- `require("./y")` on its own, for side effects
+- `module.exports = <identifier>` and `module.exports = <expression>`
+- `module.exports = { a, b }`, which also produces named exports
+- `exports.name = <expression>`
+
+Everything else is refused by name rather than translated into something that looks right and behaves differently. A require that is computed, nested in a function or inside a condition cannot be resolved without running the code; `__dirname` and `__filename` have no meaning once modules are concatenated; and a reassigned `module.exports` has no single value to export:
+
+```js
+const { bundle } = require("abstract-syntax-tree")
+const modules = { "./m.js": 'module.exports = function () { return require("./other.js") }' }
+bundle('import "./m.js"', { modules })
+// throws: Cannot convert "./m.js" from CommonJS: a require call outside a top level declaration
+```
+
+`require`, `module` and `exports` only mean CommonJS when they are free variables, so a module that declares its own is an ordinary script and is left alone.
+
+Pass `commonjs: false` to turn the conversion off and treat every module as written. `graph` records which modules were converted, as `commonjs` on each one. Nothing here reads a `package.json` or consults a `type` field; the format is read off the code itself, which is what keeps [graph](#graph) and [bundle](#bundle) free of any package manager.
+
 #### Reading from disk
 
 The library itself never touches the filesystem, which is what keeps it usable anywhere and free of a resolver of its own. `abstract-syntax-tree/fs` is a separate entry point that provides the two callbacks [graph](#graph) and [bundle](#bundle) need to work against real files, so requiring it is how you opt in to disk access:
@@ -613,8 +656,23 @@ console.log(generate(bundle(modules(entry), { entry, modules, resolve })))
 
 - `modules(id)` reads a file, or returns `undefined` when the id is not a readable file
 - `resolve(specifier, importer)` resolves against the importer's directory, trying no extension, `.js`, `.mjs` and a directory index
+- `resolver(options)` builds a resolver, which is how you turn on `packages`
 
-Resolution is anchored to the importer rather than the working directory, and a relative specifier that matches no file is reported as missing instead of being left as an import. A bare specifier names a package and stays an import, so `react` and `node:fs` are external.
+Resolution is anchored to the importer rather than the working directory, and a relative specifier that matches no file is reported as missing instead of being left as an import. Ids are canonical paths, so a file reached through a symlink and through a relative path is one module rather than two.
+
+A bare specifier names a package, and by default it stays an import the way it does in every other bundler. Pass `packages: true` to read it out of `node_modules` and pull it into the bundle instead:
+
+```js
+const path = require("node:path")
+const { bundle, generate } = require("abstract-syntax-tree")
+const { modules, resolver } = require("abstract-syntax-tree/fs")
+
+const resolve = resolver({ packages: true })
+const entry = path.resolve("src/index.js")
+console.log(generate(bundle(modules(entry), { entry, modules, resolve })))
+```
+
+Packages are resolved with Node's own algorithm, so package walking, `main`, `exports` maps, subpaths like `lodash/fp` and scoped names all behave the way they do everywhere else. Node builtins stay external. Most packages on npm are CommonJS, which is [converted](#commonjs) on the way in.
 
 Both are ordinary functions, so layering your own rules on top is just a wrapper:
 

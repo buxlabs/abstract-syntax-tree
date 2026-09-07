@@ -1,6 +1,7 @@
 const parse = require('../parse')
 const Module = require('./Module')
 const resolve = require('./resolve')
+const commonjs = require('./commonjs')
 
 function loader (modules) {
   if (typeof modules === 'function') return modules
@@ -83,7 +84,12 @@ module.exports = function graph (tree, options = {}) {
     if (existing) return existing
     const parsed = read(id)
     if (!parsed) throw new Error(`Cannot resolve "${id}"`)
+    // CommonJS is normalized into modules syntax first, so its requires are
+    // seen as the dependencies they are and everything downstream deals with
+    // one module system.
+    const converted = options.commonjs === false ? false : commonjs(parsed, id)
     const module = new Module(id, parsed)
+    module.commonjs = converted
     modules.set(id, module)
     dependencies(module)
     return module

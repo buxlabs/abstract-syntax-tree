@@ -7,6 +7,8 @@ module.exports = class Module {
     this.dependencies = []
     this.imports = []
     this.exports = []
+    // Whether the module was written as CommonJS and converted
+    this.commonjs = false
   }
 
   get external () {

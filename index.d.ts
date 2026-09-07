@@ -350,6 +350,10 @@ type ModuleMap =
   | Map<string, string | Node>
   | ((id: string) => string | Node | undefined)
 
+/**
+ * Resolves a specifier to a module id. Return null to leave it as an import,
+ * or undefined when nothing was found, which is reported as missing.
+ */
 type ResolveCallback = (specifier: string, importer: string) => string | null | undefined
 
 type ExternalOption = string[] | RegExp | ((specifier: string, importer: string) => boolean)
@@ -399,6 +403,10 @@ interface GraphModule {
    */
   exports: Node[]
   /**
+   * Whether the module was written as CommonJS and converted to modules syntax
+   */
+  commonjs: boolean
+  /**
    * The dependencies that are left as imports
    */
   readonly external: Dependency[]
@@ -426,6 +434,13 @@ interface GraphOptions {
    * "collect", which gathers it into the missing list instead
    */
   missing?: "throw" | "collect"
+  /**
+   * Whether to convert CommonJS modules to modules syntax, true by default.
+   * A module that already uses import or export is never touched. Anything
+   * that cannot be converted without running it is refused rather than
+   * translated, so this only ever turns off the conversion, never a check.
+   */
+  commonjs?: boolean
 }
 
 interface BundleOptions extends GraphOptions {
