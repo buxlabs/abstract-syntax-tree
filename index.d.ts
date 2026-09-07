@@ -345,6 +345,145 @@ interface Scope {
   getReference(node: Node): Reference | null
 }
 
+type ModuleMap =
+  | Record<string, string | Node>
+  | Map<string, string | Node>
+  | ((id: string) => string | Node | undefined)
+
+type ResolveCallback = (specifier: string, importer: string) => string | null | undefined
+
+type ExternalOption = string[] | RegExp | ((specifier: string, importer: string) => boolean)
+
+interface Dependency {
+  /**
+   * The specifier exactly as written in the source
+   */
+  specifier: string
+  /**
+   * The resolved module id, or null when the dependency is external or missing
+   */
+  id: string | null
+  /**
+   * Whether the dependency is left as an import rather than resolved
+   */
+  external: boolean
+  /**
+   * Set when the specifier could not be resolved and missing is "collect"
+   */
+  missing?: boolean
+  /**
+   * The import or export node that names the source
+   */
+  node: Node
+}
+
+interface GraphModule {
+  /**
+   * The module id
+   */
+  id: string
+  /**
+   * The parsed module
+   */
+  tree: Node
+  /**
+   * The dependencies, in the order their nodes appear
+   */
+  dependencies: Dependency[]
+  /**
+   * The import declarations of the module
+   */
+  imports: Node[]
+  /**
+   * The export declarations of the module
+   */
+  exports: Node[]
+  /**
+   * The dependencies that are left as imports
+   */
+  readonly external: Dependency[]
+}
+
+interface GraphOptions {
+  /**
+   * The id of the entry module, "entry" by default
+   */
+  entry?: string
+  /**
+   * The modules available to resolve against; nothing is read from disk
+   */
+  modules?: ModuleMap
+  /**
+   * Overrides resolution entirely; returning null marks a specifier external
+   */
+  resolve?: ResolveCallback
+  /**
+   * Specifiers to leave as imports instead of resolving
+   */
+  external?: ExternalOption
+  /**
+   * What to do with an unresolvable relative specifier: "throw" (default) or
+   * "collect", which gathers it into the missing list instead
+   */
+  missing?: "throw" | "collect"
+}
+
+interface BundleOptions extends GraphOptions {
+  /**
+   * Whether to remove unused declarations from the result, true by default
+   */
+  treeshake?: boolean
+  /**
+   * How to materialize a namespace import: "auto" (default) dissolves it into
+   * the bindings it reads when every use is a static property access, "object"
+   * always builds the namespace object
+   */
+  namespace?: "auto" | "object"
+  /**
+   * What to do with a circular import: "allow" (default) or "throw"
+   */
+  cycles?: "allow" | "throw"
+}
+
+interface Graph {
+  /**
+   * The id of the entry module
+   */
+  entry: string
+  /**
+   * Every reachable module, by id
+   */
+  modules: Map<string, GraphModule>
+  /**
+   * Module ids in evaluation order, dependencies before their importers
+   */
+  order: string[]
+  /**
+   * Circular import paths, each ending where it started. Reported rather than
+   * thrown on, because circular imports are valid modules
+   */
+  cycles: string[][]
+  /**
+   * Specifiers left as imports, each listed once
+   */
+  externals: string[]
+  /**
+   * Unresolvable specifiers, only populated when missing is "collect"
+   */
+  missing: Array<{ specifier: string; importer: string }>
+}
+
+interface RenameOptions {
+  /**
+   * Which bindings to rename:
+   * - "all" (default) renames every binding with the name, in every scope
+   * - "top" renames only the binding declared in the root scope
+   * - a Scope renames only the binding declared in that scope, which must come
+   *   from a scope() call on the same tree
+   */
+  scope?: "all" | "top" | Scope
+}
+
 /**
  * Abstract Syntax Tree class
  */
@@ -440,14 +579,35 @@ declare class AbstractSyntaxTree {
   static scope(tree: Node): Scope
 
   /**
-   * Renames every binding with the given name and all of its references
+   * Renames bindings with the given name and all of their references. Renames
+   * every scope by default; pass options.scope to target one binding.
+   *
+   * Throws when the new name is already declared in the same scope, or when the
+   * rename would change what an identifier resolves to.
    */
-  static rename(tree: Node, from: string, to: string): Node
+  static rename(tree: Node, from: string, to: string, options?: RenameOptions): Node
+
+  /**
+   * Walks the module graph from the entry and returns the modules it reaches,
+   * their evaluation order, any circular imports and any external specifiers.
+   * Nothing is read from disk; modules come from options.modules.
+   */
+  static graph(tree: Node | string, options?: GraphOptions): Graph
 
   /**
    * Removes unused, side effect free declarations from the tree
    */
   static prune(tree: Node): Node
+
+  /**
+   * Bundles the entry module and everything it imports into a single program.
+   * Module bodies are concatenated into one scope, bindings are renamed only
+   * where names collide, and unused declarations are removed unless treeshake
+   * is false. Nothing is read from disk; modules come from options.modules.
+   *
+   * The module trees are mutated and spliced into the result.
+   */
+  static bundle(tree: Node | string, options?: BundleOptions): Program
 
   /**
    * Serializes a node into a JavaScript value
@@ -669,14 +829,35 @@ declare class AbstractSyntaxTree {
   scope(): Scope
 
   /**
-   * Renames every binding with the given name and all of its references
+   * Renames bindings with the given name and all of their references. Renames
+   * every scope by default; pass options.scope to target one binding.
+   *
+   * Throws when the new name is already declared in the same scope, or when the
+   * rename would change what an identifier resolves to.
    */
-  rename(from: string, to: string): Node
+  rename(from: string, to: string, options?: RenameOptions): Node
+
+  /**
+   * Walks the module graph from the entry and returns the modules it reaches,
+   * their evaluation order, any circular imports and any external specifiers.
+   * Nothing is read from disk; modules come from options.modules.
+   */
+  graph(options?: GraphOptions): Graph
 
   /**
    * Removes unused, side effect free declarations from the tree
    */
   prune(): Node
+
+  /**
+   * Bundles the entry module and everything it imports into a single program.
+   * Module bodies are concatenated into one scope, bindings are renamed only
+   * where names collide, and unused declarations are removed unless treeshake
+   * is false. Nothing is read from disk; modules come from options.modules.
+   *
+   * The module trees are mutated and spliced into the result.
+   */
+  bundle(options?: BundleOptions): Program
 
   /**
    * Prepends a node to the tree body

@@ -28,6 +28,8 @@
   "files": [
     "index.js",
     "index.d.ts",
+    "fs.d.ts",
+    "fs.js",
     "types.json",
     "src"
   ],

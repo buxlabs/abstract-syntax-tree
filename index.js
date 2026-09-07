@@ -21,6 +21,8 @@ const sourcemap = require('./src/sourcemap')
 const mark = require('./src/mark')
 const scope = require('./src/scope')
 const rename = require('./src/rename')
+const graph = require('./src/graph')
+const bundle = require('./src/bundle')
 const prune = require('./src/prune')
 const program = require('./src/program')
 const iife = require('./src/iife')
@@ -106,12 +108,20 @@ class AbstractSyntaxTree {
     return scope(tree)
   }
 
-  static rename (tree, from, to) {
-    return rename(tree, from, to)
+  static rename (tree, from, to, options) {
+    return rename(tree, from, to, options)
+  }
+
+  static graph (tree, options) {
+    return graph(tree, options)
   }
 
   static prune (tree) {
     return prune(tree)
+  }
+
+  static bundle (tree, options) {
+    return bundle(tree, options)
   }
 
   static program (body, options) {
@@ -198,12 +208,21 @@ class AbstractSyntaxTree {
     return scope(this._tree)
   }
 
-  rename (from, to) {
-    return rename(this._tree, from, to)
+  rename (from, to, options) {
+    return rename(this._tree, from, to, options)
+  }
+
+  graph (options) {
+    return graph(this._tree, options)
   }
 
   prune () {
     return prune(this._tree)
+  }
+
+  bundle (options) {
+    this._tree = bundle(this._tree, options)
+    return this._tree
   }
 
   prepend (node) {

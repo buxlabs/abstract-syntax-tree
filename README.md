@@ -9,9 +9,10 @@
 - [parse](#parse), [transform](#replace) and [generate](#generate) code with a single dependency
 - offers both [functional](#functional-programming-style) and [class](#object-oriented-programming-style) interfaces
 - built-in ast <-> js types helpers - [serialize](#serialize) and [template](#template)
-- built-in [find](#find), [has](#has), [scope](#scope) analysis, [rename](#rename) and [prune](#prune)
+- built-in [find](#find), [has](#has), [scope](#scope) analysis, [rename](#rename), [prune](#prune), [graph](#graph) and [bundle](#bundle)
+- no filesystem access unless you opt in with [abstract-syntax-tree/fs](#reading-from-disk)
 - built-in transformations like [append](#append), [prepend](#prepend)
-- 20+ methods total
+- 25+ methods total
 
 ## Table of Contents
 
@@ -373,6 +374,23 @@ rename(tree, "foo", "bar")
 console.log(generate(tree)) // let bar = 1; function f() { let bar = 2; return bar; } bar;
 ```
 
+Pass `scope` to rename a single binding instead of every binding with that name. It takes `"all"` (the default), `"top"` for the binding declared in the root scope, or a scope from a [scope](#scope) call on the same tree:
+
+```js
+const { parse, generate, rename } = require("abstract-syntax-tree")
+const tree = parse("let foo = 1; function f () { let foo = 2; return foo } foo")
+rename(tree, "foo", "renamed", { scope: "top" })
+console.log(generate(tree)) // let renamed = 1; function f() { let foo = 2; return foo; } renamed;
+```
+
+```js
+const { parse, generate, scope, rename } = require("abstract-syntax-tree")
+const tree = parse("let foo = 1; function f () { let foo = 2; return foo } foo")
+const root = scope(tree)
+rename(tree, "foo", "inner", { scope: root.children[0] })
+console.log(generate(tree)) // let foo = 1; function f() { let inner = 2; return inner; } foo;
+```
+
 It throws when the new name is already declared in the same scope, which would change the meaning of the code:
 
 ```js
@@ -380,6 +398,24 @@ const { parse, rename } = require("abstract-syntax-tree")
 const tree = parse("let foo = 1; let bar = 2")
 rename(tree, "foo", "bar") // throws: Cannot rename "foo" to "bar": "bar" is already declared in the same scope
 ```
+
+It also throws when the rename would leave an identifier resolving to a different binding. This is the dangerous case, because the result is valid code that quietly means something else, so it is rejected rather than emitted:
+
+```js
+const { parse, rename } = require("abstract-syntax-tree")
+// f returns 1; renaming foo to bar would make it return 2
+const tree = parse("const foo = 1; function f () { const bar = 2; return foo }")
+rename(tree, "foo", "bar") // throws: a reference to "foo" would be captured by "bar" declared in an inner scope
+```
+
+```js
+const { parse, rename } = require("abstract-syntax-tree")
+// f returns the outer bar; renaming foo to bar would shadow it
+const tree = parse("const bar = 1; function f () { const foo = 2; return bar }")
+rename(tree, "foo", "bar") // throws: an existing reference to "bar" would be shadowed by the renamed binding
+```
+
+Nothing is mutated when a rename is rejected, so a throw always leaves the tree as it was.
 
 #### prune
 
@@ -414,6 +450,184 @@ const { parse, generate, prune } = require("abstract-syntax-tree")
 const tree = parse("const x = compute()")
 prune(tree)
 console.log(generate(tree)) // const x = compute();
+```
+
+#### graph
+
+Walks the module graph from an entry module and returns what it reaches: every module, the order they evaluate in, any circular imports and any external specifiers. Nothing is read from disk, so the modules to resolve against are given as `options.modules`, keyed by whatever ids you want to use.
+
+```js
+const { graph } = require("abstract-syntax-tree")
+const modules = {
+  "./math.js": "export const PI = 3.14",
+  "./util.js": 'import "./math.js"'
+}
+const result = graph('import "./util.js"', { modules })
+console.log(result.order) // [ "./math.js", "./util.js", "entry" ]
+```
+
+The result has the following shape:
+
+- `entry` - the id of the entry module, `"entry"` unless you pass `options.entry`
+- `modules` - a `Map` of id to module, each with `id`, `tree`, `dependencies`, `imports` and `exports`
+- `order` - module ids in evaluation order, dependencies before their importers
+- `cycles` - circular import paths, each ending where it started
+- `externals` - specifiers left as imports, each listed once
+- `missing` - unresolvable specifiers, only populated when `missing` is `"collect"`
+
+Circular imports are valid modules, so they are reported rather than thrown on. The cycle is cut at the back edge, which leaves each module in the position ESM itself evaluates it in:
+
+```js
+const { graph } = require("abstract-syntax-tree")
+const modules = { "./a.js": 'import "./b.js"', "./b.js": 'import "./a.js"' }
+const result = graph('import "./a.js"', { modules })
+console.log(result.cycles) // [ [ "./a.js", "./b.js", "./a.js" ] ]
+```
+
+A specifier that names a package rather than a module in the map is external and is not followed:
+
+```js
+const { graph } = require("abstract-syntax-tree")
+const result = graph('import React from "react"', { modules: {} })
+console.log(result.externals) // [ "react" ]
+console.log(result.order) // [ "entry" ]
+```
+
+Resolution tries an exact key first, so a flat map keyed by the specifiers themselves needs no path handling at all. Otherwise a relative specifier is joined to its importer and tried with no extension, `.js`, `.mjs` and as a directory index. Pass `resolve` to replace this entirely, or `external` to mark specifiers as external without resolving them:
+
+```js
+const { graph } = require("abstract-syntax-tree")
+const modules = { "src/math.js": "export const PI = 3.14" }
+const result = graph('import "./math.js"', { modules, entry: "src/entry.js" })
+console.log(result.order) // [ "src/math.js", "src/entry.js" ]
+```
+
+```js
+const { graph } = require("abstract-syntax-tree")
+// resolve receives the specifier and the id of the module importing it
+const result = graph('import "./a.js"', {
+  modules: { a: "const x = 1" },
+  resolve: (specifier, importer) => "a"
+})
+console.log(result.order) // [ "a", "entry" ]
+```
+
+A resolver returns `null` to leave a specifier as an import, and `undefined` when it did not find anything, which is reported as missing rather than quietly turned into an external.
+
+An unresolvable relative specifier throws, because it names a module that was meant to be there. Pass `missing: "collect"` to gather them instead:
+
+```js
+const { graph } = require("abstract-syntax-tree")
+graph('import "./nope.js"', { modules: {} }) // throws: Cannot resolve "./nope.js" from "entry"
+```
+
+```js
+const { graph } = require("abstract-syntax-tree")
+const result = graph('import "./nope.js"', { modules: {}, missing: "collect" })
+console.log(result.missing) // [ { specifier: "./nope.js", importer: "entry" } ]
+```
+
+#### bundle
+
+Bundles the entry module and everything it imports into a single program. Module bodies are concatenated into one scope, so the output reads like the source: there is no runtime, no wrapper functions and no module registry. Bindings are renamed only where names actually collide, which means a set of modules with no clashes comes out exactly as it went in. Nothing is read from disk, so the modules are given as `options.modules`, the same way [graph](#graph) takes them.
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const modules = {
+  "./math.js": "export const PI = 3.14; export default function multiply (a, b) { return a * b }"
+}
+const entry = 'import multiply, { PI } from "./math.js"; console.log(multiply(PI, 2))'
+console.log(generate(bundle(entry, { modules })))
+// const PI = 3.14;
+// function multiply(a, b) { return a * b; }
+// console.log(multiply(PI, 2));
+```
+
+Because everything ends up in one scope, a name used by two modules has to move. Dependencies are deconflicted first, so the module that is imported keeps its name:
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const modules = { "./math.js": "export const PI = 3.14" }
+const entry = 'import { PI as P } from "./math.js"; const PI = 3; console.log(P, PI)'
+console.log(generate(bundle(entry, { modules })))
+// const PI = 3.14;
+// const PI$1 = 3;
+// console.log(PI, PI$1);
+```
+
+Unused exports are removed with [prune](#prune), which sees the hoisted code as ordinary declarations. Pass `treeshake: false` to keep everything:
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const modules = { "./math.js": "export const used = 1; export const unused = 2" }
+const entry = 'import { used } from "./math.js"; console.log(used)'
+console.log(generate(bundle(entry, { modules }))) // const used = 1; console.log(used);
+```
+
+A namespace import is dissolved into the bindings it reads when every use is a static property access. When the namespace is used as a value, or read with a computed key, the object is built instead, with a getter per name so the bindings stay live:
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const modules = { "./math.js": "export const PI = 3.14; export const E = 2.71" }
+const entry = 'import * as math from "./math.js"; console.log(math.PI)'
+console.log(generate(bundle(entry, { modules }))) // const PI = 3.14; console.log(PI);
+```
+
+Specifiers that name a package rather than a module in the map stay as imports, and locals for the same external binding are shared so each source produces one import:
+
+```js
+const { bundle, generate } = require("abstract-syntax-tree")
+const entry = 'import React from "react"; console.log(React)'
+console.log(generate(bundle(entry, { modules: {} })))
+// import React from "react";
+// console.log(React);
+```
+
+The options are the ones [graph](#graph) takes - `entry`, `modules`, `resolve`, `external` and `missing` - plus:
+
+- `treeshake` - whether to remove unused declarations, `true` by default
+- `namespace` - `"auto"` (default) or `"object"` to always build the namespace object
+- `cycles` - `"allow"` (default) or `"throw"`
+
+Caveats:
+
+- the module trees are mutated and spliced into the result, so pass trees you can afford to lose, or re-parse
+- modules in, modules out - CommonJS is not converted
+- nothing is read from disk, so `modules` is the whole universe
+- `import.meta` and dynamic `import()` are passed through untouched, which means a dynamic import is not followed and its specifier is left as written
+- hoisting reorders statements, so a circular dependency that worked as separate modules can become a temporal dead zone error; [graph](#graph) reports `cycles` if you want to check first
+- the entry's exports are stripped with everyone else's and re-emitted at the end, so they keep their public names even when the binding behind them is renamed
+
+#### Reading from disk
+
+The library itself never touches the filesystem, which is what keeps it usable anywhere and free of a resolver of its own. `abstract-syntax-tree/fs` is a separate entry point that provides the two callbacks [graph](#graph) and [bundle](#bundle) need to work against real files, so requiring it is how you opt in to disk access:
+
+```js
+const path = require("node:path")
+const { bundle, generate } = require("abstract-syntax-tree")
+const { modules, resolve } = require("abstract-syntax-tree/fs")
+
+const entry = path.resolve("src/index.js")
+console.log(generate(bundle(modules(entry), { entry, modules, resolve })))
+```
+
+- `modules(id)` reads a file, or returns `undefined` when the id is not a readable file
+- `resolve(specifier, importer)` resolves against the importer's directory, trying no extension, `.js`, `.mjs` and a directory index
+
+Resolution is anchored to the importer rather than the working directory, and a relative specifier that matches no file is reported as missing instead of being left as an import. A bare specifier names a package and stays an import, so `react` and `node:fs` are external.
+
+Both are ordinary functions, so layering your own rules on top is just a wrapper:
+
+```js
+const path = require("node:path")
+const { modules, resolve } = require("abstract-syntax-tree/fs")
+
+const alias = (specifier, importer) =>
+  specifier.startsWith("~/")
+    ? path.resolve("src", specifier.slice(2))
+    : resolve(specifier, importer)
+
+// pass { modules, resolve: alias } to graph or bundle
 ```
 
 #### has

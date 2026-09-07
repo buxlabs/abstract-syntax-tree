@@ -1,9 +1,11 @@
 const test = require("node:test")
 const assert = require("node:assert")
 const AbstractSyntaxTree = require("..")
-const { parse, generate, rename } = AbstractSyntaxTree
+const { parse, generate, rename, scope } = AbstractSyntaxTree
+const { runInNewContext } = require("node:vm")
 
 const output = (tree) => generate(tree).replace(/\s+/g, " ").trim()
+const evaluate = (tree) => runInNewContext(generate(tree))
 
 // ---------------------------------------------------------------------------
 // basics
@@ -180,4 +182,134 @@ test("rename: allows reusing a name that only exists in a different scope", () =
     output(tree),
     "let bar = 1; function f() { let bar = 2; return bar; } bar;"
   )
+})
+
+// ---------------------------------------------------------------------------
+// scope option
+// ---------------------------------------------------------------------------
+
+test("rename: renames every scope by default", () => {
+  const tree = parse("let foo = 1; function f () { let foo = 2; return foo } foo")
+  rename(tree, "foo", "bar", { scope: "all" })
+  assert.equal(output(tree), "let bar = 1; function f() { let bar = 2; return bar; } bar;")
+})
+
+test("rename: scope top renames only the root binding", () => {
+  const tree = parse("let foo = 1; function f () { let foo = 2; return foo } foo")
+  rename(tree, "foo", "renamed", { scope: "top" })
+  assert.equal(output(tree), "let renamed = 1; function f() { let foo = 2; return foo; } renamed;")
+})
+
+test("rename: scope top ignores a name declared only in an inner scope", () => {
+  const tree = parse("function f () { let foo = 1; return foo }")
+  rename(tree, "foo", "bar", { scope: "top" })
+  assert.equal(output(tree), "function f() { let foo = 1; return foo; }")
+})
+
+test("rename: a scope renames only the binding declared in it", () => {
+  const tree = parse("let foo = 1; function f () { let foo = 2; return foo } foo")
+  const root = scope(tree)
+  rename(tree, "foo", "inner", { scope: root.children[0] })
+  assert.equal(output(tree), "let foo = 1; function f() { let inner = 2; return inner; } foo;")
+})
+
+test("rename: is available as an instance method with options", () => {
+  const tree = new AbstractSyntaxTree("let foo = 1; function f () { let foo = 2; return foo }")
+  tree.rename("foo", "bar", { scope: "top" })
+  assert.equal(output(tree._tree), "let bar = 1; function f() { let foo = 2; return foo; }")
+})
+
+test("rename: throws for a scope analyzed from a different tree", () => {
+  const tree = parse("let foo = 1")
+  const other = scope(parse("let foo = 2"))
+  assert.throws(() => rename(tree, "foo", "bar", { scope: other }), /different tree/)
+})
+
+test("rename: throws for an unknown scope option", () => {
+  const tree = parse("let foo = 1")
+  assert.throws(() => rename(tree, "foo", "bar", { scope: "nope" }), /Invalid scope option/)
+})
+
+// ---------------------------------------------------------------------------
+// capture
+// ---------------------------------------------------------------------------
+
+test("rename: throws when a reference would be captured by an inner declaration", () => {
+  const tree = parse("const foo = 1; function f () { const bar = 2; return foo }")
+  assert.throws(() => rename(tree, "foo", "bar"), /would be captured/)
+})
+
+test("rename: throws when the renamed binding would shadow an existing reference", () => {
+  const tree = parse("const bar = 1; function f () { const foo = 2; return bar }")
+  assert.throws(() => rename(tree, "foo", "bar"), /would be shadowed/)
+})
+
+test("rename: throws when the renamed binding would shadow a global", () => {
+  const tree = parse("function f () { const foo = 1; return bar }")
+  assert.throws(() => rename(tree, "foo", "bar"), /would be shadowed/)
+})
+
+test("rename: does not mutate the tree when a capture is rejected", () => {
+  const tree = parse("const foo = 1; function f () { const bar = 2; return foo }")
+  assert.throws(() => rename(tree, "foo", "bar"))
+  assert.equal(output(tree), "const foo = 1; function f() { const bar = 2; return foo; }")
+})
+
+test("rename: preserves the value of a reference that reaches past an inner scope", () => {
+  const tree = parse("const foo = 1; function f () { const other = 2; return foo } f()")
+  const before = evaluate(tree)
+  rename(tree, "foo", "renamed")
+  assert.equal(before, 1)
+  assert.equal(evaluate(tree), before)
+})
+
+test("rename: preserves the value of a shadowed binding renamed at the top", () => {
+  const tree = parse("let foo = 1; function f () { let foo = 2; return foo } f() + foo")
+  const before = evaluate(tree)
+  rename(tree, "foo", "renamed", { scope: "top" })
+  assert.equal(before, 3)
+  assert.equal(evaluate(tree), before)
+})
+
+// ---------------------------------------------------------------------------
+// classes
+// ---------------------------------------------------------------------------
+
+test("rename: renames a class and its self reference", () => {
+  const tree = parse("class Foo { m () { return Foo } }")
+  rename(tree, "Foo", "Bar")
+  assert.equal(output(tree), "class Bar { m() { return Bar; } }")
+})
+
+test("rename: renames a class self reference when targeting the root scope", () => {
+  const tree = parse("class Foo { m () { return Foo } } new Foo()")
+  rename(tree, "Foo", "Bar", { scope: "top" })
+  assert.equal(output(tree), "class Bar { m() { return Bar; } } new Bar();")
+})
+
+test("rename: keeps a renamed class constructible", () => {
+  const tree = parse("class Foo { m () { return Foo.name } } new Foo().m()")
+  rename(tree, "Foo", "Bar")
+  assert.equal(evaluate(tree), "Bar")
+})
+
+test("rename: allows a name used only outside the binding's scope", () => {
+  const tree = parse("function f (foo) { return foo } bar()")
+  rename(tree, "foo", "bar")
+  assert.equal(output(tree), "function f(bar) { return bar; } bar();")
+})
+
+test("rename: allows sibling scopes to reuse the same name", () => {
+  const tree = parse("function a () { let foo = 1; return foo } function b () { let bar = 2; return bar }")
+  rename(tree, "foo", "bar")
+  assert.equal(
+    output(tree),
+    "function a() { let bar = 1; return bar; } function b() { let bar = 2; return bar; }"
+  )
+})
+
+test("rename: does not treat a property key as a conflicting reference", () => {
+  const tree = parse("const foo = 1; obj.bar; foo")
+  rename(tree, "foo", "bar")
+  assert.equal(output(tree), "const bar = 1; obj.bar; bar;")
 })

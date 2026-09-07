@@ -1,0 +1,15 @@
+module.exports = class Module {
+  constructor (id, tree) {
+    this.id = id
+    this.tree = tree
+    // { specifier, id, external, node } - one per module syntax node that names
+    // a source, in the order they appear
+    this.dependencies = []
+    this.imports = []
+    this.exports = []
+  }
+
+  get external () {
+    return this.dependencies.filter((dependency) => dependency.external)
+  }
+}
