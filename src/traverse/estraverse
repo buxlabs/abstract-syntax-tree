@@ -357,7 +357,14 @@ Controller.prototype.__initialize = function (root, visitor) {
 
   this.__keys = VisitorKeys
   if (visitor.keys) {
-    this.__keys = Object.assign(Object.create(this.__keys), visitor.keys)
+    var safeKeys = Object.create(this.__keys)
+    Object.keys(visitor.keys).forEach(function (key) {
+      if (key === "__proto__" || key === "constructor" || key === "prototype") {
+        return
+      }
+      safeKeys[key] = visitor.keys[key]
+    })
+    this.__keys = safeKeys
   }
 }
 
