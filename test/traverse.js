@@ -30,48 +30,11 @@ test("it is exposed as a static method", () => {
   assert.deepEqual(generate(tree), "const a = 1;\n")
 })
 
-// regression tests for V-001 (prototype pollution via traverse's `keys` option)
+// ---------------------------------------------------------------------------
+// the keys option
+// ---------------------------------------------------------------------------
 
-test("it does not pollute Object.prototype when keys option has an own __proto__ property", () => {
-  const { traverse } = AbstractSyntaxTree
-  const tree = { type: "Program", body: [] }
-  const maliciousKeys = {}
-  Object.defineProperty(maliciousKeys, "__proto__", {
-    value: { polluted: ["polluted"] },
-    enumerable: true,
-    configurable: true,
-  })
-  traverse(tree, {
-    keys: maliciousKeys,
-    enter() {},
-  })
-  assert.strictEqual(Object.prototype.polluted, undefined)
-  assert.strictEqual({}.polluted, undefined)
-})
-
-test("it does not pollute Object.prototype when keys option has a constructor property", () => {
-  const { traverse } = AbstractSyntaxTree
-  const tree = { type: "Program", body: [] }
-  traverse(tree, {
-    keys: { constructor: ["polluted"] },
-    enter() {},
-  })
-  assert.strictEqual(Object.prototype.polluted, undefined)
-  assert.strictEqual({}.polluted, undefined)
-})
-
-test("it does not pollute Object.prototype when keys option has a prototype property", () => {
-  const { traverse } = AbstractSyntaxTree
-  const tree = { type: "Program", body: [] }
-  traverse(tree, {
-    keys: { prototype: ["polluted"] },
-    enter() {},
-  })
-  assert.strictEqual(Object.prototype.polluted, undefined)
-  assert.strictEqual({}.polluted, undefined)
-})
-
-test("it still merges legitimate custom keys and visits their children", () => {
+test("it visits the children named by a custom key", () => {
   const { traverse } = AbstractSyntaxTree
   const visited = []
   const tree = {
@@ -84,24 +47,79 @@ test("it still merges legitimate custom keys and visits their children", () => {
   traverse(tree, {
     keys: { CustomNode: ["children"] },
     enter(node) {
-      visited.push(node.type + (node.name ? ":" + node.name : ""))
+      visited.push(node.name || node.type)
     },
   })
-  assert.deepEqual(visited, ["CustomNode", "Identifier:a", "Identifier:b"])
+  assert.deepEqual(visited, ["CustomNode", "a", "b"])
 })
 
-test("it still falls back to default visitor keys for standard node types when a custom keys option is supplied", () => {
+test("it keeps the default keys for node types the visitor does not mention", () => {
   const { parse, traverse } = AbstractSyntaxTree
   const visited = []
-  const tree = parse("var a = 1;")
+  const tree = parse("var a = 1")
   traverse(tree, {
     keys: { CustomNode: ["children"] },
     enter(node) {
       visited.push(node.type)
     },
   })
+  assert.deepEqual(visited, [
+    "Program",
+    "VariableDeclaration",
+    "VariableDeclarator",
+    "Identifier",
+    "Literal",
+  ])
+})
+
+test("it lets a custom key override a default one", () => {
+  const { traverse } = AbstractSyntaxTree
+  const visited = []
+  const tree = {
+    type: "Program",
+    body: [{ type: "Identifier", name: "skipped" }],
+    extra: [{ type: "Identifier", name: "visited" }],
+  }
+  traverse(tree, {
+    keys: { Program: ["extra"] },
+    enter(node) {
+      visited.push(node.name || node.type)
+    },
+  })
+  assert.deepEqual(visited, ["Program", "visited"])
+})
+
+// `__proto__` is the one key name that assignment treats specially, because
+// setting it reaches the accessor on Object.prototype. Merging has to store it
+// like any other name instead.
+test("it keeps the default keys when the keys option has an own __proto__ property", () => {
+  const { parse, traverse } = AbstractSyntaxTree
+  const keys = {}
+  Object.defineProperty(keys, "__proto__", {
+    value: { Program: ["nowhere"] },
+    enumerable: true,
+    configurable: true,
+  })
+  const visited = []
+  traverse(parse("var a = 1"), {
+    keys,
+    enter(node) {
+      visited.push(node.type)
+    },
+  })
   assert.ok(visited.includes("VariableDeclaration"))
-  assert.ok(visited.includes("VariableDeclarator"))
-  assert.ok(visited.includes("Identifier"))
-  assert.ok(visited.includes("Literal"))
+  assert.equal(Object.prototype.Program, undefined)
+})
+
+test("it keeps a key named constructor", () => {
+  const { traverse } = AbstractSyntaxTree
+  const visited = []
+  const tree = { type: "constructor", parts: [{ type: "Identifier", name: "a" }] }
+  traverse(tree, {
+    keys: { constructor: ["parts"] },
+    enter(node) {
+      visited.push(node.name || node.type)
+    },
+  })
+  assert.deepEqual(visited, ["constructor", "a"])
 })

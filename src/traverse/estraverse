@@ -355,17 +355,11 @@ Controller.prototype.__initialize = function (root, visitor) {
     this.__fallback = visitor.fallback
   }
 
-  this.__keys = VisitorKeys
-  if (visitor.keys) {
-    var safeKeys = Object.create(this.__keys)
-    Object.keys(visitor.keys).forEach(function (key) {
-      if (key === "__proto__" || key === "constructor" || key === "prototype") {
-        return
-      }
-      safeKeys[key] = visitor.keys[key]
-    })
-    this.__keys = safeKeys
-  }
+  // Visitor keys override the defaults; any node type the visitor does not
+  // mention keeps its default child keys. Spreading defines each key rather
+  // than assigning it, so a key named __proto__ is stored like any other
+  // instead of reaching the setter on Object.prototype.
+  this.__keys = visitor.keys ? { ...VisitorKeys, ...visitor.keys } : VisitorKeys
 }
 
 function isNode(node) {
